@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# anmol.dev — portfolio
 
-## Getting Started
+Personal site for Anmol Sethi. Next.js 16 (App Router) + Tailwind v4 + Motion,
+statically exported. No database, no CMS, no API routes.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # static output
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The one file you edit
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`src/lib/content.ts` holds every word and number on the site — bio, projects,
+experience, skills, metrics, marquee copy. Components read from it and contain no
+hardcoded copy. Change a number there and it changes everywhere it appears.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## The live map
 
-## Learn More
+The circle punched into the "O" of PRODUCTS is not decoration. Every dot is one
+real company from [ncrhiring.in](https://ncrhiring.in), plotted from its actual
+coordinates:
 
-To learn more about Next.js, take a look at the following resources:
+- **Orange, solid** — address verified against Google Maps (268).
+- **White, faint** — hiring in the city, address unconfirmed. Drawn differently on
+  purpose; a guessed pin never gets shown as a verified one.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`src/lib/ncr-pins.json` is a build-time snapshot of that dataset. Regenerate it
+from the map repo:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+node -e "
+const d=require('../delhi-ncr-startup-map/data/companies.json');
+const pts=d.filter(c=>typeof c.lat==='number').map(c=>[+c.lat.toFixed(4),+c.lng.toFixed(4),c.approx?0:1,c.hiring?1:0]);
+require('fs').writeFileSync('src/lib/ncr-pins.json',JSON.stringify({
+  generated:new Date().toISOString().slice(0,10),
+  total:d.length,
+  verified:d.filter(c=>!c.approx).length,
+  hiring:d.filter(c=>c.hiring).length,
+  openJobs:d.reduce((s,c)=>s+(c.openJobs||0),0),
+  startups:d.filter(c=>c.tier==='startup').length,
+  pts}));
+"
+```
 
-## Deploy on Vercel
+`PinOrb` draws it on canvas (1,760 DOM nodes is not a plan) with an
+aspect-corrected equirectangular projection, so the cluster you see is NCR's real
+shape — Gurugram bottom-left, Noida right, Delhi through the middle.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Adding a photo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Drop a square headshot at `public/anmol.jpg`, then set `photo: "/anmol.jpg"` in
+`src/lib/content.ts`. Until then the avatar renders an "AS" monogram.
+
+## Design system
+
+Tokens live at the top of `src/app/globals.css`.
+
+| Token | Value | Rule |
+|---|---|---|
+| `--ink` | `#08080a` | page ground |
+| `--accent` | `#ff5a1f` | the one loud colour |
+| `--signal` | `#4ade80` | **live/verified data only** — if it's green, it's real |
+
+Type: Bricolage Grotesque (display), Inter (body), Geist Mono (data and labels).
+Numbers are always mono and tabular.
+
+Everything respects `prefers-reduced-motion`: marquees stop, the orb skips its
+reveal, smooth scrolling turns off.
