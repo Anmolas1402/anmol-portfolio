@@ -82,10 +82,11 @@ export function PhysicsPills() {
           const bodies = ITEMS.map((item, i) => {
             const el = itemRefs.current[i];
             if (!el) return null;
-            // Spread the drop across the band and start above it, so they fall
-            // in one after another rather than appearing already stacked.
+            // Spread the drop across the band, and start high enough that the
+            // first bodies enter from the top of the viewport rather than
+            // popping in just above the landing zone.
             const x = width * (0.08 + 0.84 * ((i + 0.5) / ITEMS.length));
-            const y = -90 - i * 65;
+            const y = -280 - i * 95;
             const opts = {
               restitution: 0.45,
               friction: 0.35,
@@ -187,14 +188,14 @@ export function PhysicsPills() {
   return (
     <section
       aria-label="Career numbers, as a pile of draggable pills"
-      className="relative"
+      className="relative z-20"
     >
       <div
         ref={bandRef}
         className={
           isStatic
             ? "flex flex-wrap items-center justify-center gap-3 px-5 py-12"
-            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab overflow-hidden select-none active:cursor-grabbing"
+            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab overflow-visible select-none active:cursor-grabbing"
         }
       >
         {ITEMS.map((item, i) => (
@@ -209,7 +210,7 @@ export function PhysicsPills() {
                 ? "mono flex items-center rounded-full px-4 py-2.5 text-[11px] font-semibold tracking-[0.14em] whitespace-nowrap"
                 : "rounded-full"
             } shadow-[0_12px_40px_-10px_rgba(0,0,0,0.85)] ${
-              isStatic ? "" : "absolute top-0 left-0"
+              isStatic ? "" : "pointer-events-none absolute top-0 left-0"
             }`}
             style={{
               background: item.tint,
@@ -231,12 +232,6 @@ export function PhysicsPills() {
             {item.kind === "pill" ? item.text : null}
           </div>
         ))}
-
-        {mode === "live" && (
-          <p className="mono pointer-events-none absolute inset-x-0 top-5 text-center text-[10px] tracking-[0.2em] text-muted/45">
-            DRAG THEM AROUND
-          </p>
-        )}
       </div>
 
       {/* The floor the pills land on. */}

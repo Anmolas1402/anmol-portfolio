@@ -31,7 +31,7 @@ const HEADLINE = {
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-32 pb-16 sm:pt-40">
+    <section id="top" className="relative pt-32 pb-4 sm:pt-40">
       <div className="grid-ground pointer-events-none absolute inset-0 -z-10" />
 
 
