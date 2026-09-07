@@ -5,37 +5,49 @@ import { Marquee } from "./Marquee";
 import { marqueeWords } from "@/lib/content";
 
 /**
- * A band of metric pills that drop in under gravity, land on the marquee strip
- * below them, pile up, and can be grabbed and thrown. The strip is rendered
- * here rather than in the hero precisely so the band's floor and the top of the
- * line are the same edge. Matter.js runs the simulation; the pills themselves stay
- * real DOM nodes positioned from their bodies each frame, so the text stays
- * selectable-crisp and accessible rather than being painted into a canvas.
+ * A band of metric pills and loose balls that drop in under gravity, land on
+ * the marquee strip below them, pile up, and can be grabbed and thrown.
  *
- * Matter is imported dynamically and only once the band scrolls into view — it
- * is the heaviest dependency on the site and the hero must not wait for it.
+ * Matter.js runs the simulation; every body is a real DOM node positioned from
+ * its body each frame, so pill text stays selectable and screen-readable rather
+ * than being painted into a canvas. Matter is imported dynamically and only
+ * once the band scrolls into view — it is the heaviest dependency here and the
+ * hero must not wait on it.
+ *
+ * The marquee is rendered by this component rather than by the hero precisely
+ * so the band's floor and the top of the line are the same edge.
  */
 
-type Pill = { text: string; tint: string; ink?: string };
+type Item =
+  | { kind: "pill"; text: string; tint: string }
+  | { kind: "ball"; size: number; tint: string };
 
-const TILT = 0.42; // ~24°, the most tilt that still reads cleanly
+/** ~24° — the most tilt that still reads cleanly. */
+const TILT = 0.42;
 
-const PILLS: Pill[] = [
-  { text: "500K STUDENTS", tint: "#f5ce78" },
-  { text: "1 → 14 EXAMS", tint: "#6dc7ba" },
-  { text: "99.4% ACCURATE", tint: "#c3afff" },
-  { text: "30+ TEAM", tint: "#f79c77" },
-  { text: "100+ INTERNS HIRED", tint: "#f7c5d0" },
-  { text: "2 L PAYING STUDENTS", tint: "#a8d5ff" },
-  { text: "1,878 STARTUPS MAPPED", tint: "#ffb37a" },
-  { text: "SOPs THAT STICK", tint: "#b9e8a1" },
-  { text: "1,500+ LISTENERS/EP", tint: "#e5d3ff" },
+const ITEMS: Item[] = [
+  { kind: "pill", text: "500K STUDENTS", tint: "#f5ce78" },
+  { kind: "ball", size: 26, tint: "#ff7a3c" },
+  { kind: "pill", text: "1 → 14 EXAMS", tint: "#6dc7ba" },
+  { kind: "ball", size: 16, tint: "#c3afff" },
+  { kind: "pill", text: "99.4% ACCURATE", tint: "#c3afff" },
+  { kind: "pill", text: "30+ TEAM", tint: "#f79c77" },
+  { kind: "ball", size: 32, tint: "#6dc7ba" },
+  { kind: "pill", text: "100+ INTERNS HIRED", tint: "#f7c5d0" },
+  { kind: "ball", size: 20, tint: "#f5ce78" },
+  { kind: "pill", text: "2 L PAYING STUDENTS", tint: "#a8d5ff" },
+  { kind: "ball", size: 14, tint: "#b9e8a1" },
+  { kind: "pill", text: "1,878 STARTUPS MAPPED", tint: "#ffb37a" },
+  { kind: "ball", size: 24, tint: "#a8d5ff" },
+  { kind: "pill", text: "SOPs THAT STICK", tint: "#b9e8a1" },
+  { kind: "pill", text: "1,500+ LISTENERS/EP", tint: "#e5d3ff" },
+  { kind: "ball", size: 18, tint: "#f7c5d0" },
 ];
 
 export function PhysicsPills() {
   const bandRef = useRef<HTMLDivElement>(null);
-  const pillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  // "idle" until we know which we can do; "static" honours reduced motion.
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // "idle" until we know what we can do; "static" honours reduced motion.
   const [mode, setMode] = useState<"idle" | "static" | "live">("idle");
 
   useEffect(() => {
@@ -51,7 +63,7 @@ export function PhysicsPills() {
         io.disconnect();
 
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          // No gravity, no drag — just lay the pills out and leave them alone.
+          // No gravity, no drag — just lay everything out and leave it alone.
           setMode("static");
           return;
         }
@@ -67,26 +79,26 @@ export function PhysicsPills() {
           const engine = M.Engine.create();
           engine.gravity.y = 1.1;
 
-          const bodies = PILLS.map((_, i) => {
-            const el = pillRefs.current[i];
+          const bodies = ITEMS.map((item, i) => {
+            const el = itemRefs.current[i];
             if (!el) return null;
-            const w = el.offsetWidth;
-            const h = el.offsetHeight;
-            return M.Bodies.rectangle(
-              // Spread the drop across the band and start above it, so they
-              // fall in rather than appearing already stacked.
-              width * (0.12 + 0.76 * ((i + 0.5) / PILLS.length)),
-              -120 - i * 90,
-              w,
-              h,
-              {
-                chamfer: { radius: h / 2 },
-                restitution: 0.45,
-                friction: 0.35,
-                frictionAir: 0.012,
-                angle: (Math.random() - 0.5) * 0.5,
-              },
-            );
+            // Spread the drop across the band and start above it, so they fall
+            // in one after another rather than appearing already stacked.
+            const x = width * (0.08 + 0.84 * ((i + 0.5) / ITEMS.length));
+            const y = -90 - i * 65;
+            const opts = {
+              restitution: 0.45,
+              friction: 0.35,
+              frictionAir: 0.012,
+            };
+            if (item.kind === "ball") {
+              return M.Bodies.circle(x, y, item.size / 2, opts);
+            }
+            return M.Bodies.rectangle(x, y, el.offsetWidth, el.offsetHeight, {
+              ...opts,
+              chamfer: { radius: el.offsetHeight / 2 },
+              angle: (Math.random() - 0.5) * 0.5,
+            });
           });
 
           const walls = [
@@ -95,15 +107,16 @@ export function PhysicsPills() {
             M.Bodies.rectangle(width + WALL / 2, height / 2, WALL, height * 4, { isStatic: true }),
           ];
 
-          const pillBodies = bodies.filter((b): b is NonNullable<typeof b> => !!b);
-          M.Composite.add(engine.world, [...walls, ...pillBodies]);
+          const live = bodies.filter((b): b is NonNullable<typeof b> => !!b);
+          M.Composite.add(engine.world, [...walls, ...live]);
 
-          // Drag and throw. Matter's mouse wheel handler swallows page scroll,
-          // so remove it — the band sits mid-page and must not trap the user.
+          // Drag and throw. Matter's own wheel handler swallows page scroll, so
+          // remove it — the band sits mid-page and must not trap the user.
           const mouse = M.Mouse.create(band);
-          band.removeEventListener("wheel", (mouse as unknown as {
-            mousewheel: (e: Event) => void;
-          }).mousewheel);
+          band.removeEventListener(
+            "wheel",
+            (mouse as unknown as { mousewheel: (e: Event) => void }).mousewheel,
+          );
           const drag = M.MouseConstraint.create(engine, {
             mouse,
             constraint: { stiffness: 0.18, render: { visible: false } },
@@ -114,18 +127,22 @@ export function PhysicsPills() {
           let last = performance.now();
           const frame = (now: number) => {
             // Clamped delta: a backgrounded tab would otherwise resume with a
-            // huge step and fire every pill through the floor.
+            // huge step and fire every body through the floor.
             const dt = Math.min(now - last, 32);
             last = now;
             M.Engine.update(engine, dt);
-            for (let i = 0; i < pillBodies.length; i++) {
-              const el = pillRefs.current[i];
+
+            for (let i = 0; i < live.length; i++) {
+              const el = itemRefs.current[i];
               if (!el) continue;
-              const body = pillBodies[i];
+              const body = live[i];
               // Unrestricted tumbling settles pills upside down and the text
-              // becomes unreadable, so cap the tilt and kill the spin at the
-              // limit. They still wobble when thrown, they just never invert.
-              if (body.angle > TILT || body.angle < -TILT) {
+              // reads backwards, so cap the tilt and kill the spin at the
+              // limit. Balls carry no text, so they spin freely.
+              if (
+                ITEMS[i].kind === "pill" &&
+                (body.angle > TILT || body.angle < -TILT)
+              ) {
                 M.Body.setAngle(body, Math.max(-TILT, Math.min(TILT, body.angle)));
                 M.Body.setAngularVelocity(body, 0);
               }
@@ -141,8 +158,8 @@ export function PhysicsPills() {
 
           const onResize = () => {
             const w = band.clientWidth;
-            M.Body.setPosition(walls[2], { x: w + WALL / 2, y: height / 2 });
             M.Body.setPosition(walls[0], { x: w / 2, y: height + WALL / 2 });
+            M.Body.setPosition(walls[2], { x: w + WALL / 2, y: height / 2 });
           };
           window.addEventListener("resize", onResize);
 
@@ -165,6 +182,8 @@ export function PhysicsPills() {
     };
   }, []);
 
+  const isStatic = mode === "static";
+
   return (
     <section
       aria-label="Career numbers, as a pile of draggable pills"
@@ -173,40 +192,48 @@ export function PhysicsPills() {
       <div
         ref={bandRef}
         className={
-          mode === "static"
+          isStatic
             ? "flex flex-wrap items-center justify-center gap-3 px-5 py-12"
-            : "relative h-[38svh] min-h-[280px] w-full cursor-grab overflow-hidden select-none active:cursor-grabbing"
+            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab overflow-hidden select-none active:cursor-grabbing"
         }
       >
-        {PILLS.map((p, i) => (
+        {ITEMS.map((item, i) => (
           <div
-            key={p.text}
+            key={item.kind === "pill" ? item.text : `ball-${i}`}
             ref={(el) => {
-              pillRefs.current[i] = el;
+              itemRefs.current[i] = el;
             }}
-            className={`mono flex items-center rounded-full px-5 py-3 text-[11px] font-semibold tracking-[0.14em] whitespace-nowrap shadow-[0_12px_40px_-10px_rgba(0,0,0,0.85)] ${
-              mode === "static" ? "" : "absolute top-0 left-0"
+            aria-hidden={item.kind === "ball"}
+            className={`${
+              item.kind === "pill"
+                ? "mono flex items-center rounded-full px-4 py-2.5 text-[11px] font-semibold tracking-[0.14em] whitespace-nowrap"
+                : "rounded-full"
+            } shadow-[0_12px_40px_-10px_rgba(0,0,0,0.85)] ${
+              isStatic ? "" : "absolute top-0 left-0"
             }`}
             style={{
-              background: p.tint,
-              color: p.ink ?? "#08080a",
-              ...(mode === "static"
+              background: item.tint,
+              color: "#08080a",
+              ...(item.kind === "ball"
+                ? { width: item.size, height: item.size }
+                : null),
+              ...(isStatic
                 ? { transform: `rotate(${(i % 2 ? 1 : -1) * 2}deg)` }
                 : {
                     willChange: "transform",
                     // React owns opacity, the simulation owns transform. If
                     // React also set transform, the re-render that flips mode
-                    // to "live" would reset every pill for one frame.
+                    // to "live" would reset every body for one frame.
                     opacity: mode === "live" ? 1 : 0,
                   }),
             }}
           >
-            {p.text}
+            {item.kind === "pill" ? item.text : null}
           </div>
         ))}
 
         {mode === "live" && (
-          <p className="mono pointer-events-none absolute inset-x-0 top-6 text-center text-[10px] tracking-[0.2em] text-muted/45">
+          <p className="mono pointer-events-none absolute inset-x-0 top-5 text-center text-[10px] tracking-[0.2em] text-muted/45">
             DRAG THEM AROUND
           </p>
         )}
