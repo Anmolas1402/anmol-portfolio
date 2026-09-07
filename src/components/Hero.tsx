@@ -18,6 +18,18 @@ const line = {
   }),
 };
 
+/**
+ * The hero claim. The orb replaces one letter, so the split lives here: swap to
+ * { before: "AT V", after: "LUME" } and it becomes a real O instead of an A.
+ */
+const HEADLINE = {
+  lines: [
+    { text: "I MAKE THINGS", accent: false },
+    { text: "RELIABLE", accent: true },
+  ],
+  orbLine: { before: "AT SC", after: "LE" },
+} as const;
+
 /** Grace's floating pills, except each one is a number Anmol can defend. */
 const pills = [
   { text: "500K STUDENTS", tint: "#f5ce78", side: "left", inset: "2.5rem", y: "20%", rot: -9 },
@@ -71,37 +83,35 @@ export function Hero() {
           <span className="text-lg text-paper sm:text-2xl">Anmol</span>
         </motion.div>
 
-        {/* The headline. The O in PRODUCTS is a live map of 1,760 companies. */}
-        <h1 className="display text-center text-[clamp(3rem,13vw,10.5rem)] text-paper">
-          {["I MAKE", null, "MEASURABLE"].map((text, i) =>
-            text ? (
-              <span key={i} className="block overflow-hidden">
-                <motion.span
-                  custom={i}
-                  variants={line}
-                  initial="hidden"
-                  animate="shown"
-                  className="block"
-                >
-                  {text}
-                </motion.span>
-              </span>
-            ) : (
-              <span key={i} className="block overflow-hidden">
-                <motion.span
-                  custom={i}
-                  variants={line}
-                  initial="hidden"
-                  animate="shown"
-                  className="flex items-center justify-center gap-[0.02em]"
-                >
-                  <span>PR</span>
-                  <PinOrb className="mx-[0.03em] w-[0.78em] shrink-0 translate-y-[0.03em]" />
-                  <span className="text-accent">DUCTS</span>
-                </motion.span>
-              </span>
-            ),
-          )}
+        {/* The headline. The orb is a live map of 1,760 companies standing in
+            for a letter, so HEADLINE controls exactly which one it replaces. */}
+        <h1 className="display text-center text-[clamp(2.6rem,8.8vw,8.5rem)] text-paper">
+          {HEADLINE.lines.map((l, i) => (
+            <span key={i} className="block overflow-hidden">
+              <motion.span
+                custom={i}
+                variants={line}
+                initial="hidden"
+                animate="shown"
+                className={l.accent ? "block text-accent" : "block"}
+              >
+                {l.text}
+              </motion.span>
+            </span>
+          ))}
+          <span className="block overflow-hidden">
+            <motion.span
+              custom={HEADLINE.lines.length}
+              variants={line}
+              initial="hidden"
+              animate="shown"
+              className="flex items-center justify-center gap-[0.02em]"
+            >
+              <span>{HEADLINE.orbLine.before}</span>
+              <PinOrb className="mx-[0.03em] w-[0.78em] shrink-0 translate-y-[0.03em]" />
+              <span>{HEADLINE.orbLine.after}</span>
+            </motion.span>
+          </span>
         </h1>
 
         {/* Caption for the orb — otherwise it's just a pretty circle. */}
@@ -112,7 +122,7 @@ export function Hero() {
           className="mono mt-7 text-center text-[11px] tracking-[0.16em] text-muted"
         >
           <span className="mr-2 inline-block size-1.5 translate-y-[-1px] rounded-full bg-signal align-middle" />
-          THAT O IS REAL DATA — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
+          THAT ORB IS LIVE DATA — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
           {pins.verified.toLocaleString()} ADDRESS-VERIFIED
         </motion.p>
 
@@ -122,12 +132,14 @@ export function Hero() {
           transition={{ duration: 0.8, ease, delay: 0.7 }}
           className="mx-auto mt-8 max-w-2xl text-center text-base leading-relaxed text-muted sm:text-lg"
         >
-          Product ops at{" "}
-          <span className="text-paper">MathonGo</span>. I built the data
-          pipelines behind exam analysis for{" "}
-          <span className="text-paper">500,000 students</span>, scaled the test
-          series from one exam to fourteen, and shipped a College Predictor at{" "}
-          <span className="text-paper">99.4% accuracy</span> before it went live.
+          Pipelines for{" "}
+          <span className="text-paper">500,000 students</span>. A test series
+          scaled from{" "}
+          <span className="text-paper">one exam to fourteen</span>. A{" "}
+          <span className="text-paper">30-person team</span> and{" "}
+          <span className="text-paper">100+ interns</span> onboarded. Two years
+          of product ops at MathonGo, and the same problem every time — make the
+          output trustworthy when the volume goes up.
         </motion.p>
 
         <motion.div
