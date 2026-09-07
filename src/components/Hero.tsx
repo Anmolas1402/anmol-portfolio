@@ -3,8 +3,7 @@
 import { motion } from "motion/react";
 import { PinOrb } from "./PinOrb";
 import { Avatar } from "./Avatar";
-import { Marquee } from "./Marquee";
-import { marqueeWords, person } from "@/lib/content";
+import { person } from "@/lib/content";
 import pins from "@/lib/ncr-pins.json";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -32,7 +31,7 @@ const HEADLINE = {
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-32 pb-10 sm:pt-40">
+    <section id="top" className="relative overflow-hidden pt-32 pb-16 sm:pt-40">
       <div className="grid-ground pointer-events-none absolute inset-0 -z-10" />
 
 
@@ -129,23 +128,6 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="mt-20 border-y border-line py-4"
-      >
-        <Marquee duration={45}>
-          {marqueeWords.map((w) => (
-            <span key={w} className="flex items-center">
-              <span className="mono px-6 text-sm tracking-[0.18em] text-muted">
-                {w}
-              </span>
-              <span className="text-accent">✦</span>
-            </span>
-          ))}
-        </Marquee>
-      </motion.div>
     </section>
   );
 }

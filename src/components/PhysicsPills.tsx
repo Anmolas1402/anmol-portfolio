@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Marquee } from "./Marquee";
+import { marqueeWords } from "@/lib/content";
 
 /**
- * A band of metric pills that drop in under gravity, pile up, and can be
- * grabbed and thrown. Matter.js runs the simulation; the pills themselves stay
+ * A band of metric pills that drop in under gravity, land on the marquee strip
+ * below them, pile up, and can be grabbed and thrown. The strip is rendered
+ * here rather than in the hero precisely so the band's floor and the top of the
+ * line are the same edge. Matter.js runs the simulation; the pills themselves stay
  * real DOM nodes positioned from their bodies each frame, so the text stays
  * selectable-crisp and accessible rather than being painted into a canvas.
  *
@@ -13,6 +17,8 @@ import { useEffect, useRef, useState } from "react";
  */
 
 type Pill = { text: string; tint: string; ink?: string };
+
+const TILT = 0.42; // ~24°, the most tilt that still reads cleanly
 
 const PILLS: Pill[] = [
   { text: "500K STUDENTS", tint: "#f5ce78" },
@@ -78,7 +84,7 @@ export function PhysicsPills() {
                 restitution: 0.45,
                 friction: 0.35,
                 frictionAir: 0.012,
-                angle: (Math.random() - 0.5) * 0.6,
+                angle: (Math.random() - 0.5) * 0.5,
               },
             );
           });
@@ -115,7 +121,15 @@ export function PhysicsPills() {
             for (let i = 0; i < pillBodies.length; i++) {
               const el = pillRefs.current[i];
               if (!el) continue;
-              const { position: p, angle } = pillBodies[i];
+              const body = pillBodies[i];
+              // Unrestricted tumbling settles pills upside down and the text
+              // becomes unreadable, so cap the tilt and kill the spin at the
+              // limit. They still wobble when thrown, they just never invert.
+              if (body.angle > TILT || body.angle < -TILT) {
+                M.Body.setAngle(body, Math.max(-TILT, Math.min(TILT, body.angle)));
+                M.Body.setAngularVelocity(body, 0);
+              }
+              const { position: p, angle } = body;
               el.style.transform = `translate(${p.x - el.offsetWidth / 2}px, ${
                 p.y - el.offsetHeight / 2
               }px) rotate(${angle}rad)`;
@@ -140,7 +154,7 @@ export function PhysicsPills() {
           };
         })();
       },
-      { rootMargin: "120px" },
+      { threshold: 0.35 },
     );
 
     io.observe(band);
@@ -154,14 +168,14 @@ export function PhysicsPills() {
   return (
     <section
       aria-label="Career numbers, as a pile of draggable pills"
-      className="relative border-y border-line bg-ink-2/30"
+      className="relative"
     >
       <div
         ref={bandRef}
         className={
           mode === "static"
             ? "flex flex-wrap items-center justify-center gap-3 px-5 py-12"
-            : "relative h-[32svh] min-h-[240px] w-full cursor-grab overflow-hidden select-none active:cursor-grabbing"
+            : "relative h-[38svh] min-h-[280px] w-full cursor-grab overflow-hidden select-none active:cursor-grabbing"
         }
       >
         {PILLS.map((p, i) => (
@@ -190,13 +204,27 @@ export function PhysicsPills() {
             {p.text}
           </div>
         ))}
+
+        {mode === "live" && (
+          <p className="mono pointer-events-none absolute inset-x-0 top-6 text-center text-[10px] tracking-[0.2em] text-muted/45">
+            DRAG THEM AROUND
+          </p>
+        )}
       </div>
 
-      {mode === "live" && (
-        <p className="mono pointer-events-none absolute inset-x-0 bottom-4 text-center text-[10px] tracking-[0.2em] text-muted/60">
-          DRAG THEM AROUND
-        </p>
-      )}
+      {/* The floor the pills land on. */}
+      <div className="border-y border-line py-4">
+        <Marquee duration={45}>
+          {marqueeWords.map((w) => (
+            <span key={w} className="flex items-center">
+              <span className="mono px-6 text-sm tracking-[0.18em] text-muted">
+                {w}
+              </span>
+              <span className="text-accent">✦</span>
+            </span>
+          ))}
+        </Marquee>
+      </div>
     </section>
   );
 }
