@@ -20,11 +20,11 @@ const line = {
 
 /** Grace's floating pills, except each one is a number Anmol can defend. */
 const pills = [
-  { text: "500K STUDENTS", tint: "#f5ce78", x: "-3%", y: "22%", rot: -9 },
-  { text: "1 → 14 EXAMS", tint: "#6dc7ba", x: "84%", y: "16%", rot: 8 },
-  { text: "99.4% ACCURATE", tint: "#c3afff", x: "88%", y: "62%", rot: -6 },
-  { text: "30+ TEAM", tint: "#f79c77", x: "-1%", y: "68%", rot: 7 },
-];
+  { text: "500K STUDENTS", tint: "#f5ce78", side: "left", inset: "2.5rem", y: "20%", rot: -9 },
+  { text: "1 → 14 EXAMS", tint: "#6dc7ba", side: "right", inset: "2rem", y: "14%", rot: 8 },
+  { text: "99.4% ACCURATE", tint: "#c3afff", side: "right", inset: "3rem", y: "62%", rot: -6 },
+  { text: "30+ TEAM", tint: "#f79c77", side: "left", inset: "4rem", y: "68%", rot: 7 },
+] as const;
 
 export function Hero() {
   return (
@@ -40,7 +40,7 @@ export function Hero() {
             animate={{ opacity: 1, scale: 1, rotate: p.rot }}
             transition={{ duration: 0.8, ease, delay: 0.6 + i * 0.12 }}
             className="absolute"
-            style={{ left: p.x, top: p.y }}
+            style={{ [p.side]: p.inset, top: p.y }}
           >
             <motion.div
               animate={{ y: [0, -10, 0] }}

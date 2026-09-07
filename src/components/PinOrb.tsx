@@ -80,11 +80,17 @@ export function PinOrb({
       const r = size / 2;
       // One shared scale for both axes keeps NCR's real proportions.
       const scale = (size * fill) / SPAN;
-      // Dots scale with the orb: legible at 86px in the headline, still crisp big.
-      const rBase = Math.max(0.75, (size / 86) * 1.05) * dotScale;
+      // Dots grow far slower than the orb. Linear scaling turns the big map into
+      // three merged white blobs — at 420px these stay separate points.
+      const rBase = Math.min(2.2, Math.max(0.7, size / 150)) * dotScale;
+      // In the headline the orb is ~90px across, so all 1,492 approximate pins
+      // stack 30-deep and compound to solid white however faint each one is.
+      // Thin them until the density suits the size; verified pins always draw.
+      const approxStep = size < 140 ? 7 : size < 260 ? 3 : 1;
 
       for (let i = 0; i < PTS.length; i++) {
         const [lat, lng, verified, hiring] = PTS[i];
+        if (!verified && i % approxStep !== 0) continue;
         const depth = verified ? 1 : 0.5;
         const x =
           r + ((lng - LNG[0]) * KX - SPAN_X / 2) * scale + eased.x * parallax * depth;
@@ -106,13 +112,16 @@ export function PinOrb({
         if (verified) {
           const pulse = reduced ? 1 : 0.78 + 0.22 * Math.sin(t * 1.2 + i * 0.9);
           ctx.beginPath();
-          ctx.arc(x, y, rBase * 1.1, 0, Math.PI * 2);
+          ctx.arc(x, y, rBase * 1.15, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255, 122, 60, ${a * pulse})`;
           ctx.fill();
         } else {
+          // 1,492 approximate pins overlap heavily in Gurugram, Noida and central
+          // Delhi. Kept faint on purpose: dense enough to read as a haze over the
+          // three hubs, never bright enough to compete with a verified pin.
           ctx.beginPath();
-          ctx.arc(x, y, rBase * 0.85, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(226, 232, 240, ${a * (hiring ? 0.55 : 0.3)})`;
+          ctx.arc(x, y, rBase * 0.62, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(214, 224, 238, ${a * (hiring ? 0.2 : 0.11)})`;
           ctx.fill();
         }
       }
