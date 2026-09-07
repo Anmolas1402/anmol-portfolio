@@ -1,9 +1,16 @@
 "use client";
 
-import { motion } from "motion/react";
-import { PinOrb } from "./PinOrb";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { PinOrb, type Hit } from "./PinOrb";
 import { Reveal } from "./Reveal";
 import pins from "@/lib/ncr-pins.json";
+
+const DATE = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+}).format(new Date(pins.generated));
 
 const readout = [
   { k: "Companies mapped", v: pins.total.toLocaleString() },
@@ -13,6 +20,8 @@ const readout = [
 ];
 
 export function LiveProof() {
+  const [hit, setHit] = useState<Hit | null>(null);
+
   return (
     <section className="relative overflow-hidden border-y border-line bg-ink-2/40 py-24 sm:py-28">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
@@ -98,9 +107,46 @@ export function LiveProof() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="relative mx-auto w-full max-w-[520px]"
         >
-          <PinOrb fill={0.96} dotScale={0.55} parallax={16} />
-          <div className="mono absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-line bg-ink px-4 py-2 text-[10px] tracking-[0.16em] text-muted">
-            DELHI NCR · UPDATED {pins.generated}
+          <PinOrb
+            fill={0.96}
+            dotScale={0.55}
+            parallax={16}
+            inspect
+            onHit={setHit}
+          />
+
+          {/* Tooltip is positioned in orb-local pixels, which is exactly the
+              coordinate space the canvas reports the hit in. */}
+          <AnimatePresence>
+            {hit && (
+              <motion.div
+                key={hit.label[0]}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                transition={{ duration: 0.16 }}
+                className="pointer-events-none absolute z-10 w-max max-w-[15rem] -translate-x-1/2 -translate-y-[calc(100%+14px)] rounded-xl border border-white/14 bg-black/85 px-3.5 py-2.5 backdrop-blur-md"
+                style={{ left: hit.x, top: hit.y }}
+              >
+                <div className="text-sm font-semibold text-paper">
+                  {hit.label[0]}
+                </div>
+                <div className="mono mt-1 text-[10px] tracking-[0.12em] text-muted">
+                  {[hit.label[1], hit.label[2]].filter(Boolean).join(" · ").toUpperCase()}
+                </div>
+                {hit.label[3] > 0 && (
+                  <div className="mono mt-1.5 text-[10px] tracking-[0.12em] text-signal">
+                    {hit.label[3]} OPEN {hit.label[3] === 1 ? "ROLE" : "ROLES"}
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="mono absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-[10px] tracking-[0.16em] text-muted">
+            {hit
+              ? "VERIFIED PIN"
+              : `HOVER A BRIGHT PIN · UPDATED ${DATE.toUpperCase()}`}
           </div>
         </motion.div>
       </div>

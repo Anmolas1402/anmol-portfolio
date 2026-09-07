@@ -1,5 +1,6 @@
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
+import { PhysicsPills } from "@/components/PhysicsPills";
 import { LiveProof } from "@/components/LiveProof";
 import { Work } from "@/components/Work";
 import { About } from "@/components/About";
@@ -12,6 +13,7 @@ export default function Home() {
       <Nav />
       <main className="noise relative">
         <Hero />
+        <PhysicsPills />
         <LiveProof />
         <Work />
         <About />

@@ -1,3 +1,5 @@
+import pins from "./ncr-pins.json";
+
 // Single source of truth for every word and number on the site.
 // Change it here, it changes everywhere.
 
@@ -51,13 +53,13 @@ export const projects: Project[] = [
     title: "NCR Hiring Map",
     kicker: "Built solo · live in production",
     blurb:
-      "An interactive map of every startup and VC firm hiring across Delhi NCR. 1,760 companies, 2,908 open roles, built from a reproducible scraping pipeline instead of a hand-typed spreadsheet.",
+      `An interactive map of every startup and VC firm hiring across Delhi NCR. ${pins.total.toLocaleString()} companies, ${pins.openJobs.toLocaleString()} open roles, built from a reproducible scraping pipeline instead of a hand-typed spreadsheet.`,
     detail: [
       "Bangalore had a startup map. NCR did not, and the obvious way to build one is to type companies into a sheet until you get bored.",
       "I built a pipeline instead: scrape live job postings, verify addresses against Google Maps, drop anything outside the NCR bounding box, and derive the area facet from address text.",
-      "The honest part is the interesting part. 268 pins are verified against real street addresses. The rest are city-level guesses from job postings — drawn as hollow dots and labelled as approximate. A guessed pin never gets shown as a verified one.",
+      `The honest part is the interesting part. ${pins.verified} pins are verified against real street addresses. The rest are city-level guesses from job postings — drawn as hollow dots and labelled as approximate. A guessed pin never gets shown as a verified one.`,
     ],
-    stat: { value: "1,760", label: "companies mapped" },
+    stat: { value: pins.total.toLocaleString(), label: "companies mapped" },
     tags: ["Next.js 16", "Leaflet", "Data pipeline", "Scraping", "Tailwind v4"],
     href: "https://ncrhiring.in",
     hrefLabel: "ncrhiring.in",

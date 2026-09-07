@@ -6,6 +6,12 @@ import pins from "@/lib/ncr-pins.json";
 type Pt = [lat: number, lng: number, verified: 0 | 1, hiring: 0 | 1];
 const PTS = pins.pts as Pt[];
 
+/** [name, area, sector, openJobs] — present for verified pins only. */
+type Label = [string, string, string, number];
+const LABELS = pins.labels as unknown as Record<string, Label>;
+
+export type Hit = { label: Label; x: number; y: number };
+
 // Bounds taken from the dataset itself, so the dots fill the frame instead of
 // collapsing into the middle of an oversized box.
 const LAT = [28.355, 28.72] as const;
@@ -22,23 +28,38 @@ const SPAN = Math.max(SPAN_X, SPAN_Y);
 /**
  * Every dot is one real company from ncrhiring.in — solid orange if its address
  * is verified against Google Maps, faint white if it's a city-level guess from a
- * job posting. Canvas, because 1,760 DOM nodes is not a plan.
+ * job posting. Canvas, because 1,878 DOM nodes is not a plan.
+ *
+ * With `inspect`, hovering a verified pin reports the company under the cursor.
+ * Approximate pins are deliberately not hoverable: they sit at a generated
+ * offset from a city centre, so naming one would imply a precision we don't have.
  */
 export function PinOrb({
   className = "",
   fill = 0.98,
   dotScale = 1,
   parallax = 9,
+  inspect = false,
+  onHit,
 }: {
   className?: string;
   /** How much of the diameter the data spans. >1 crops the edges. */
   fill?: number;
   dotScale?: number;
   parallax?: number;
+  /** Enable hit-testing against verified pins. */
+  inspect?: boolean;
+  onHit?: (hit: Hit | null) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  // Held in a ref so a changing callback identity never restarts the draw loop.
+  const onHitRef = useRef(onHit);
+  useEffect(() => {
+    onHitRef.current = onHit;
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -53,6 +74,9 @@ export function PinOrb({
     const start = performance.now();
     const target = { x: 0, y: 0 };
     const eased = { x: 0, y: 0 };
+    // Cursor in orb-local pixels, so hit-testing shares the drawn coordinates.
+    const local = { x: -1e4, y: -1e4 };
+    let lastHit = -1;
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -68,6 +92,8 @@ export function PinOrb({
       const r = wrap.getBoundingClientRect();
       target.x = ((e.clientX - (r.left + r.width / 2)) / r.width) * 2;
       target.y = ((e.clientY - (r.top + r.height / 2)) / r.height) * 2;
+      local.x = e.clientX - r.left;
+      local.y = e.clientY - r.top;
     };
 
     const draw = (now: number) => {
@@ -87,6 +113,12 @@ export function PinOrb({
       // stack 30-deep and compound to solid white however faint each one is.
       // Thin them until the density suits the size; verified pins always draw.
       const approxStep = size < 140 ? 7 : size < 260 ? 3 : 1;
+      // Generous grab radius — the pins are ~2px and nobody aims that well.
+      const grab = Math.max(9, rBase * 5);
+      let bestIdx = -1;
+      let bestDist = grab;
+      let bestX = 0;
+      let bestY = 0;
 
       for (let i = 0; i < PTS.length; i++) {
         const [lat, lng, verified, hiring] = PTS[i];
@@ -110,6 +142,15 @@ export function PinOrb({
         if (a <= 0) continue;
 
         if (verified) {
+          if (inspect) {
+            const d = Math.hypot(x - local.x, y - local.y);
+            if (d < bestDist) {
+              bestDist = d;
+              bestIdx = i;
+              bestX = x;
+              bestY = y;
+            }
+          }
           const pulse = reduced ? 1 : 0.78 + 0.22 * Math.sin(t * 1.2 + i * 0.9);
           ctx.beginPath();
           ctx.arc(x, y, rBase * 1.15, 0, Math.PI * 2);
@@ -123,6 +164,29 @@ export function PinOrb({
           ctx.arc(x, y, rBase * 0.62, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(214, 224, 238, ${a * (hiring ? 0.2 : 0.11)})`;
           ctx.fill();
+        }
+      }
+
+      if (inspect) {
+        if (bestIdx >= 0) {
+          // Ring the pin under the cursor so the tooltip has a visible anchor.
+          ctx.beginPath();
+          ctx.arc(bestX, bestY, rBase * 3.4, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255, 122, 60, 0.85)";
+          ctx.lineWidth = 1.25;
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(bestX, bestY, rBase * 1.6, 0, Math.PI * 2);
+          ctx.fillStyle = "#fff";
+          ctx.fill();
+        }
+        if (bestIdx !== lastHit) {
+          lastHit = bestIdx;
+          setHovering(bestIdx >= 0);
+          const label = bestIdx >= 0 ? LABELS[String(bestIdx)] : undefined;
+          onHitRef.current?.(
+            label ? { label, x: bestX, y: bestY } : null,
+          );
         }
       }
       raf = requestAnimationFrame(draw);
@@ -139,12 +203,14 @@ export function PinOrb({
       ro.disconnect();
       window.removeEventListener("pointermove", onMove);
     };
-  }, [fill, dotScale, parallax]);
+  }, [fill, dotScale, parallax, inspect]);
 
   return (
     <div
       ref={wrapRef}
-      className={`relative aspect-square overflow-hidden rounded-full ${className}`}
+      className={`relative aspect-square overflow-hidden rounded-full ${
+        hovering ? "cursor-pointer" : ""
+      } ${className}`}
       style={{
         background:
           "radial-gradient(circle at 50% 40%, rgba(255,90,31,0.14), rgba(255,90,31,0.02) 55%, transparent 72%), #08080a",

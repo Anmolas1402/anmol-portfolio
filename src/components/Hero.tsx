@@ -30,45 +30,11 @@ const HEADLINE = {
   orbLine: { before: "AT SC", after: "LE" },
 } as const;
 
-/** Grace's floating pills, except each one is a number Anmol can defend. */
-const pills = [
-  { text: "500K STUDENTS", tint: "#f5ce78", side: "left", inset: "2.5rem", y: "20%", rot: -9 },
-  { text: "1 → 14 EXAMS", tint: "#6dc7ba", side: "right", inset: "2rem", y: "14%", rot: 8 },
-  { text: "99.4% ACCURATE", tint: "#c3afff", side: "right", inset: "3rem", y: "62%", rot: -6 },
-  { text: "30+ TEAM", tint: "#f79c77", side: "left", inset: "4rem", y: "68%", rot: 7 },
-] as const;
-
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pt-32 pb-10 sm:pt-40">
       <div className="grid-ground pointer-events-none absolute inset-0 -z-10" />
 
-      {/* Floating metric pills — desktop only, they'd crowd a phone. */}
-      <div className="pointer-events-none absolute inset-0 -z-0 hidden lg:block">
-        {pills.map((p, i) => (
-          <motion.div
-            key={p.text}
-            initial={{ opacity: 0, scale: 0.8, rotate: p.rot * 2 }}
-            animate={{ opacity: 1, scale: 1, rotate: p.rot }}
-            transition={{ duration: 0.8, ease, delay: 0.6 + i * 0.12 }}
-            className="absolute"
-            style={{ [p.side]: p.inset, top: p.y }}
-          >
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 5 + i,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="mono rounded-full px-5 py-2.5 text-[11px] font-semibold tracking-[0.14em] text-ink shadow-[0_10px_40px_-8px_rgba(0,0,0,0.8)]"
-              style={{ background: p.tint }}
-            >
-              {p.text}
-            </motion.div>
-          </motion.div>
-        ))}
-      </div>
 
       <div className="mx-auto max-w-6xl px-5">
         {/* Hey, I'm Anmol */}
