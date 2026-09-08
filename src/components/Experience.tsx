@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { Logo } from "./Logo";
@@ -12,43 +12,79 @@ import { education, experience } from "@/lib/content";
  * each card's date sits above or below it alternately, joined to the card by a
  * stalk and a dot, so the eye zigzags along the row instead of scanning a column.
  *
- * The track is a native overflow-x container with scroll snapping — it works
- * with a trackpad, a touch drag, arrow keys and Tab focus, none of which a
- * scroll-hijacked pinned section gives you for free.
+ * On a wide screen the section pins and the track slides sideways as the page
+ * scrolls down, which is what the reference does. Below that, and whenever
+ * reduced motion is asked for, it falls back to a plain horizontal scroller —
+ * pinning is where touch devices and keyboard users get stranded, and a native
+ * overflow container keeps drag, arrow keys and Tab focus working for free.
  */
 export function Experience() {
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [atEnd, setAtEnd] = useState(false);
+  const reduced = useReducedMotion();
+  const [overflow, setOverflow] = useState(0);
+  const [pinned, setPinned] = useState(false);
 
+  // How far the track has to travel, and whether pinning is appropriate here.
   useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const onScroll = () =>
-      setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 8);
-    onScroll();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
+    const measure = () => {
+      const el = trackRef.current;
+      if (!el) return;
+      const canPin = window.innerWidth >= 900 && !reduced;
+      setPinned(canPin);
+      setOverflow(canPin ? Math.max(0, el.scrollWidth - window.innerWidth + 80) : 0);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [reduced]);
+
+  // Progress through the section's extra height drives the sideways travel.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const x = useTransform(scrollYProgress, [0, 1], [0, -overflow]);
 
   return (
     <section
       id="experience"
-      className="scroll-mt-24 overflow-hidden py-16 sm:py-20"
+      ref={sectionRef}
+      className="scroll-mt-24"
+      // The extra height is the runway the pinned track slides across.
+      style={pinned ? { height: `calc(100svh + ${overflow}px)` } : undefined}
     >
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionHeading
-          eyebrow="Work experience"
-          title="The journey so far"
-          note="Two roles, both about making a lot of moving parts behave."
-        />
-      </div>
+      <div
+        className={
+          pinned
+            ? "sticky top-0 flex h-svh flex-col justify-center overflow-hidden"
+            : "overflow-hidden py-16 sm:py-20"
+        }
+      >
+        <div className="mx-auto w-full max-w-6xl px-5">
+          <SectionHeading
+            eyebrow="Work experience"
+            title="The journey so far"
+            note="Two roles, both about making a lot of moving parts behave."
+          />
+        </div>
 
-      <div className="relative mt-16">
-        <Reveal>
-          <div
-            ref={trackRef}
-            className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 py-20 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
-          >
+        <div className="relative mt-14">
+          <Reveal>
+            <motion.div
+              ref={trackRef}
+              style={pinned ? { x } : undefined}
+              className={`flex items-center gap-6 px-5 py-16 sm:px-[max(1.25rem,calc((100vw-72rem)/2))] ${
+                pinned
+                  ? "w-max"
+                  : "snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              }`}
+            >
             {[...experience, ...education].map((role, i) => {
               const dateOnTop = i % 2 === 0;
               return (
@@ -116,16 +152,8 @@ export function Experience() {
                 </article>
               );
             })}
-          </div>
-        </Reveal>
-
-        {/* Only shown while there is somewhere left to scroll. */}
-        <div
-          className={`mt-2 px-5 text-right text-[13px] text-muted/60 transition-opacity duration-300 sm:px-[max(1.25rem,calc((100vw-72rem)/2))] ${
-            atEnd ? "opacity-0" : "opacity-100"
-          }`}
-        >
-          Scroll →
+            </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>
