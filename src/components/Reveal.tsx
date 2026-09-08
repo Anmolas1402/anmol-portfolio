@@ -38,10 +38,14 @@ export function Reveal({
 }
 
 /** Staggers direct children. Pair with <Reveal> inside. */
+/**
+ * Default stagger is 0.05s per child. Beyond ~0.1s the total reveal on a long
+ * list becomes sluggish, which is the usual failure of scroll choreography.
+ */
 export function RevealGroup({
   children,
   className,
-  stagger = 0.08,
+  stagger = 0.05,
 }: {
   children: ReactNode;
   className?: string;

@@ -22,8 +22,8 @@ export const person = {
 /** The numbers that run in the hero marquee. Each one is defensible. */
 export const metrics = [
   { value: "500K+", label: "students covered by the pipelines I built" },
-  { value: "1 → 14", label: "exams in the test-series lineup" },
-  { value: "99.4%", label: "College Predictor data accuracy at rollout" },
+  { value: "1 → 14", label: "exams in the test-series lineup", segments: { from: 1, to: 14 } },
+  { value: "99.4%", label: "College Predictor data accuracy at rollout", ratio: 0.994 },
   { value: "~10 L", label: "hits on College Predictor in 3 months" },
   { value: "30+", label: "team managed across three subsidiaries" },
   { value: "100+", label: "interns hired and onboarded" },

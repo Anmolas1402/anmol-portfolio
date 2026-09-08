@@ -86,13 +86,44 @@ export function About() {
         <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-4">
           {metrics.map((m) => (
             <Reveal key={m.value + m.label}>
-              <div className="h-full bg-ink p-6 transition-colors hover:bg-ink-2">
+              <div className="flex h-full flex-col bg-ink p-6 transition-colors hover:bg-ink-2">
                 <div className="display text-3xl text-paper sm:text-4xl">
                   {m.value}
                 </div>
                 <div className="mono mt-3 text-[10px] leading-relaxed tracking-[0.1em] text-muted">
                   {m.label.toUpperCase()}
                 </div>
+                {/* A bar is drawn only where a real denominator exists. Most of
+                    these numbers have no ceiling to plot against, and inventing
+                    one to make every tile look alike would be a lie. */}
+                {"segments" in m && (
+                  <div
+                    className="mt-4 flex items-center gap-[3px]"
+                    role="img"
+                    aria-label={`Grew from ${m.segments.from} to ${m.segments.to}`}
+                  >
+                    {Array.from({ length: m.segments.to }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1 flex-1 rounded-full ${
+                          i < m.segments.from ? "bg-white/25" : "bg-accent"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+                {"ratio" in m && typeof m.ratio === "number" && (
+                  <div
+                    className="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/8"
+                    role="img"
+                    aria-label={`${Math.round(m.ratio * 100)} percent`}
+                  >
+                    <div
+                      className="h-full rounded-full bg-accent"
+                      style={{ width: `${m.ratio * 100}%` }}
+                    />
+                  </div>
+                )}
               </div>
             </Reveal>
           ))}
