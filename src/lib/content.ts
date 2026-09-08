@@ -116,6 +116,10 @@ export const projects: Project[] = [
 
 export type Role = {
   org: string;
+  /** Square-ish mark in public/logos. Falls back to a monogram when absent. */
+  logo?: string;
+  /** Tile colour behind the mark — dark logos need a light plate. */
+  logoBg?: string;
   title: string;
   period: string;
   place?: string;
@@ -126,6 +130,7 @@ export type Role = {
 export const experience: Role[] = [
   {
     org: "MathonGo",
+    logo: "/logos/mathongo-mark.png",
     title: "Operations Manager (Intern)",
     period: "Dec 2023 — Jan 2026",
     place: "Bengaluru, India",
@@ -139,6 +144,8 @@ export const experience: Role[] = [
   },
   {
     org: "Alumni Relations Cell, TIET",
+    logo: "/logos/arc.png",
+    logoBg: "#ffffff",
     title: "President",
     period: "Sept 2025 — Jan 2026",
     points: [

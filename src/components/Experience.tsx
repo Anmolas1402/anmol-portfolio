@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
+import { Logo } from "./Logo";
 import { education, experience } from "@/lib/content";
 
 /**
- * A horizontal timeline rather than a stacked list: roles run left to right
- * along one rule, and each card's date sits above or below it alternately, so
- * the eye zigzags along the line instead of scanning a column.
+ * A horizontal timeline rather than a stacked list: roles run left to right and
+ * each card's date sits above or below it alternately, joined to the card by a
+ * stalk and a dot, so the eye zigzags along the row instead of scanning a column.
  *
  * The track is a native overflow-x container with scroll snapping — it works
  * with a trackpad, a touch drag, arrow keys and Tab focus, none of which a
@@ -43,9 +44,6 @@ export function Experience() {
       </div>
 
       <div className="relative mt-16">
-        {/* The rule the cards hang from. */}
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-line" />
-
         <div
           ref={trackRef}
           className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 pb-4 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
@@ -59,36 +57,38 @@ export function Experience() {
                     dateOnTop ? "" : "flex-col-reverse"
                   }`}
                 >
+                  {/* Date pill, stalk, dot — the connector the reference uses
+                      in place of a continuous rule. */}
                   <div
-                    className={`flex items-center gap-3 ${
-                      dateOnTop ? "pb-5" : "pt-5"
+                    className={`flex flex-col items-center ${
+                      dateOnTop ? "pb-1" : "flex-col-reverse pt-1"
                     }`}
                   >
-                    <span className="mono text-[11px] tracking-[0.14em] text-accent">
+                    <span className="mono rounded-full border border-line bg-ink-2 px-4 py-2 text-[11px] tracking-[0.12em] text-paper/80">
                       {role.period.toUpperCase()}
                     </span>
-                    <span className="h-px flex-1 bg-line" />
-                    <span className="size-2 shrink-0 rounded-full bg-accent" />
+                    <span className="size-2 rounded-full bg-accent" />
+                    <span className="h-8 w-px bg-line" />
                   </div>
 
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="rounded-3xl border border-line bg-ink-2 p-6 transition-colors hover:border-white/16"
+                    className="rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
                   >
-                    <h3 className="text-xl font-semibold text-paper">
-                      {role.org}
-                    </h3>
-                    <p className="mono mt-1.5 text-[11px] tracking-[0.12em] text-accent">
-                      {role.title.toUpperCase()}
-                    </p>
-                    {role.place && (
-                      <p className="mono mt-1 text-[10px] tracking-[0.1em] text-muted">
-                        {role.place.toUpperCase()}
-                      </p>
-                    )}
+                    <div className="flex items-center gap-4">
+                      <Logo src={role.logo} bg={role.logoBg} name={role.org} />
+                      <div className="min-w-0">
+                        <h3 className="truncate text-2xl font-semibold text-paper">
+                          {role.org}
+                        </h3>
+                        <p className="mt-0.5 text-[15px] text-muted">
+                          {role.title}
+                        </p>
+                      </div>
+                    </div>
 
-                    <ul className="mt-5 space-y-3">
+                    <ul className="mt-6 space-y-3">
                       {role.points.map((pt, k) => (
                         <li
                           key={k}
@@ -100,11 +100,11 @@ export function Experience() {
                       ))}
                     </ul>
 
-                    <div className="mt-5 flex flex-wrap gap-2">
+                    <div className="mt-6 flex flex-wrap gap-2">
                       {role.tags.map((t) => (
                         <span
                           key={t}
-                          className="mono rounded-full border border-line px-2.5 py-1 text-[10px] tracking-[0.08em] text-muted"
+                          className="rounded-full border border-line bg-white/[0.03] px-3 py-1.5 text-[12px] text-muted"
                         >
                           {t}
                         </span>
@@ -119,19 +119,29 @@ export function Experience() {
           {/* Education rides the same rail rather than starting a new section. */}
           <Reveal>
             <article className="flex w-[min(84vw,400px)] shrink-0 snap-start flex-col">
-              <div className="flex items-center gap-3 pb-5">
-                <span className="mono text-[11px] tracking-[0.14em] text-muted">
+              <div className="flex flex-col items-center pb-1">
+                <span className="mono rounded-full border border-line bg-ink-2 px-4 py-2 text-[11px] tracking-[0.12em] text-muted">
                   EDUCATION
                 </span>
-                <span className="h-px flex-1 bg-line" />
-                <span className="size-2 shrink-0 rounded-full bg-white/25" />
+                <span className="size-2 rounded-full bg-white/30" />
+                <span className="h-8 w-px bg-line" />
               </div>
-              <div className="rounded-3xl border border-line bg-ink-2/60 p-6">
-                {education.map((e, i) => (
-                  <div
-                    key={e.org}
-                    className={i ? "mt-5 border-t border-line pt-5" : ""}
-                  >
+              <div className="rounded-3xl border border-line bg-ink-2/60 p-7">
+                <div className="flex items-center gap-4">
+                  <Logo
+                    src="/logos/thapar.png"
+                    bg="#ffffff"
+                    name="Thapar Institute"
+                  />
+                  <div className="min-w-0">
+                    <h3 className="text-xl font-semibold text-paper">Education</h3>
+                    <p className="mt-0.5 text-[15px] text-muted">
+                      Thapar Institute
+                    </p>
+                  </div>
+                </div>
+                {education.map((e) => (
+                  <div key={e.org} className="mt-5 border-t border-line pt-5">
                     <div className="mono text-[10px] tracking-[0.12em] text-muted">
                       {e.period.toUpperCase()}
                     </div>
