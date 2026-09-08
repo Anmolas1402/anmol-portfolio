@@ -235,7 +235,9 @@ export function Contact() {
             separate strip bolted to the bottom. */}
         <div className="mt-16 flex flex-col items-center justify-between gap-1 text-sm text-muted sm:flex-row">
           <span>© {new Date().getFullYear()} Anmol Sethi.</span>
-          <span>Built by me, with love.</span>
+          <span>
+            Handcrafted by me with <span className="text-accent">love</span>
+          </span>
         </div>
       </div>
     </footer>
