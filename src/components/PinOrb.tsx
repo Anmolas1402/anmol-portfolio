@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import pins from "@/lib/ncr-pins.json";
-
-type Pt = [lat: number, lng: number, verified: 0 | 1, hiring: 0 | 1];
-const PTS = pins.pts as Pt[];
-
-/** [name, area, sector, openJobs] — present for verified pins only. */
-type Label = [string, string, string, number];
-const LABELS = pins.labels as unknown as Record<string, Label>;
+import { usePins, type Label } from "./PinsProvider";
 
 export type Hit = { label: Label; x: number; y: number };
 
@@ -51,6 +44,10 @@ export function PinOrb({
   inspect?: boolean;
   onHit?: (hit: Hit | null) => void;
 }) {
+  const pins = usePins();
+  const PTS = pins.pts;
+  const LABELS = pins.labels;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
@@ -203,7 +200,7 @@ export function PinOrb({
       ro.disconnect();
       window.removeEventListener("pointermove", onMove);
     };
-  }, [fill, dotScale, parallax, inspect]);
+  }, [fill, dotScale, parallax, inspect, PTS, LABELS]);
 
   return (
     <div

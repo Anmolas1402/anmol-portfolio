@@ -1,3 +1,4 @@
+import { PinsProvider } from "@/components/PinsProvider";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { PhysicsPills } from "@/components/PhysicsPills";
@@ -10,7 +11,7 @@ import { Contact } from "@/components/Contact";
 
 export default function Home() {
   return (
-    <>
+    <PinsProvider>
       <Nav />
       <main className="noise relative">
         <Hero />
@@ -22,6 +23,6 @@ export default function Home() {
         <Experience />
       </main>
       <Contact />
-    </>
+    </PinsProvider>
   );
 }

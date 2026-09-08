@@ -26,8 +26,15 @@ try {
   throw err;
 }
 
+// Same scope as ncrhiring.in/api/stats and the Map tab's default view:
+// startup-tier companies with coordinates, excluding the tier that sits behind
+// the "+ Non-startups" toggle. The snapshot is the fallback for that endpoint,
+// so the two must not disagree about what they are counting.
 const rows = raw.filter(
-  (c) => typeof c.lat === "number" && typeof c.lng === "number",
+  (c) =>
+    c.tier !== "company" &&
+    typeof c.lat === "number" &&
+    typeof c.lng === "number",
 );
 
 // Compact tuples: the render loop walks this every frame.
@@ -60,7 +67,6 @@ const out = {
   verified: rows.filter((c) => !c.approx).length,
   hiring: rows.filter((c) => c.hiring).length,
   openJobs: rows.reduce((sum, c) => sum + (c.openJobs || 0), 0),
-  startups: rows.filter((c) => c.tier === "startup").length,
   areas,
   labels,
   pts,

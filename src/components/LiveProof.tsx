@@ -4,23 +4,25 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { PinOrb, type Hit } from "./PinOrb";
 import { Reveal } from "./Reveal";
-import pins from "@/lib/ncr-pins.json";
+import { usePins } from "./PinsProvider";
 
-const DATE = new Intl.DateTimeFormat("en-GB", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-}).format(new Date(pins.generated));
-
-const readout = [
-  { k: "Companies mapped", v: pins.total.toLocaleString() },
-  { k: "Address-verified", v: pins.verified.toLocaleString() },
-  { k: "Hiring right now", v: pins.hiring.toLocaleString() },
-  { k: "Open roles", v: pins.openJobs.toLocaleString() },
-];
+const fmtDate = (iso: string) =>
+  new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(iso));
 
 export function LiveProof() {
   const [hit, setHit] = useState<Hit | null>(null);
+  const pins = usePins();
+
+  const readout = [
+    { k: "Companies mapped", v: pins.total.toLocaleString() },
+    { k: "Address-verified", v: pins.verified.toLocaleString() },
+    { k: "Hiring right now", v: pins.hiring.toLocaleString() },
+    { k: "Open roles", v: pins.openJobs.toLocaleString() },
+  ];
 
   return (
     <section className="relative overflow-hidden border-y border-line bg-ink-2/40 py-24 sm:py-28">
@@ -32,7 +34,7 @@ export function LiveProof() {
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
               </span>
-              REAL DATASET · {DATE.toUpperCase()}
+              {pins.live ? "LIVE FROM NCRHIRING.IN" : `SNAPSHOT · ${fmtDate(pins.generated).toUpperCase()}`}
             </p>
 
             <h2 className="display mt-6 text-[clamp(2.2rem,6vw,4.2rem)] text-paper">
@@ -146,7 +148,7 @@ export function LiveProof() {
           <div className="mono absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-[10px] tracking-[0.16em] text-muted">
             {hit
               ? "VERIFIED PIN"
-              : `HOVER A BRIGHT PIN · UPDATED ${DATE.toUpperCase()}`}
+              : `HOVER A BRIGHT PIN · UPDATED ${fmtDate(pins.generated).toUpperCase()}`}
           </div>
         </motion.div>
       </div>

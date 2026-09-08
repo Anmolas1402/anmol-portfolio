@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { PinOrb } from "./PinOrb";
 import { Avatar } from "./Avatar";
 import { person } from "@/lib/content";
-import pins from "@/lib/ncr-pins.json";
+import { usePins } from "./PinsProvider";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -30,6 +30,8 @@ const HEADLINE = {
 } as const;
 
 export function Hero() {
+  const pins = usePins();
+
   return (
     <section id="top" className="relative pt-32 pb-4 sm:pt-40">
       <div className="grid-ground pointer-events-none absolute inset-0 -z-10" />
@@ -87,7 +89,7 @@ export function Hero() {
           className="mono mt-7 text-center text-[11px] tracking-[0.16em] text-muted"
         >
           <span className="mr-2 inline-block size-1.5 translate-y-[-1px] rounded-full bg-signal align-middle" />
-          THAT ORB IS REAL DATA — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
+          {pins.live ? "THAT ORB IS LIVE DATA" : "THAT ORB IS REAL DATA"} — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
           {pins.verified.toLocaleString()} ADDRESS-VERIFIED
         </motion.p>
 
