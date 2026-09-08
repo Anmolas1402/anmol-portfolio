@@ -74,7 +74,7 @@ export function Experience() {
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="ui-sans rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
+                    className="rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
                   >
                     <div className="flex items-center gap-4">
                       <Logo src={role.logo} bg={role.logoBg} name={role.org} />
@@ -126,7 +126,7 @@ export function Experience() {
                 <span className="size-2 rounded-full bg-white/30" />
                 <span className="h-8 w-px bg-line" />
               </div>
-              <div className="ui-sans rounded-3xl border border-line bg-ink-2/60 p-7">
+              <div className="rounded-3xl border border-line bg-ink-2/60 p-7">
                 <div className="flex items-center gap-4">
                   <Logo
                     src="/logos/thapar.png"

@@ -1,27 +1,17 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Newsreader, Space_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque, Geist_Mono, Inter } from "next/font/google";
 import { person } from "@/lib/content";
 import "./globals.css";
 
-const display = Space_Grotesk({
+const display = Bricolage_Grotesque({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600", "700", "800"],
 });
 
-// A serif body is the fastest way out of the default AI-startup look — no
-// landing page in that genre sets its prose in one.
-const sans = Newsreader({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-});
+const sans = Inter({ variable: "--font-sans", subsets: ["latin"] });
 
-const mono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-});
+const mono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://anmolsethi.com"),
