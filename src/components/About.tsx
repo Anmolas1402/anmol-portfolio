@@ -2,20 +2,11 @@
 
 import { Reveal, RevealGroup } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
-import { Marquee } from "./Marquee";
 import { metrics, person, skills } from "@/lib/content";
-
-const traits = [
-  "OPS BRAIN",
-  "DATA FIRST",
-  "SHIPS IT",
-  "WRITES THE SOP",
-  "ASKS WHY",
-];
 
 export function About() {
   return (
-    <section id="about" className="scroll-mt-24 py-24 sm:py-32">
+    <section id="about" className="scroll-mt-24 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="About me"
@@ -67,19 +58,6 @@ export function About() {
         </div>
       </div>
 
-      {/* Trait marquee — the one purely-for-fun element on the page. */}
-      <div className="mt-20 border-y border-line py-5">
-        <Marquee duration={38} reverse>
-          {traits.map((t) => (
-            <span key={t} className="flex items-center">
-              <span className="display px-8 text-2xl text-white/12 sm:text-4xl">
-                {t}
-              </span>
-              <span className="text-accent/60">◆</span>
-            </span>
-          ))}
-        </Marquee>
-      </div>
 
       {/* The numbers, laid out like a readout. */}
       <div className="mx-auto mt-20 max-w-6xl px-5">

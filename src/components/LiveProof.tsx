@@ -25,7 +25,7 @@ export function LiveProof() {
   ];
 
   return (
-    <section className="relative overflow-hidden border-y border-line bg-ink-2/40 py-24 sm:py-28">
+    <section className="relative overflow-hidden border-y border-line bg-ink-2/40 py-20 sm:py-24">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <Reveal>
           <div>

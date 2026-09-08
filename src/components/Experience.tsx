@@ -33,7 +33,7 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="scroll-mt-24 overflow-hidden py-24 sm:py-32"
+      className="scroll-mt-24 overflow-hidden py-16 sm:py-20"
     >
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading

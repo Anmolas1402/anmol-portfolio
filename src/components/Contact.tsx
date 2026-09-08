@@ -50,12 +50,12 @@ const socials = [
     ),
   },
   {
-    label: "NCR Hiring",
-    href: "https://ncrhiring.in",
+    label: `WhatsApp ${person.phone}`,
+    href: `https://wa.me/${person.phone.replace(/\D/g, "")}`,
     icon: (
       <>
-        <path d="M12 21s6.5-6 6.5-10.5a6.5 6.5 0 1 0-13 0C5.5 15 12 21 12 21z" />
-        <circle cx="12" cy="10.5" r="2.3" />
+        <path d="M3.8 20.2l1.2-4.2a7.6 7.6 0 1 1 3 3l-4.2 1.2z" />
+        <path d="M9.1 8.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.1.2-.2.3-.1.5a5.4 5.4 0 0 0 2.6 2.3c.2.1.4 0 .5-.1l.5-.6c.2-.2.3-.2.5-.1l1.5.8c.2.1.3.2.3.4a1.7 1.7 0 0 1-1.2 1.4c-.4.1-1 .1-3-.8a8.6 8.6 0 0 1-3.4-3.4c-.7-1.2-.6-2-.5-2.4a1.9 1.9 0 0 1 .4-.8z" />
       </>
     ),
   },
@@ -184,6 +184,12 @@ export function Contact() {
               >
                 {person.email}
               </a>
+              <a
+                href={`tel:${person.phone.replace(/\s/g, "")}`}
+                className="mono mt-2 block text-sm text-muted transition hover:text-paper"
+              >
+                {person.phone}
+              </a>
               <div className="mt-6 flex gap-3">
                 {socials.map((s) => (
                   <a
@@ -224,9 +230,12 @@ export function Contact() {
           </div>
         </Reveal>
 
-        <div className="mono mt-20 flex flex-col items-center justify-between gap-2 border-t border-line pt-8 text-[11px] tracking-[0.12em] text-muted sm:flex-row">
-          <span>© {new Date().getFullYear()} ANMOL SETHI</span>
-          <span>DELHI NCR / BENGALURU · BUILT BY ME</span>
+        {/* No rule above it and no spaced-out mono — the reference just sets
+            two quiet lines, which is why its footer does not read as a
+            separate strip bolted to the bottom. */}
+        <div className="mt-16 flex flex-col items-center justify-between gap-1 text-sm text-muted sm:flex-row">
+          <span>© {new Date().getFullYear()} Anmol Sethi.</span>
+          <span>Built by me, with love.</span>
         </div>
       </div>
     </footer>

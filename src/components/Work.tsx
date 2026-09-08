@@ -11,7 +11,7 @@ function Card({ project, i }: { project: Project; i: number }) {
       <motion.article
         whileHover={{ y: -4 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="group relative overflow-hidden rounded-3xl border border-line bg-ink-2 p-6 sm:p-9"
+        className="group relative overflow-hidden rounded-3xl border border-line bg-ink-2 p-6 sm:p-8"
       >
         {/* Accent wash on hover — cheap, but it makes the card feel alive. */}
         <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -37,25 +37,14 @@ function Card({ project, i }: { project: Project; i: number }) {
             </span>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:gap-12">
+          <div className="flex flex-col gap-7">
             <div>
-              <h3 className="display text-[clamp(1.9rem,5vw,3.2rem)] text-paper">
+              <h3 className="display text-[clamp(1.7rem,4vw,2.4rem)] text-paper">
                 {project.title}
               </h3>
               <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
                 {project.blurb}
               </p>
-
-              <div className="mt-7 space-y-3.5 border-l border-line pl-5">
-                {project.detail.map((d, k) => (
-                  <p
-                    key={k}
-                    className="max-w-xl text-[14px] leading-relaxed text-muted/85"
-                  >
-                    {d}
-                  </p>
-                ))}
-              </div>
 
               <div className="mt-7 flex flex-wrap gap-2">
                 {project.tags.map((t) => (
@@ -69,12 +58,12 @@ function Card({ project, i }: { project: Project; i: number }) {
               </div>
             </div>
 
-            <div className="flex flex-col justify-between gap-6 lg:items-end lg:text-right">
+            <div className="flex items-end justify-between gap-6">
               <div>
-                <div className="display text-[clamp(2.6rem,7vw,4.5rem)] text-paper">
+                <div className="display text-[clamp(2rem,5vw,3rem)] text-paper">
                   {project.stat.value}
                 </div>
-                <div className="mono mt-2 max-w-[16rem] text-[11px] leading-relaxed tracking-[0.1em] text-muted lg:ml-auto">
+                <div className="mono mt-2 max-w-[14rem] text-[11px] leading-relaxed tracking-[0.1em] text-muted">
                   {project.stat.label.toUpperCase()}
                 </div>
               </div>
@@ -105,13 +94,13 @@ function Card({ project, i }: { project: Project; i: number }) {
 
 export function Work() {
   return (
-    <section id="work" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-24 sm:py-32">
+    <section id="work" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:py-24">
       <SectionHeading
         eyebrow="Selected work"
         title="Things I shipped"
         note="Four projects, each with a number attached. Two are live right now."
       />
-      <div className="mt-14 space-y-6">
+      <div className="mt-12 grid gap-6 lg:grid-cols-2">
         {projects.map((p, i) => (
           <Card key={p.id} project={p} i={i} />
         ))}

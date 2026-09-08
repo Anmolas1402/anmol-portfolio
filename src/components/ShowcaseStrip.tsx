@@ -234,7 +234,7 @@ function Frame({ card }: { card: Card }) {
 
 export function ShowcaseStrip() {
   return (
-    <section className="overflow-hidden py-24 sm:py-28">
+    <section className="overflow-hidden py-20 sm:py-24">
       <div className="mx-auto mb-12 max-w-6xl px-5">
         <SectionHeading
           eyebrow="Proof of work"
