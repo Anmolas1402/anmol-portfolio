@@ -147,15 +147,6 @@ export const experience: Role[] = [
     ],
     tags: ["Leadership", "Ops", "Podcasting"],
   },
-  {
-    org: "Lead Society, TIET",
-    title: "Joint Secretary",
-    period: "Oct 2024 — Apr 2025",
-    points: [
-      "Directed cross-functional student squads to execute campus initiatives end to end — planning, budgeting and coordinating across departments to get things delivered.",
-    ],
-    tags: ["Cross-functional", "Budgeting"],
-  },
 ];
 
 export const education = [

@@ -21,3 +21,8 @@
  GET / 200 in 58ms (next.js: 11ms, application-code: 47ms)
  GET / 200 in 38ms (next.js: 14ms, application-code: 24ms)
  GET / 200 in 25ms (next.js: 5ms, application-code: 20ms)
+ GET / 200 in 192ms (next.js: 30ms, application-code: 162ms)
+[browser] matter-js: Matter.Engine.update: delta argument is recommended to be less than or equal to 16.667 ms. (src/components/PhysicsPills.tsx:199:22)
+ GET / 200 in 100ms (next.js: 43ms, application-code: 58ms)
+ GET / 200 in 84ms (next.js: 32ms, application-code: 52ms)
+ GET / 200 in 46ms (next.js: 22ms, application-code: 25ms)
