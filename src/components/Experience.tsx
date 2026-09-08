@@ -53,8 +53,13 @@ export function Experience() {
             return (
               <Reveal key={role.org + role.title}>
                 <article
+                  // The alternating date block alone only offsets the cards by
+                  // ~46px; the reference staggers them far harder, so push each
+                  // one off centre as well.
                   className={`flex w-[min(84vw,400px)] shrink-0 snap-start flex-col ${
-                    dateOnTop ? "" : "flex-col-reverse"
+                    dateOnTop
+                      ? "sm:-translate-y-14"
+                      : "flex-col-reverse sm:translate-y-14"
                   }`}
                 >
                   {/* Date pill, stalk, dot — the connector the reference uses
@@ -64,8 +69,8 @@ export function Experience() {
                       dateOnTop ? "pb-1" : "flex-col-reverse pt-1"
                     }`}
                   >
-                    <span className="mono rounded-full border border-line bg-ink-2 px-4 py-2 text-[11px] tracking-[0.12em] text-paper/80">
-                      {role.period.toUpperCase()}
+                    <span className="rounded-full border border-line bg-ink-2 px-4 py-2 text-[13px] text-paper/75">
+                      {role.period}
                     </span>
                     <span className="size-2 rounded-full bg-accent" />
                     <span className="h-8 w-px bg-line" />
@@ -88,17 +93,9 @@ export function Experience() {
                       </div>
                     </div>
 
-                    <ul className="mt-6 space-y-3">
-                      {role.points.map((pt, k) => (
-                        <li
-                          key={k}
-                          className="flex gap-2.5 text-[14.5px] leading-relaxed text-muted"
-                        >
-                          <span className="mt-[7px] size-1 shrink-0 rounded-full bg-accent/70" />
-                          <span>{pt}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="mt-6 text-[15px] leading-relaxed text-muted">
+                      {role.summary}
+                    </p>
 
                     <div className="mt-6 flex flex-wrap gap-2">
                       {role.tags.map((t) => (
@@ -118,10 +115,10 @@ export function Experience() {
 
           {/* Education rides the same rail rather than starting a new section. */}
           <Reveal>
-            <article className="flex w-[min(84vw,400px)] shrink-0 snap-start flex-col">
+            <article className="flex w-[min(84vw,400px)] shrink-0 snap-start flex-col sm:-translate-y-14">
               <div className="flex flex-col items-center pb-1">
-                <span className="mono rounded-full border border-line bg-ink-2 px-4 py-2 text-[11px] tracking-[0.12em] text-muted">
-                  EDUCATION
+                <span className="rounded-full border border-line bg-ink-2 px-4 py-2 text-[13px] text-muted">
+                  Education
                 </span>
                 <span className="size-2 rounded-full bg-white/30" />
                 <span className="h-8 w-px bg-line" />
@@ -142,9 +139,7 @@ export function Experience() {
                 </div>
                 {education.map((e) => (
                   <div key={e.org} className="mt-5 border-t border-line pt-5">
-                    <div className="mono text-[10px] tracking-[0.12em] text-muted">
-                      {e.period.toUpperCase()}
-                    </div>
+                    <div className="text-[13px] text-muted">{e.period}</div>
                     <div className="mt-2 font-semibold text-paper">{e.org}</div>
                     <div className="mt-1 text-sm text-muted">{e.title}</div>
                   </div>

@@ -123,7 +123,8 @@ export type Role = {
   title: string;
   period: string;
   place?: string;
-  points: string[];
+  /** One sentence, verb first, ending on the outcome — the reference's shape. */
+  summary: string;
   tags: string[];
 };
 
@@ -132,14 +133,10 @@ export const experience: Role[] = [
     org: "MathonGo",
     logo: "/logos/mathongo-mark.png",
     title: "Operations Manager (Intern)",
-    period: "Dec 2023 — Jan 2026",
+    period: "Dec 2023 – Jan 2026",
     place: "Bengaluru, India",
-    points: [
-      "Built the data pipelines behind MathonGo's exam analysis, covering 500K+ students across every exam we supported.",
-      "Managed a 30+ member team across three subsidiaries, split into sub-manager tiers, and ran hiring for 100+ interns over two years — writing the SOPs that got new people up to speed fast.",
-      "Scaled the test-series lineup from 1 exam (JEE Main) to 14, owning the question-bank architecture and analysis pipeline for each launch.",
-      "Marks App didn't exist when I joined. I owned the features and initiatives that shaped it, aimed squarely at growing daily active users.",
-    ],
+    summary:
+      "Built the data pipelines behind exam analysis for 500,000+ students, scaled the test series from one exam to fourteen, and ran hiring and onboarding for 100+ interns across a 30-member team.",
     tags: ["Product Ops", "Data pipelines", "Hiring", "SOPs", "Team leadership"],
   },
   {
@@ -147,11 +144,9 @@ export const experience: Role[] = [
     logo: "/logos/arc.png",
     logoBg: "#ffffff",
     title: "President",
-    period: "Sept 2025 — Jan 2026",
-    points: [
-      "Led a 40-person executive team running alumni engagement, outreach and day-to-day operations for the cell.",
-      "Hosted Engineers Beyond Engineering and Insider Bench — two podcasts reaching 1,500+ listeners per episode.",
-    ],
+    period: "Sept 2025 – Jan 2026",
+    summary:
+      "Led a 40-person executive team running alumni engagement, outreach and day-to-day operations, and hosted two podcasts that reached 1,500+ listeners an episode.",
     tags: ["Leadership", "Ops", "Podcasting"],
   },
 ];
