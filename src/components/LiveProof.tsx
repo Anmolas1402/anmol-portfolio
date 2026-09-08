@@ -29,12 +29,12 @@ export function LiveProof() {
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <Reveal>
           <div>
-            <p className="mono inline-flex items-center gap-2 rounded-full border border-signal/25 bg-signal/8 px-3 py-1.5 text-[10px] tracking-[0.18em] text-signal">
+            <p className="inline-flex items-center gap-2 rounded-full border border-signal/25 bg-signal/8 px-3.5 py-1.5 text-[13px] text-signal">
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
               </span>
-              {pins.live ? "LIVE FROM NCRHIRING.IN" : `SNAPSHOT · ${fmtDate(pins.generated).toUpperCase()}`}
+              {pins.live ? "Live from ncrhiring.in" : `Snapshot · ${fmtDate(pins.generated)}`}
             </p>
 
             <h2 className="display mt-6 text-[clamp(2.2rem,6vw,4.2rem)] text-paper">
@@ -81,8 +81,8 @@ export function LiveProof() {
                   <div className="display text-2xl text-paper sm:text-3xl">
                     {r.v}
                   </div>
-                  <div className="mono mt-2 text-[10px] tracking-[0.12em] text-muted">
-                    {r.k.toUpperCase()}
+                  <div className="mt-2 text-[13px] text-muted">
+                    {r.k}
                   </div>
                 </div>
               ))}
@@ -133,8 +133,8 @@ export function LiveProof() {
                 <div className="text-sm font-semibold text-paper">
                   {hit.label[0]}
                 </div>
-                <div className="mono mt-1 text-[10px] tracking-[0.12em] text-muted">
-                  {[hit.label[1], hit.label[2]].filter(Boolean).join(" · ").toUpperCase()}
+                <div className="mt-1 text-[12px] text-muted">
+                  {[hit.label[1], hit.label[2]].filter(Boolean).join(" · ")}
                 </div>
                 {hit.label[3] > 0 && (
                   <div className="mono mt-1.5 text-[10px] tracking-[0.12em] text-signal">
@@ -145,10 +145,10 @@ export function LiveProof() {
             )}
           </AnimatePresence>
 
-          <div className="mono absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-[10px] tracking-[0.16em] text-muted">
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-[13px] text-muted">
             {hit
-              ? "VERIFIED PIN"
-              : `HOVER A BRIGHT PIN · UPDATED ${fmtDate(pins.generated).toUpperCase()}`}
+              ? "Verified pin"
+              : `Hover a bright pin · updated ${fmtDate(pins.generated)}`}
           </div>
         </motion.div>
       </div>

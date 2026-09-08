@@ -29,16 +29,16 @@ type Card = {
 
 const EdgeCases = (
   <div className="flex h-full flex-col p-5">
-    <div className="mono mb-3 text-[9px] tracking-[0.18em] text-muted">
-      COLLEGE PREDICTOR — PRE-RELEASE QA
+    <div className="mb-3 text-[12px] text-muted">
+      College Predictor — pre-release QA
     </div>
     <table className="mono w-full text-left text-[10px]">
       <thead className="text-muted">
         <tr className="[&>th]:pb-2 [&>th]:font-normal">
-          <th>RANK</th>
-          <th>CATEGORY</th>
-          <th>SEAT</th>
-          <th className="text-right">RESULT</th>
+          <th>Rank</th>
+          <th>Category</th>
+          <th>Seat</th>
+          <th className="text-right">Result</th>
         </tr>
       </thead>
       <tbody className="text-paper/80">
@@ -74,8 +74,8 @@ const EdgeCases = (
 
 const Sop = (
   <div className="flex h-full flex-col p-5">
-    <div className="mono mb-3 text-[9px] tracking-[0.18em] text-muted">
-      SOP — INTERN INTAKE
+    <div className="mb-3 text-[12px] text-muted">
+      SOP — intern intake
     </div>
     <ol className="space-y-2.5 text-[11px] text-paper/85">
       {[
@@ -99,8 +99,8 @@ const Sop = (
 
 const Pipeline = (
   <div className="flex h-full flex-col justify-center gap-3 p-5">
-    <div className="mono mb-1 text-[9px] tracking-[0.18em] text-muted">
-      NCRHIRING.IN — DATA PIPELINE
+    <div className="mb-1 text-[12px] text-muted">
+      ncrhiring.in — data pipeline
     </div>
     {[
       ["scrape", "live job postings", "1"],
@@ -213,7 +213,7 @@ function Frame({ card }: { card: Card }) {
       </div>
       <div className="mt-4 px-1">
         <div className="text-[13px] font-semibold text-paper">{card.label}</div>
-        <div className="mono mt-1 text-[10px] leading-relaxed tracking-[0.08em] text-muted">
+        <div className="mt-1 text-[12.5px] leading-snug text-muted">
           {card.role}
         </div>
       </div>

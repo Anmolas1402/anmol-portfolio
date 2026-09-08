@@ -121,11 +121,11 @@ export function Experience() {
 
         {/* Only shown while there is somewhere left to scroll. */}
         <div
-          className={`mono mt-2 px-5 text-right text-[10px] tracking-[0.18em] text-muted/60 transition-opacity duration-300 sm:px-[max(1.25rem,calc((100vw-72rem)/2))] ${
+          className={`mt-2 px-5 text-right text-[13px] text-muted/60 transition-opacity duration-300 sm:px-[max(1.25rem,calc((100vw-72rem)/2))] ${
             atEnd ? "opacity-0" : "opacity-100"
           }`}
         >
-          SCROLL →
+          Scroll →
         </div>
       </div>
     </section>

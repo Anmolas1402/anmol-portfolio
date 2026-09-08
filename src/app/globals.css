@@ -97,11 +97,11 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }
+/* Section labels read as something a person wrote, not machine output:
+   sentence case, body font, normal tracking. Monospace stays for figures. */
 .eyebrow {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0;
   color: var(--muted);
 }
 

@@ -216,6 +216,12 @@ export const marqueeWords = [
 export type Testimonial = {
   /** Verbatim. Never paraphrased, never written on someone's behalf. */
   quote: string;
+  /**
+   * The closing clause to render at full brightness, with the rest muted —
+   * emphasis only, so it must appear in `quote` exactly. If it doesn't, the
+   * whole quote renders muted rather than silently showing altered words.
+   */
+  emphasise?: string;
   name: string;
   /** Their title at the time, and how they knew the work. */
   role: string;
@@ -234,6 +240,8 @@ export const testimonials: Testimonial[] = [
   {
     quote:
       "Anmol is a cool-headed guy who can manage a big team at such a young age. Started working at a young age. I worked with Anmol on multiple products from scratch at MathonGo for a good 1.5 years. Highly recommend Anmol for management, consulting and product roles.",
+    emphasise:
+      "Highly recommend Anmol for management, consulting and product roles.",
     name: "Kunal Taneja",
     role: "Founder, Canvas Classes · Ex-Head of Content (founding team), MathonGo",
     relationship: "Managed Anmol directly",

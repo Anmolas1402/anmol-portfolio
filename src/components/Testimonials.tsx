@@ -42,8 +42,7 @@ export function Testimonials() {
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="What people say"
-          title="Feedback from people I worked with"
-          note="Written by them, not by me."
+          title="From people I worked with"
         />
 
         <Reveal>
@@ -61,8 +60,25 @@ export function Testimonials() {
             >
               {testimonials.map((t) => (
                 <figure key={t.name} className="w-full shrink-0 snap-start">
-                  <blockquote className="max-w-3xl text-xl leading-relaxed text-paper sm:text-[27px] sm:leading-[1.45]">
-                    &ldquo;{t.quote}&rdquo;
+                  <blockquote className="max-w-3xl text-xl leading-relaxed text-muted sm:text-[27px] sm:leading-[1.45]">
+                    &ldquo;
+                    {(() => {
+                      // Split on the emphasised clause so the closing line
+                      // carries full brightness and the lead stays muted —
+                      // the reference's treatment. Same words either way.
+                      const at = t.emphasise ? t.quote.indexOf(t.emphasise) : -1;
+                      if (at < 0) return t.quote;
+                      return (
+                        <>
+                          {t.quote.slice(0, at)}
+                          <span className="text-paper">
+                            {t.quote.slice(at, at + t.emphasise!.length)}
+                          </span>
+                          {t.quote.slice(at + t.emphasise!.length)}
+                        </>
+                      );
+                    })()}
+                    &rdquo;
                   </blockquote>
                   <figcaption className="mt-8">
                     <div className="font-semibold text-paper">{t.name}</div>
@@ -70,11 +86,8 @@ export function Testimonials() {
                       {t.role}
                     </div>
                     {(t.relationship || t.source) && (
-                      <div className="mono mt-2 text-[10px] tracking-[0.12em] text-muted/70">
-                        {[t.relationship, t.source]
-                          .filter(Boolean)
-                          .join(" · ")
-                          .toUpperCase()}
+                      <div className="mt-2 text-[13px] text-muted/70">
+                        {[t.relationship, t.source].filter(Boolean).join(" · ")}
                       </div>
                     )}
                   </figcaption>

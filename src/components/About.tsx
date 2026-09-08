@@ -68,8 +68,8 @@ export function About() {
                 <div className="display text-3xl text-paper sm:text-4xl">
                   {m.value}
                 </div>
-                <div className="mono mt-3 text-[10px] leading-relaxed tracking-[0.1em] text-muted">
-                  {m.label.toUpperCase()}
+                <div className="mt-3 text-[13px] leading-snug text-muted">
+                  {m.label}
                 </div>
                 {/* A bar is drawn only where a real denominator exists. Most of
                     these numbers have no ceiling to plot against, and inventing

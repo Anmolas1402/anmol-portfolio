@@ -23,10 +23,10 @@ const line = {
  */
 /** Four anchors under the claim — where, how long, how big, how far it scaled. */
 const PROOF = [
-  { value: "MathonGo", label: "PRODUCT OPS, 2 YRS" },
-  { value: "500K", label: "STUDENTS COVERED" },
-  { value: "1 → 14", label: "EXAMS SCALED" },
-  { value: "30+", label: "TEAM MANAGED" },
+  { value: "MathonGo", label: "Product ops, 2 yrs" },
+  { value: "500K", label: "Students covered" },
+  { value: "1 → 14", label: "Exams scaled" },
+  { value: "30+", label: "Team managed" },
 ] as const;
 
 const HEADLINE = {
@@ -94,11 +94,11 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.5 }}
-          className="mono mt-7 text-center text-[11px] tracking-[0.16em] text-muted"
+          className="mt-7 text-center text-[13px] text-muted"
         >
           <span className="mr-2 inline-block size-1.5 translate-y-[-1px] rounded-full bg-signal align-middle" />
-          {pins.total.toLocaleString()} NCR STARTUPS ·{" "}
-          {pins.verified.toLocaleString()} ADDRESS-VERIFIED
+          {pins.total.toLocaleString()} NCR startups ·{" "}
+          {pins.verified.toLocaleString()} address-verified
         </motion.p>
 
         {/* The claim carries the weight; the numbers underneath are a readout,
@@ -123,7 +123,7 @@ export function Hero() {
               <dd className="text-lg font-semibold text-paper sm:text-xl">
                 {p.value}
               </dd>
-              <dt className="mono mt-1.5 text-[10px] leading-relaxed tracking-[0.1em] text-balance text-muted">
+              <dt className="mt-1.5 text-[13px] leading-snug text-balance text-muted">
                 {p.label}
               </dt>
             </div>

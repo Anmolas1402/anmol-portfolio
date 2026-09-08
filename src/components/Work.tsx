@@ -32,8 +32,8 @@ function Card({ project, i }: { project: Project; i: number }) {
                 LIVE
               </span>
             )}
-            <span className="mono text-[10px] tracking-[0.16em] text-muted">
-              {project.kicker.toUpperCase()}
+            <span className="text-[13px] text-muted">
+              {project.kicker}
             </span>
           </div>
 
@@ -63,8 +63,8 @@ function Card({ project, i }: { project: Project; i: number }) {
                 <div className="display text-[clamp(2rem,5vw,3rem)] text-paper">
                   {project.stat.value}
                 </div>
-                <div className="mono mt-2 max-w-[14rem] text-[11px] leading-relaxed tracking-[0.1em] text-muted">
-                  {project.stat.label.toUpperCase()}
+                <div className="mt-2 max-w-[14rem] text-[13px] leading-snug text-muted">
+                  {project.stat.label}
                 </div>
               </div>
 
