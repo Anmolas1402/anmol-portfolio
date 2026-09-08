@@ -153,14 +153,19 @@ export const experience: Role[] = [
 
 export const education = [
   {
-    org: "Thapar Institute of Engineering and Technology",
+    org: "Thapar Institute",
+    logo: "/logos/thapar.png",
+    logoBg: "#ffffff",
     title: "B.Tech — Electronics and Computer Engineering",
     period: "Expected 2027",
+    summary:
+      "Electronics and Computer Engineering at Thapar, Patiala, alongside the MathonGo role and the Alumni Relations Cell presidency.",
   },
   {
-    org: "Sant Gyaneshwar Model School, Delhi",
+    org: "Sant Gyaneshwar Model School",
     title: "Senior Secondary (CBSE)",
     period: "2022",
+    summary: "Senior Secondary, CBSE. Delhi.",
   },
 ];
 

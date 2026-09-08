@@ -48,7 +48,7 @@ export function Experience() {
           ref={trackRef}
           className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 pb-4 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
         >
-          {experience.map((role, i) => {
+          {[...experience, ...education].map((role, i) => {
             const dateOnTop = i % 2 === 0;
             return (
               <Reveal key={role.org + role.title}>
@@ -82,7 +82,11 @@ export function Experience() {
                     className="rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
                   >
                     <div className="flex items-center gap-4">
-                      <Logo src={role.logo} bg={role.logoBg} name={role.org} />
+                      <Logo
+                        src={"logo" in role ? role.logo : undefined}
+                        bg={"logoBg" in role ? role.logoBg : undefined}
+                        name={role.org}
+                      />
                       <div className="min-w-0">
                         <h3 className="truncate text-2xl font-semibold text-paper">
                           {role.org}
@@ -98,7 +102,7 @@ export function Experience() {
                     </p>
 
                     <div className="mt-6 flex flex-wrap gap-2">
-                      {role.tags.map((t) => (
+                      {("tags" in role ? role.tags : []).map((t) => (
                         <span
                           key={t}
                           className="rounded-full border border-line bg-white/[0.03] px-3.5 py-1.5 text-[12.5px] text-muted"
@@ -113,40 +117,6 @@ export function Experience() {
             );
           })}
 
-          {/* Education rides the same rail rather than starting a new section. */}
-          <Reveal>
-            <article className="flex w-[min(84vw,400px)] shrink-0 snap-start flex-col sm:-translate-y-14">
-              <div className="flex flex-col items-center pb-1">
-                <span className="rounded-full border border-line bg-ink-2 px-4 py-2 text-[13px] text-muted">
-                  Education
-                </span>
-                <span className="size-2 rounded-full bg-white/30" />
-                <span className="h-8 w-px bg-line" />
-              </div>
-              <div className="rounded-3xl border border-line bg-ink-2/60 p-7">
-                <div className="flex items-center gap-4">
-                  <Logo
-                    src="/logos/thapar.png"
-                    bg="#ffffff"
-                    name="Thapar Institute"
-                  />
-                  <div className="min-w-0">
-                    <h3 className="text-xl font-semibold text-paper">Education</h3>
-                    <p className="mt-0.5 text-[15px] text-muted">
-                      Thapar Institute
-                    </p>
-                  </div>
-                </div>
-                {education.map((e) => (
-                  <div key={e.org} className="mt-5 border-t border-line pt-5">
-                    <div className="text-[13px] text-muted">{e.period}</div>
-                    <div className="mt-2 font-semibold text-paper">{e.org}</div>
-                    <div className="mt-1 text-sm text-muted">{e.title}</div>
-                  </div>
-                ))}
-              </div>
-            </article>
-          </Reveal>
         </div>
 
         {/* Only shown while there is somewhere left to scroll. */}
