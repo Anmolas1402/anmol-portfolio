@@ -212,3 +212,31 @@ export const marqueeWords = [
   "SHIPS THINGS",
   "EDGE CASES",
 ] as const;
+
+export type Testimonial = {
+  /** Verbatim. Never paraphrased, never written on someone's behalf. */
+  quote: string;
+  name: string;
+  /** Their title at the time, and how they knew the work. */
+  role: string;
+  relationship?: string;
+  source?: string;
+};
+
+/**
+ * Only statements the person actually wrote. Kunal's is his LinkedIn
+ * recommendation, quoted as written.
+ *
+ * To add one: ask the person for two or three lines, paste what they send
+ * here unedited, and credit them properly. Do not write these.
+ */
+export const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Anmol is a cool-headed guy who can manage a big team at such a young age. Started working at a young age. I worked with Anmol on multiple products from scratch at MathonGo for a good 1.5 years. Highly recommend Anmol for management, consulting and product roles.",
+    name: "Kunal Taneja",
+    role: "Founder, Canvas Classes · Ex-Head of Content (founding team), MathonGo",
+    relationship: "Managed Anmol directly",
+    source: "LinkedIn recommendation, May 2026",
+  },
+];
