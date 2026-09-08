@@ -8,6 +8,17 @@ import { person } from "@/lib/content";
 /** The verb cycles; the rest of the sentence holds still. */
 const VERBS = ["BUILD", "SHIP", "FIX", "MEASURE"] as const;
 
+/**
+ * A thick outline faked with text-shadows arranged around a circle — the same
+ * trick the reference uses, since -webkit-text-stroke draws inside the glyph
+ * and thins the letterforms. 24 steps is enough that the ring reads as solid.
+ */
+const ring = (color: string, radius = 9) =>
+  Array.from({ length: 24 }, (_, i) => {
+    const a = (i / 24) * Math.PI * 2;
+    return `${(Math.cos(a) * radius).toFixed(2)}px ${(Math.sin(a) * radius).toFixed(2)}px 0 ${color}`;
+  }).join(", ");
+
 const socials = [
   {
     label: "LinkedIn",
@@ -111,9 +122,17 @@ function CyclingVerb() {
         {VERBS.map((v) => (
           <span
             key={v}
-            className="flex h-full w-full shrink-0 items-center justify-center rounded-[0.18em] bg-accent px-[0.22em] text-white"
+            className="relative flex h-full w-full shrink-0 items-center justify-center"
           >
-            {v}
+            {/* The halo sits behind; the solid word rides on top of it. */}
+            <span
+              aria-hidden
+              className="absolute inset-0 flex items-center justify-center text-transparent"
+              style={{ textShadow: ring("#7a2c0d") }}
+            >
+              {v}
+            </span>
+            <span className="relative text-accent">{v}</span>
           </span>
         ))}
       </motion.span>
