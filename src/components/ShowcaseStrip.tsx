@@ -192,6 +192,10 @@ function Frame({ card }: { card: Card }) {
         alt={card.alt}
         fill
         sizes="(max-width: 640px) 82vw, 420px"
+        // The marquee renders its children twice and moves them by transform,
+        // so the duplicate set never enters the viewport by the browser's
+        // reckoning and lazy images there stay blank as the strip loops.
+        loading="eager"
         className="object-cover object-top"
       />
     ) : (
