@@ -14,7 +14,7 @@ export const person = {
   linkedin: "https://linkedin.com/in/anmol-sethi-79ba03228",
   resume: "/Anmol-Sethi-Resume.pdf",
   /** Drop a square headshot at public/anmol.jpg, then set this to "/anmol.jpg". */
-  photo: null as string | null,
+  photo: "/anmol.png",
   intro:
     "Two years in product ops at MathonGo, an EdTech platform built around data-driven decisions. I built the pipelines behind its most detailed exam analysis, scaled the test-series lineup from 1 exam to 14, and drove the feature work that grew Marks App from nothing into a product with real DAU targets.",
 } as const;
