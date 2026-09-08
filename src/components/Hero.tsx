@@ -21,6 +21,14 @@ const line = {
  * The hero claim. The orb replaces one letter, so the split lives here: swap to
  * { before: "AT V", after: "LUME" } and it becomes a real O instead of an A.
  */
+/** Four anchors under the claim — where, how long, how big, how far it scaled. */
+const PROOF = [
+  { value: "MathonGo", label: "PRODUCT OPS, 2 YRS" },
+  { value: "500K", label: "STUDENTS COVERED" },
+  { value: "1 → 14", label: "EXAMS SCALED" },
+  { value: "30+", label: "TEAM MANAGED" },
+] as const;
+
 const HEADLINE = {
   lines: [
     { text: "I MAKE THINGS", accent: false },
@@ -89,31 +97,44 @@ export function Hero() {
           className="mono mt-7 text-center text-[11px] tracking-[0.16em] text-muted"
         >
           <span className="mr-2 inline-block size-1.5 translate-y-[-1px] rounded-full bg-signal align-middle" />
-          {pins.live ? "THAT ORB IS LIVE DATA" : "THAT ORB IS REAL DATA"} — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
+          {pins.total.toLocaleString()} NCR STARTUPS ·{" "}
           {pins.verified.toLocaleString()} ADDRESS-VERIFIED
         </motion.p>
 
+        {/* The claim carries the weight; the numbers underneath are a readout,
+            not a sentence, so the whole block is scannable rather than read. */}
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease, delay: 0.7 }}
-          className="mx-auto mt-8 max-w-2xl text-center text-base leading-relaxed text-muted sm:text-lg"
+          className="mx-auto mt-9 max-w-xl text-center text-xl leading-snug text-paper sm:text-2xl"
         >
-          Pipelines for{" "}
-          <span className="text-paper">500,000 students</span>. A test series
-          scaled from{" "}
-          <span className="text-paper">one exam to fourteen</span>. A{" "}
-          <span className="text-paper">30-person team</span> and{" "}
-          <span className="text-paper">100+ interns</span> onboarded. Two years
-          of product ops at MathonGo, and the same problem every time — make the
-          output trustworthy when the volume goes up.
+          Make the output trustworthy when the volume goes up.
         </motion.p>
+
+        <motion.dl
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease, delay: 0.85 }}
+          className="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4"
+        >
+          {PROOF.map((p) => (
+            <div key={p.label} className="bg-ink px-4 py-5 text-center">
+              <dd className="text-lg font-semibold text-paper sm:text-xl">
+                {p.value}
+              </dd>
+              <dt className="mono mt-1.5 text-[10px] leading-relaxed tracking-[0.1em] text-balance text-muted">
+                {p.label}
+              </dt>
+            </div>
+          ))}
+        </motion.dl>
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.85 }}
-          className="mt-9 flex flex-wrap items-center justify-center gap-3"
+          transition={{ duration: 0.8, ease, delay: 1 }}
+          className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
           <a
             href="#work"
