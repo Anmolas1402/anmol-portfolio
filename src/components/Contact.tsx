@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Reveal } from "./Reveal";
 import { person } from "@/lib/content";
 
@@ -102,40 +102,39 @@ function CyclingVerb() {
 
   useEffect(() => {
     if (reduced) return;
-    const id = setInterval(() => setI((n) => (n + 1) % VERBS.length), 2200);
+    const id = setInterval(() => setI((n) => (n + 1) % VERBS.length), 1800);
     return () => clearInterval(id);
   }, [reduced]);
 
+  const verb = VERBS[i];
+
   return (
-    // Fixed height with the stack translated inside it, so the line never
-    // reflows as the word changes — the widest verb sets the box.
-    <span className="relative inline-block h-[1em] overflow-hidden align-bottom">
-      {/* Reserves the width of the longest verb so the sentence stays put. */}
-      <span className="invisible px-[0.22em]" aria-hidden>
+    // An invisible copy of the longest verb holds the width, so swapping the
+    // word never reflows the line.
+    <span className="relative inline-block align-bottom">
+      <span className="invisible" aria-hidden>
         {VERBS.reduce((a, b) => (b.length > a.length ? b : a))}
       </span>
-      <motion.span
-        className="absolute inset-0 flex flex-col items-center"
-        animate={{ y: `-${i * 100}%` }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {VERBS.map((v) => (
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={verb}
+          className="absolute inset-0 flex items-center justify-start"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          // Near-instant, linear: a cut rather than a fade, so it blinks.
+          transition={{ duration: 0.08, ease: "linear" }}
+        >
           <span
-            key={v}
-            className="relative flex h-full w-full shrink-0 items-center justify-center"
+            aria-hidden
+            className="absolute inset-0 flex items-center justify-start text-transparent"
+            style={{ textShadow: ring("#ff5a1f") }}
           >
-            {/* The halo sits behind; the solid word rides on top of it. */}
-            <span
-              aria-hidden
-              className="absolute inset-0 flex items-center justify-center text-transparent"
-              style={{ textShadow: ring("#7a2c0d") }}
-            >
-              {v}
-            </span>
-            <span className="relative text-accent">{v}</span>
+            {verb}
           </span>
-        ))}
-      </motion.span>
+          <span className="relative text-ink">{verb}</span>
+        </motion.span>
+      </AnimatePresence>
     </span>
   );
 }
