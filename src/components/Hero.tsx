@@ -45,7 +45,7 @@ export function Hero() {
         >
           <span className="text-lg text-muted sm:text-2xl">Hey, I&rsquo;m</span>
           <Avatar className="size-10 text-xs sm:size-12 sm:text-sm" />
-          <span className="text-lg text-paper sm:text-2xl">Anmol</span>
+          <span className="text-lg text-paper sm:text-2xl">{person.name}</span>
         </motion.div>
 
         {/* The headline. The orb is a live map of 1,760 companies standing in
