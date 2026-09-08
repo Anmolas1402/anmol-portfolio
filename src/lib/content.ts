@@ -15,6 +15,8 @@ export const person = {
   resume: "/Anmol-Sethi-Resume.pdf",
   /** Drop a square headshot at public/anmol.jpg, then set this to "/anmol.jpg". */
   photo: "/anmol.png",
+  /** Larger portrait for the About polaroid. */
+  portrait: "/anmol-portrait.jpg",
   intro:
     "Two years in product ops at MathonGo, an EdTech platform built around data-driven decisions. I built the pipelines behind its most detailed exam analysis, scaled the test-series lineup from 1 exam to 14, and drove the feature work that grew Marks App from nothing into a product with real DAU targets.",
 } as const;

@@ -166,3 +166,11 @@ body {
     background: rgba(18, 18, 22, 0.92);
   }
 }
+
+/* Italic serif, for a single accented phrase inside a display line. */
+.accent-serif {
+  font-family: var(--font-accent), ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}

@@ -1,41 +1,68 @@
 "use client";
 
 import { Reveal, RevealGroup } from "./Reveal";
-import { SectionHeading } from "./SectionHeading";
+import { Polaroid } from "./Polaroid";
 import { metrics, person, skills } from "@/lib/content";
+
+/** Two-tone pills: a light lead word, the trait itself in bold. */
+const TRAITS = [
+  { lead: "Problem", bold: "solver", tint: "#c9bcff" },
+  { lead: "Data", bold: "obsessed", tint: "#c8e79a" },
+  { lead: "Systems", bold: "thinker", tint: "#a8d5ff" },
+  { lead: "Ships", bold: "things", tint: "#f7b3ac" },
+] as const;
 
 export function About() {
   return (
     <section id="about" className="scroll-mt-24 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-5">
-        <SectionHeading
-          eyebrow="About me"
-          title="Ops is a product problem"
-          note="Most ops work is invisible until it breaks. I try to make it visible before that."
-        />
+        <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
+          <div>
+            <Reveal>
+              <p className="eyebrow">About me</p>
+              <h2 className="display mt-4 text-[clamp(2rem,4.6vw,3.4rem)] text-paper">
+                Product ops with{" "}
+                <span className="accent-serif lowercase">two years</span> at the
+                intersection of data, product and people.
+              </h2>
+            </Reveal>
 
-        <div className="mt-14 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
-          <Reveal>
-            <div className="space-y-5 text-[15px] leading-relaxed text-muted sm:text-base">
-              <p>{person.intro}</p>
-              <p>
-                The pattern in everything here is the same: I don&rsquo;t trust a
-                number until I&rsquo;ve tried to break it. The College Predictor
-                got stress-tested against boundary ranks and category-specific
-                seats before release. The buildability research shipped with its
-                own error bar. The NCR map draws a guessed pin differently from a
-                verified one, because pretending otherwise is how you lose people.
-              </p>
-              <p>
-                Alongside that: I managed a 30+ person team across three
-                subsidiaries, hired and onboarded 100+ interns, and led a
-                40-person exec team as President of my college&rsquo;s Alumni
-                Relations Cell. Currently finishing a B.Tech in Electronics and
-                Computer Engineering at Thapar.
-              </p>
-            </div>
+            <Reveal>
+              <div className="mt-8 flex flex-wrap gap-3">
+                {TRAITS.map((t) => (
+                  <span
+                    key={t.lead}
+                    className="rounded-full px-4 py-2 text-[13px] text-ink shadow-[inset_0_2px_4px_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(0,0,0,0.12),0_8px_20px_-8px_rgba(0,0,0,0.7)]"
+                    style={{ background: t.tint }}
+                  >
+                    {t.lead} <span className="font-bold">{t.bold}</span>
+                  </span>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal>
+              <div className="mt-9 space-y-5 text-[15px] leading-relaxed text-muted sm:text-base">
+                <p>{person.intro}</p>
+                <p>
+                  The pattern in everything here is the same: I don&rsquo;t
+                  trust a number until I&rsquo;ve tried to break it. The College
+                  Predictor got stress-tested against boundary ranks and
+                  category-specific seats before release. The buildability
+                  research shipped with its own error bar. The NCR map draws a
+                  guessed pin differently from a verified one, because
+                  pretending otherwise is how you lose people.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal className="mx-auto w-full max-w-[380px] lg:mt-6">
+            <Polaroid src={person.portrait} name={person.name} />
           </Reveal>
+        </div>
 
+        <div className="mt-20 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <RevealGroup className="space-y-8">
             {Object.entries(skills).map(([group, items]) => (
               <Reveal key={group}>
@@ -57,7 +84,6 @@ export function About() {
           </RevealGroup>
         </div>
       </div>
-
 
       {/* The numbers, laid out like a readout. */}
       <div className="mx-auto mt-20 max-w-6xl px-5">
