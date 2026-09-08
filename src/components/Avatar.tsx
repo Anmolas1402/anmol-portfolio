@@ -17,7 +17,7 @@ export function Avatar({ className = "" }: { className?: string }) {
   }
   return (
     <span
-      className={`relative overflow-hidden rounded-full border border-white/12 ${className}`}
+      className={`relative block shrink-0 overflow-hidden rounded-full border border-white/12 ${className}`}
     >
       <Image
         src={person.photo}

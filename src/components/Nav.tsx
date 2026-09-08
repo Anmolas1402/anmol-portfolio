@@ -71,7 +71,7 @@ export function Nav() {
       className="fixed inset-x-0 top-4 z-50 flex justify-center px-4"
     >
       <div
-        className={`glass flex items-center gap-1 rounded-full p-1.5 pl-2 backdrop-saturate-[185%] transition-all duration-300 ${
+        className={`glass flex items-center gap-1.5 rounded-full p-2 pl-2.5 backdrop-saturate-[185%] transition-all duration-300 ${
           solid
             ? "glass-solid backdrop-blur-[30px] backdrop-saturate-[200%]"
             : "backdrop-blur-[22px]"
@@ -79,16 +79,16 @@ export function Nav() {
       >
         <a
           href="#top"
-          className="relative transition hover:brightness-110"
+          className="relative flex transition hover:brightness-110"
           aria-label="Back to top"
         >
-          <Avatar className="size-9 text-[11px]" />
+          <Avatar className="size-11 text-[12px]" />
         </a>
         {links.map((l) => (
           <a
             key={l.href}
             href={l.href}
-            className={`relative flex items-center gap-1.5 rounded-full px-3 py-2 text-[15px] font-semibold text-paper/90 transition-colors hover:bg-white/10 hover:text-paper sm:px-3.5 ${
+            className={`relative flex items-center gap-1.5 rounded-full px-3.5 py-3 text-[15px] font-semibold text-paper/90 transition-colors hover:bg-white/10 hover:text-paper sm:px-4 ${
               l.wide ? "hidden sm:flex" : ""
             }`}
           >
@@ -98,14 +98,14 @@ export function Nav() {
         ))}
         <a
           href={person.resume}
-          className="relative hidden items-center gap-1.5 rounded-full px-3.5 py-2 text-[15px] font-semibold text-paper/90 transition-colors hover:bg-white/10 hover:text-paper sm:flex"
+          className="relative hidden items-center gap-1.5 rounded-full px-4 py-3 text-[15px] font-semibold text-paper/90 transition-colors hover:bg-white/10 hover:text-paper sm:flex"
         >
           <Glyph name="doc" />
           Resume
         </a>
         <a
           href={`mailto:${person.email}`}
-          className="relative ml-1 flex items-center gap-2 rounded-full bg-paper px-4 py-2 text-[15px] font-bold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
+          className="relative ml-1 flex items-center gap-2 rounded-full bg-paper px-5 py-3 text-[15px] font-bold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
         >
           <span className="hidden sm:inline">Get in Touch</span>
           <span className="sm:hidden">Contact</span>
