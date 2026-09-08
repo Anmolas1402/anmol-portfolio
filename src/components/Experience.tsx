@@ -74,7 +74,7 @@ export function Experience() {
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
+                    className="ui-sans rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
                   >
                     <div className="flex items-center gap-4">
                       <Logo src={role.logo} bg={role.logoBg} name={role.org} />
@@ -92,7 +92,7 @@ export function Experience() {
                       {role.points.map((pt, k) => (
                         <li
                           key={k}
-                          className="flex gap-2.5 text-[13.5px] leading-relaxed text-muted"
+                          className="flex gap-2.5 text-[14.5px] leading-relaxed text-muted"
                         >
                           <span className="mt-[7px] size-1 shrink-0 rounded-full bg-accent/70" />
                           <span>{pt}</span>
@@ -104,7 +104,7 @@ export function Experience() {
                       {role.tags.map((t) => (
                         <span
                           key={t}
-                          className="rounded-full border border-line bg-white/[0.03] px-3 py-1.5 text-[12px] text-muted"
+                          className="rounded-full border border-line bg-white/[0.03] px-3.5 py-1.5 text-[12.5px] text-muted"
                         >
                           {t}
                         </span>
@@ -126,7 +126,7 @@ export function Experience() {
                 <span className="size-2 rounded-full bg-white/30" />
                 <span className="h-8 w-px bg-line" />
               </div>
-              <div className="rounded-3xl border border-line bg-ink-2/60 p-7">
+              <div className="ui-sans rounded-3xl border border-line bg-ink-2/60 p-7">
                 <div className="flex items-center gap-4">
                   <Logo
                     src="/logos/thapar.png"

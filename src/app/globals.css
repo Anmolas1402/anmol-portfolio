@@ -40,7 +40,11 @@ html {
 body {
   background: var(--ink);
   color: var(--paper);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Newsreader is a serif: it sits smaller on the body than a sans at the same
+     size and wants a little more leading. */
+  font-family: var(--font-sans), ui-serif, Georgia, serif;
+  font-size: 17px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
@@ -88,9 +92,11 @@ body {
 /* Type helpers --------------------------------------------------------- */
 .display {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.045em;
-  line-height: 0.86;
+  /* Space Grotesk tops out at 700, and its forms are already wide-set, so it
+     needs less negative tracking than the grotesque it replaced. */
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
   text-transform: uppercase;
 }
 .mono {
@@ -165,4 +171,11 @@ body {
   .glass {
     background: rgba(18, 18, 22, 0.92);
   }
+}
+
+/* Newsreader carries the page's prose, but card UI — names, roles, bullets,
+   tags — reads better set in the sans, the way the reference does it. */
+.ui-sans {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.005em;
 }
