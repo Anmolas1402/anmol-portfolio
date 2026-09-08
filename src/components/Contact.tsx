@@ -61,13 +61,21 @@ const socials = [
   },
 ];
 
+/** Gmail compose, addressed and titled, so the tap lands in a ready message. */
+const COMPOSE =
+  "https://mail.google.com/mail/?view=cm&fs=1" +
+  `&to=${encodeURIComponent(person.email)}` +
+  `&su=${encodeURIComponent("Hello Anmol")}`;
+
 /** Text set around a circle, rotating slowly. */
 function StampBadge() {
   const reduced = useReducedMotion();
   const [copied, setCopied] = useState(false);
 
-  // mailto: does nothing on a machine with no mail client configured, which is
-  // most desktops now — so the address goes to the clipboard either way.
+  // mailto: silently does nothing where no mail client is configured, so the
+  // stamp opens Gmail's compose window instead — the address is a Gmail one,
+  // and the web compose works on desktop and hands off to the app on mobile.
+  // The plain email link beside it stays mailto: for native clients.
   const copy = () => {
     navigator.clipboard?.writeText(person.email).then(
       () => {
@@ -80,7 +88,9 @@ function StampBadge() {
 
   return (
     <a
-      href={`mailto:${person.email}`}
+      href={COMPOSE}
+      target="_blank"
+      rel="noreferrer"
       onClick={copy}
       className="group relative grid size-[168px] shrink-0 place-items-center"
       aria-label={`Email ${person.email}`}
