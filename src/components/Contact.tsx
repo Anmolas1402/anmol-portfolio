@@ -64,9 +64,24 @@ const socials = [
 /** Text set around a circle, rotating slowly. */
 function StampBadge() {
   const reduced = useReducedMotion();
+  const [copied, setCopied] = useState(false);
+
+  // mailto: does nothing on a machine with no mail client configured, which is
+  // most desktops now — so the address goes to the clipboard either way.
+  const copy = () => {
+    navigator.clipboard?.writeText(person.email).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1800);
+      },
+      () => {},
+    );
+  };
+
   return (
     <a
       href={`mailto:${person.email}`}
+      onClick={copy}
       className="group relative grid size-[168px] shrink-0 place-items-center"
       aria-label={`Email ${person.email}`}
     >
@@ -100,9 +115,19 @@ function StampBadge() {
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
+          aria-hidden
         >
           <path d="M7 17L17 7M8 7h9v9" />
         </svg>
+      </span>
+
+      <span
+        aria-live="polite"
+        className={`mono pointer-events-none absolute -bottom-7 text-[10px] tracking-[0.14em] text-signal transition-opacity duration-200 ${
+          copied ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {copied ? "ADDRESS COPIED" : ""}
       </span>
     </a>
   );
