@@ -47,7 +47,7 @@ export function Experience() {
         <Reveal>
           <div
             ref={trackRef}
-            className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 pb-4 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
+            className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 py-20 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
           >
             {[...experience, ...education].map((role, i) => {
               const dateOnTop = i % 2 === 0;
