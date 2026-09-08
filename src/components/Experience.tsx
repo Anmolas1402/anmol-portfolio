@@ -25,6 +25,10 @@ export function Experience() {
   const [overflow, setOverflow] = useState(0);
   const [pinned, setPinned] = useState(false);
 
+  // Runway per pixel of sideways travel. At 1 the cards track the scroll
+  // exactly, which reads as fast; a little more makes the pass deliberate.
+  const PACE = 1.4;
+
   // How far the track has to travel, and whether pinning is appropriate here.
   useEffect(() => {
     const measure = () => {
@@ -57,7 +61,7 @@ export function Experience() {
       ref={sectionRef}
       className="scroll-mt-24"
       // The extra height is the runway the pinned track slides across.
-      style={pinned ? { height: `calc(100svh + ${overflow}px)` } : undefined}
+      style={pinned ? { height: `calc(100svh + ${overflow * PACE}px)` } : undefined}
     >
       <div
         className={
@@ -125,7 +129,7 @@ export function Experience() {
                         name={role.org}
                       />
                       <div className="min-w-0">
-                        <h3 className="truncate text-2xl font-semibold text-paper">
+                        <h3 className="text-2xl leading-tight font-semibold text-balance text-paper">
                           {role.org}
                         </h3>
                         <p className="mt-0.5 text-[15px] text-muted">
