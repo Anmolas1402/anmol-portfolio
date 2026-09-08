@@ -73,14 +73,10 @@ export function Nav() {
       >
         <a
           href="#top"
-          className="relative flex items-center gap-2.5 pr-1 transition hover:brightness-110"
+          className="relative flex transition hover:brightness-110"
           aria-label="Back to top"
         >
           <Avatar className="size-10 text-[11px]" />
-          {/* Hidden below md: the bar is already tight at 589px. */}
-          <span className="hidden text-[14px] font-semibold whitespace-nowrap text-paper md:inline">
-            {person.name}
-          </span>
         </a>
         {links.map((l) => (
           <a
