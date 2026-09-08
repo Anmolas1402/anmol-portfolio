@@ -87,7 +87,7 @@ export function Hero() {
           className="mono mt-7 text-center text-[11px] tracking-[0.16em] text-muted"
         >
           <span className="mr-2 inline-block size-1.5 translate-y-[-1px] rounded-full bg-signal align-middle" />
-          THAT ORB IS LIVE DATA — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
+          THAT ORB IS REAL DATA — {pins.total.toLocaleString()} NCR STARTUPS,{" "}
           {pins.verified.toLocaleString()} ADDRESS-VERIFIED
         </motion.p>
 

@@ -32,7 +32,7 @@ export function LiveProof() {
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
               </span>
-              LIVE DATASET
+              REAL DATASET · {DATE.toUpperCase()}
             </p>
 
             <h2 className="display mt-6 text-[clamp(2.2rem,6vw,4.2rem)] text-paper">
