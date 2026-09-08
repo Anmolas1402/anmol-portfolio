@@ -5,8 +5,20 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Reveal } from "./Reveal";
 import { person } from "@/lib/content";
 
-/** The verb cycles; the rest of the sentence holds still. */
-const VERBS = ["BUILD", "SHIP", "FIX", "MEASURE"] as const;
+/**
+ * The verb cycles and each one carries its own ring colour, as the reference
+ * does — measured there as teal, periwinkle, orange and pink across four words.
+ *
+ * No green: the signal green on this site means live data, and a decorative
+ * ring in it would undercut that. These are the physics-pill tints, saturated
+ * enough to hold as an outline on the dark ground.
+ */
+const VERBS = [
+  { word: "BUILD", ring: "#ff5a1f" },
+  { word: "SHIP", ring: "#8b7cf6" },
+  { word: "FIX", ring: "#ff5c8a" },
+  { word: "MEASURE", ring: "#f0c24a" },
+] as const;
 
 /**
  * A thick outline faked with text-shadows arranged around a circle — the same
@@ -106,18 +118,18 @@ function CyclingVerb() {
     return () => clearInterval(id);
   }, [reduced]);
 
-  const verb = VERBS[i];
+  const { word, ring: ringColor } = VERBS[i];
 
   return (
     // An invisible copy of the longest verb holds the width, so swapping the
     // word never reflows the line.
     <span className="relative inline-block align-bottom">
       <span className="invisible" aria-hidden>
-        {VERBS.reduce((a, b) => (b.length > a.length ? b : a))}
+        {VERBS.reduce((a, b) => (b.word.length > a.word.length ? b : a)).word}
       </span>
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
-          key={verb}
+          key={word}
           className="absolute inset-0 flex items-center justify-start"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -128,11 +140,11 @@ function CyclingVerb() {
           <span
             aria-hidden
             className="absolute inset-0 flex items-center justify-start text-transparent"
-            style={{ textShadow: ring("#ff5a1f") }}
+            style={{ textShadow: ring(ringColor) }}
           >
-            {verb}
+            {word}
           </span>
-          <span className="relative text-ink">{verb}</span>
+          <span className="relative text-ink">{word}</span>
         </motion.span>
       </AnimatePresence>
     </span>
