@@ -1,0 +1,26 @@
+
+> portfolio@0.1.0 dev
+> next dev
+
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://127.0.2.2:3000
+✓ Ready in 571ms
+✓ Running next.config.ts took 148ms
+
+ GET / 200 in 583ms (next.js: 275ms, application-code: 308ms)
+ GET / 200 in 70ms (next.js: 4ms, application-code: 66ms)
+ GET / 200 in 475ms (next.js: 302ms, application-code: 173ms)
+[browser] matter-js: Matter.Engine.update: delta argument is recommended to be less than or equal to 16.667 ms. (src/components/PhysicsPills.tsx:134:22)
+[browser] matter-js: Matter.Engine.update: delta argument is recommended to be less than or equal to 16.667 ms. (src/components/PhysicsPills.tsx:134:22)
+[browser] matter-js: Matter.Engine.update: delta argument is recommended to be less than or equal to 16.667 ms. (src/components/PhysicsPills.tsx:134:22)
+ GET / 200 in 378ms (next.js: 136ms, application-code: 242ms)
+[browser] matter-js: Matter.Engine.update: delta argument is recommended to be less than or equal to 16.667 ms. (src/components/PhysicsPills.tsx:134:22)
+ GET / 200 in 359ms (next.js: 134ms, application-code: 225ms)
+[browser] matter-js: Matter.Engine.update: delta argument is recommended to be less than or equal to 16.667 ms. (src/components/PhysicsPills.tsx:134:22)
+✓ Compiled in 498ms
+ GET / 200 in 101ms (next.js: 40ms, application-code: 61ms)
+✓ Compiled in 151ms
+ GET / 200 in 51ms (next.js: 19ms, application-code: 32ms)
+✓ Compiled in 219ms
+ GET / 200 in 366ms (next.js: 89ms, application-code: 277ms)
