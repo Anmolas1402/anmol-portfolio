@@ -44,15 +44,16 @@ export function Experience() {
       </div>
 
       <div className="relative mt-16">
-        <div
-          ref={trackRef}
-          className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 pb-4 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
-        >
-          {[...experience, ...education].map((role, i) => {
-            const dateOnTop = i % 2 === 0;
-            return (
-              <Reveal key={role.org + role.title}>
+        <Reveal>
+          <div
+            ref={trackRef}
+            className="flex snap-x snap-mandatory items-center gap-6 overflow-x-auto scroll-smooth px-5 pb-4 [scrollbar-width:none] sm:px-[max(1.25rem,calc((100vw-72rem)/2))] [&::-webkit-scrollbar]:hidden"
+          >
+            {[...experience, ...education].map((role, i) => {
+              const dateOnTop = i % 2 === 0;
+              return (
                 <article
+                  key={role.org + role.title}
                   // The alternating date block alone only offsets the cards by
                   // ~46px; the reference staggers them far harder, so push each
                   // one off centre as well.
@@ -113,11 +114,10 @@ export function Experience() {
                     </div>
                   </motion.div>
                 </article>
-              </Reveal>
-            );
-          })}
-
-        </div>
+              );
+            })}
+          </div>
+        </Reveal>
 
         {/* Only shown while there is somewhere left to scroll. */}
         <div
