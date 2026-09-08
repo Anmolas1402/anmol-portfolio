@@ -20,7 +20,7 @@ export function About() {
           <div>
             <Reveal>
               <p className="eyebrow">About me</p>
-              <h2 className="display mt-4 text-[clamp(2rem,4.6vw,3.4rem)] normal-case! text-paper">
+              <h2 className="display-soft mt-4 max-w-[19ch] text-[clamp(1.8rem,3.1vw,2.8rem)] text-paper">
                 Product ops with{" "}
                 <span className="accent-serif">two years</span> at the
                 intersection of data, product and people.

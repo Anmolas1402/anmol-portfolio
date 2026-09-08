@@ -174,3 +174,13 @@ body {
   font-weight: 400;
   letter-spacing: 0;
 }
+
+/* Display font at sentence-case proportions: lighter, looser, less tracking
+   than .display, which is tuned for tight uppercase section titles. Numbers
+   taken from the reference — 1.12 line-height, -0.02em, weight 700. */
+.display-soft {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
