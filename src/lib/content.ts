@@ -3,6 +3,13 @@ import pins from "./ncr-pins.json";
 // Single source of truth for every word and number on the site.
 // Change it here, it changes everywhere.
 
+/**
+ * The mapped-company count, formatted once. The hero pill drifted to a stale
+ * 1,878 against the map's own 948 because it was typed by hand; deriving it
+ * from the same snapshot the map reads means the two can no longer disagree.
+ */
+export const pinCount = pins.total.toLocaleString();
+
 export const person = {
   name: "Anmol Sethi",
   role: "Product Ops",
@@ -244,6 +251,7 @@ export const skills = {
     "Funnel Analysis",
     "KPI Definition",
     "Data Storytelling",
+    "AI-assisted analysis",
   ],
   "Business & consulting": [
     "Business Analysis",
@@ -254,12 +262,12 @@ export const skills = {
     "Forecasting",
     "Decision Memos",
   ],
-  "AI & automation": ["AI-assisted analysis", "AI-assisted documentation"],
   Collaboration: [
     "Team Leadership",
     "Process Optimization",
     "Structured Documentation",
     "SOPs",
+    "AI-assisted documentation",
   ],
 } as const;
 

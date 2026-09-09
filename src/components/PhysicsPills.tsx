@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Marquee } from "./Marquee";
-import { marqueeWords } from "@/lib/content";
+import { marqueeWords, pinCount } from "@/lib/content";
 
 /**
  * A band of metric pills and loose balls that drop in under gravity, land on
@@ -87,7 +87,7 @@ const ITEMS: Item[] = [
   { kind: "ball", size: 48, tint: "#f5ce78", icon: "arrow" },
   { kind: "pill", text: "2 L PAYING STUDENTS", tint: "#a8d5ff" },
   { kind: "ball", size: 44, tint: "#b9e8a1", icon: "coffee" },
-  { kind: "pill", text: "1,878 STARTUPS MAPPED", tint: "#ffb37a" },
+  { kind: "pill", text: `${pinCount} STARTUPS MAPPED`, tint: "#ffb37a" },
   { kind: "ball", size: 56, tint: "#a8d5ff", icon: "pin" },
   { kind: "pill", text: "SOPs THAT STICK", tint: "#b9e8a1" },
   { kind: "pill", text: "1,500+ LISTENERS/EP", tint: "#e5d3ff" },

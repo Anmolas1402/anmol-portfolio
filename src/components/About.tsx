@@ -14,7 +14,7 @@ const TRAITS = [
 
 export function About() {
   return (
-    <section id="about" className="scroll-mt-24 py-20 sm:py-24">
+    <section id="about" className="scroll-mt-24 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5">
         <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
           <div>
@@ -62,8 +62,8 @@ export function About() {
           </Reveal>
         </div>
 
-        <div className="mt-20 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
-          <RevealGroup className="space-y-8">
+        <div className="mt-14 grid gap-12 lg:grid-cols-[1.2fr_1fr]">
+          <RevealGroup className="space-y-6">
             {Object.entries(skills).map(([group, items]) => (
               <Reveal key={group}>
                 <div>
@@ -86,7 +86,7 @@ export function About() {
       </div>
 
       {/* The numbers, laid out like a readout. */}
-      <div className="mx-auto mt-20 max-w-6xl px-5">
+      <div className="mx-auto mt-14 max-w-6xl px-5">
         <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-4">
           {metrics.map((m) => (
             <Reveal key={m.value + m.label}>

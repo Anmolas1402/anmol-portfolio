@@ -24,12 +24,12 @@ function Card({ project, i }: { project: Project; i: number }) {
             </span>
             <span className="h-px flex-1 bg-line" />
             {project.live && (
-              <span className="mono inline-flex items-center gap-1.5 rounded-full border border-signal/25 bg-signal/8 px-2.5 py-1 text-[10px] tracking-[0.16em] text-signal">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-signal/25 bg-signal/8 px-2.5 py-1 text-[12px] text-signal">
                 <span className="relative flex size-1.5">
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
                   <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
                 </span>
-                LIVE
+                Live
               </span>
             )}
             <span className="text-[13px] text-muted">
@@ -50,7 +50,7 @@ function Card({ project, i }: { project: Project; i: number }) {
                 {project.tags.map((t) => (
                   <span
                     key={t}
-                    className="mono rounded-full border border-line px-3 py-1.5 text-[10px] tracking-[0.1em] text-muted"
+                    className="rounded-full border border-line px-3 py-1.5 text-[12px] text-muted"
                   >
                     {t}
                   </span>

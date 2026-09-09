@@ -38,15 +38,15 @@ export function Testimonials() {
   if (testimonials.length === 0) return null;
 
   return (
-    <section className="scroll-mt-24 py-20 sm:py-24">
+    <section className="scroll-mt-24 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="What people say"
-          title="From people I worked with"
+          title="In their words"
         />
 
         <Reveal>
-          <div className="relative mt-12">
+          <div className="relative mt-10">
             <span
               aria-hidden
               className="display block text-6xl leading-none text-accent/40"
@@ -59,8 +59,24 @@ export function Testimonials() {
               className="mt-4 flex snap-x snap-mandatory gap-10 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {testimonials.map((t) => (
-                <figure key={t.name} className="w-full shrink-0 snap-start">
-                  <blockquote className="max-w-3xl text-xl leading-relaxed text-muted sm:text-[27px] sm:leading-[1.45]">
+                <figure
+                  key={t.name}
+                  className="grid w-full shrink-0 snap-start gap-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12"
+                >
+                  {/* Who said it sits beside the quote rather than under it.
+                      With one quote the old stacked layout left the whole
+                      right-hand half of the section empty. */}
+                  <figcaption className="md:order-2 md:self-end md:pb-1">
+                    <div className="font-semibold text-paper">{t.name}</div>
+                    <div className="mt-1 text-sm text-muted">{t.role}</div>
+                    {(t.relationship || t.source) && (
+                      <div className="mt-2 text-[13px] text-muted/70">
+                        {[t.relationship, t.source].filter(Boolean).join(" · ")}
+                      </div>
+                    )}
+                  </figcaption>
+
+                  <blockquote className="text-xl leading-relaxed text-muted md:order-1 sm:text-[26px] sm:leading-[1.45]">
                     &ldquo;
                     {(() => {
                       // Split on the emphasised clause so the closing line
@@ -80,17 +96,6 @@ export function Testimonials() {
                     })()}
                     &rdquo;
                   </blockquote>
-                  <figcaption className="mt-8">
-                    <div className="font-semibold text-paper">{t.name}</div>
-                    <div className="mt-1 max-w-xl text-sm text-muted">
-                      {t.role}
-                    </div>
-                    {(t.relationship || t.source) && (
-                      <div className="mt-2 text-[13px] text-muted/70">
-                        {[t.relationship, t.source].filter(Boolean).join(" · ")}
-                      </div>
-                    )}
-                  </figcaption>
                 </figure>
               ))}
             </div>
