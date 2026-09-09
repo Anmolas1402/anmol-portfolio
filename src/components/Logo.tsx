@@ -40,11 +40,16 @@ export function Logo({
       className={`relative block shrink-0 overflow-hidden rounded-2xl border border-white/10 ${className}`}
       style={bg ? { background: bg } : undefined}
     >
+      {/* Eager on purpose. These sit in the timeline's horizontally clipped
+          track, and a clipped element never reports as intersecting, so the
+          lazy loader can leave a logo permanently unloaded — the same trap the
+          marquee hit. They are a few KB each; there is nothing to defer. */}
       <Image
         src={src}
         alt=""
         fill
         sizes="56px"
+        loading="eager"
         className={bg ? "object-contain p-2" : "object-cover"}
       />
     </span>
