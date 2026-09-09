@@ -209,9 +209,9 @@ function Frame({ card }: { card: Card }) {
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/12 bg-ink">
         {inner}
         {card.live && (
-          <span className="mono absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full border border-signal/30 bg-black/70 px-2 py-1 text-[9px] tracking-[0.14em] text-signal backdrop-blur-sm">
+          <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full border border-signal/30 bg-black/70 px-2 py-1 text-[11px] text-signal backdrop-blur-sm">
             <span className="size-1 rounded-full bg-signal" />
-            LIVE
+            Live
           </span>
         )}
       </div>
