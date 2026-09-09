@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Reveal } from "./Reveal";
-import { person } from "@/lib/content";
+import { composeUrl, person } from "@/lib/content";
 
 /**
  * The verb cycles and each one carries its own ring colour, as the reference
@@ -61,12 +61,6 @@ const socials = [
   },
 ];
 
-/** Gmail compose, addressed and titled, so the tap lands in a ready message. */
-const COMPOSE =
-  "https://mail.google.com/mail/?view=cm&fs=1" +
-  `&to=${encodeURIComponent(person.email)}` +
-  `&su=${encodeURIComponent("Hello Anmol")}`;
-
 /** Text set around a circle, rotating slowly. */
 function StampBadge() {
   const reduced = useReducedMotion();
@@ -88,7 +82,7 @@ function StampBadge() {
 
   return (
     <a
-      href={COMPOSE}
+      href={composeUrl}
       target="_blank"
       rel="noreferrer"
       onClick={copy}

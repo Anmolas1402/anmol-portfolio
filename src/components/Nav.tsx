@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Avatar } from "./Avatar";
-import { person } from "@/lib/content";
+import { composeUrl, person } from "@/lib/content";
 
 /** 18px stroked glyphs, one viewBox, so they sit on the text baseline evenly. */
 const ICONS = {
@@ -104,7 +104,9 @@ export function Nav() {
           Resume
         </a>
         <a
-          href={`mailto:${person.email}`}
+          href={composeUrl}
+          target="_blank"
+          rel="noreferrer"
           className="relative ml-1 flex items-center gap-2 rounded-full bg-paper px-4 py-2.5 text-[14px] font-bold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
         >
           <span className="hidden sm:inline">Get in Touch</span>

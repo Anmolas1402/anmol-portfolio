@@ -29,6 +29,20 @@ export const person = {
 } as const;
 
 /** The numbers that run in the hero marquee. Each one is defensible. */
+/**
+ * Gmail's compose window, addressed and titled.
+ *
+ * Every "Get in Touch" control uses this rather than mailto:, which silently
+ * does nothing on a machine with no mail client configured — the click looks
+ * broken. The address is a Gmail one, and this works on desktop and hands off
+ * to the app on mobile. The plain address further down stays a mailto: for
+ * people who do have a native client.
+ */
+export const composeUrl =
+  "https://mail.google.com/mail/?view=cm&fs=1" +
+  `&to=${encodeURIComponent(person.email)}` +
+  `&su=${encodeURIComponent("Hello Anmol")}`;
+
 export const metrics = [
   { value: "500K+", label: "students covered by the pipelines I built" },
   { value: "1 → 14", label: "exams in the test-series lineup", segments: { from: 1, to: 14 } },
