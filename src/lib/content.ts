@@ -171,6 +171,54 @@ export const education = [
   },
 ];
 
+/**
+ * The six things the work actually consists of, for the scattered pile in
+ * "What I do". Each caption is evidence for its label, not a restatement of it:
+ * the label says the discipline, the caption says what I did in it.
+ *
+ * Tints are deliberately pale so the cards read as paper scraps against the
+ * dark ground, the way the physics pills up top do.
+ */
+export const disciplines = [
+  {
+    label: "Product Ops",
+    caption: "0 → 1 features, end to end",
+    tint: "#ebe9e1",
+  },
+  {
+    label: "Hiring",
+    caption: "100+ interns onboarded",
+    tint: "#e6e2ef",
+  },
+  {
+    label: "Data Analysis",
+    caption: "pipelines to decisions",
+    tint: "#dfe4e5",
+  },
+  {
+    label: "Process Design",
+    caption: "SOPs that survive scale",
+    tint: "#f2f1ef",
+  },
+  {
+    label: "Stakeholders",
+    caption: "founders to interns",
+    tint: "#ece7ea",
+  },
+  {
+    label: "Quality",
+    caption: "break it before users do",
+    tint: "#ebe9e1",
+  },
+] as const;
+
+/**
+ * Read word by word as the section scrolls past. Kept to one sentence: the
+ * reveal is what holds attention, and a second sentence outlasts it.
+ */
+export const disciplineStatement =
+  "My work spans product ops, data and hiring \u2014 turning messy, manual processes into systems that still hold up when the volume goes up.";
+
 export const skills = {
   "Cross-functional execution": [
     "Product Thinking",

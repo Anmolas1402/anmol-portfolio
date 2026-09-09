@@ -4,6 +4,7 @@ import { Hero } from "@/components/Hero";
 import { PhysicsPills } from "@/components/PhysicsPills";
 import { LiveProof } from "@/components/LiveProof";
 import { ShowcaseStrip } from "@/components/ShowcaseStrip";
+import { WhatIDo } from "@/components/WhatIDo";
 import { Work } from "@/components/Work";
 import { About } from "@/components/About";
 import { Experience } from "@/components/Experience";
@@ -19,6 +20,7 @@ export default function Home() {
         <PhysicsPills />
         <LiveProof />
         <ShowcaseStrip />
+        <WhatIDo />
         <Work />
         <About />
         <Experience />
