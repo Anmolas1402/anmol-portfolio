@@ -100,7 +100,10 @@ body {
 /* Section labels read as something a person wrote, not machine output:
    sentence case, body font, normal tracking. Monospace stays for figures. */
 .eyebrow {
-  font-size: 0.9rem;
+  /* The reference sets these at 20px. 0.9rem read as fine print next to the
+     display headings below them; 1.1rem gives them the weight of a label
+     without competing with the heading. */
+  font-size: 1.1rem;
   letter-spacing: 0;
   color: var(--muted);
 }

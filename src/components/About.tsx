@@ -2,7 +2,7 @@
 
 import { Reveal, RevealGroup } from "./Reveal";
 import { Polaroid } from "./Polaroid";
-import { metrics, person, skills } from "@/lib/content";
+import { coreStack, metrics, person, skills } from "@/lib/content";
 
 /** Two-tone pills: a light lead word, the trait itself in bold. */
 const TRAITS = [
@@ -29,10 +29,16 @@ export function About() {
 
             <Reveal>
               <div className="mt-8 flex flex-wrap gap-3">
-                {TRAITS.map((t) => (
+                {TRAITS.map((t, i) => (
+                  // Alternating tilt, so hovering along the row rocks them one
+                  // way then the other instead of nudging all four the same way.
                   <span
                     key={t.lead}
-                    className="rounded-full px-4 py-2 text-[13px] text-ink shadow-[inset_0_2px_4px_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(0,0,0,0.12),0_8px_20px_-8px_rgba(0,0,0,0.7)]"
+                    className={`cursor-default rounded-full px-4 py-2 text-[13px] text-ink shadow-[inset_0_2px_4px_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(0,0,0,0.12),0_8px_20px_-8px_rgba(0,0,0,0.7)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                      i % 2 === 0
+                        ? "hover:-rotate-3 motion-reduce:hover:rotate-0"
+                        : "hover:rotate-3 motion-reduce:hover:rotate-0"
+                    } hover:-translate-y-0.5 hover:scale-[1.03] motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100`}
                     style={{ background: t.tint }}
                   >
                     {t.lead} <span className="font-bold">{t.bold}</span>
@@ -82,6 +88,35 @@ export function About() {
               </Reveal>
             ))}
           </RevealGroup>
+
+          {/* Fills the column that used to sit empty. Sticky on wide screens so
+              it stays level with the groups rather than stranding itself at the
+              top of a taller neighbour. */}
+          <Reveal>
+            <div className="rounded-3xl border border-line bg-ink-2 p-6 lg:sticky lg:top-28">
+              <p className="eyebrow">Core stack</p>
+              <ul className="mt-5">
+                {coreStack.map((c, i) => (
+                  <li
+                    key={c.area}
+                    className="flex gap-4 border-t border-line py-4 first:border-t-0 first:pt-0 last:pb-0"
+                  >
+                    <span className="pt-0.5 text-[13px] font-medium tabular-nums text-accent">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[15px] font-medium text-paper">
+                        {c.area}
+                      </span>
+                      <span className="mt-0.5 block text-[13px] leading-snug text-muted">
+                        {c.output}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
         </div>
       </div>
 
