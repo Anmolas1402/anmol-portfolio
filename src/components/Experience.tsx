@@ -74,7 +74,6 @@ export function Experience() {
           <SectionHeading
             eyebrow="Work experience"
             title="The journey so far"
-            note="Two roles, both about making a lot of moving parts behave."
           />
         </div>
 

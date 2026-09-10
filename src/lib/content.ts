@@ -44,14 +44,14 @@ export const composeUrl =
   `&su=${encodeURIComponent("Hello Anmol")}`;
 
 export const metrics = [
-  { value: "500K+", label: "students covered by the pipelines I built" },
-  { value: "1 → 14", label: "exams in the test-series lineup", segments: { from: 1, to: 14 } },
-  { value: "99.4%", label: "College Predictor data accuracy at rollout", ratio: 0.994 },
-  { value: "~10 L", label: "hits on College Predictor in 3 months" },
-  { value: "30+", label: "team managed across three subsidiaries" },
-  { value: "100+", label: "interns hired and onboarded" },
-  { value: "2 L", label: "paying students on Digital Books" },
-  { value: "1,500+", label: "listeners per podcast episode" },
+  { value: "700K+", label: "students impacted through data & product pipelines I built" },
+  { value: "1 → 14", label: "exam categories scaled in the test-series lineup", segments: { from: 1, to: 14 } },
+  { value: "99.4%", label: "College Predictor accuracy at launch", ratio: 0.994 },
+  { value: "~10 L", label: "College Predictor visits in the first 3 months" },
+  { value: "30+", label: "people managed across 3 teams / subsidiaries" },
+  { value: "100+", label: "interns hired, onboarded & operationalized" },
+  { value: "0 → 500K", label: "Marks App daily actives, scaled from an early product", segments: { from: 0, to: 12 } },
+  { value: "0 → 1", label: "features built and shipped end-to-end" },
 ] as const;
 
 export type Project = {
@@ -66,7 +66,6 @@ export type Project = {
   tags: string[];
   href?: string;
   hrefLabel?: string;
-  live?: boolean;
 };
 
 export const projects: Project[] = [
@@ -74,7 +73,7 @@ export const projects: Project[] = [
     id: "ncrhiring",
     index: "001",
     title: "NCR Hiring Map",
-    kicker: "Built solo · live in production",
+    kicker: "Built and run by me",
     blurb:
       `An interactive map of every startup and VC firm hiring across Delhi NCR. ${pins.total.toLocaleString()} companies, ${pins.openJobs.toLocaleString()} open roles, built from a reproducible scraping pipeline instead of a hand-typed spreadsheet.`,
     detail: [
@@ -86,13 +85,12 @@ export const projects: Project[] = [
     tags: ["Next.js 16", "Leaflet", "Data pipeline", "Scraping", "Tailwind v4"],
     href: "https://ncrhiring.in",
     hrefLabel: "ncrhiring.in",
-    live: true,
   },
   {
     id: "college-predictor",
     index: "002",
     title: "College Predictor",
-    kicker: "MathonGo · owned end to end",
+    kicker: "Owned end to end at MathonGo",
     blurb:
       "Score-to-seat prediction for JoSAA, JAC and BITSAT, wired into the score calculator so a student goes from marks to predicted college in one flow.",
     detail: [
@@ -102,6 +100,8 @@ export const projects: Project[] = [
     ],
     stat: { value: "~10 L", label: "hits in 3 months" },
     tags: ["Product ownership", "Data validation", "UAT", "Edge cases"],
+    href: "https://tools.mathongo.com/",
+    hrefLabel: "tools.mathongo.com",
   },
   {
     id: "buildability",
@@ -119,21 +119,6 @@ export const projects: Project[] = [
     tags: ["Research design", "Evidence tracking", "AI-assisted analysis"],
     href: "https://anmolas1402.github.io/composio-app-buildability/",
     hrefLabel: "Read the report",
-  },
-  {
-    id: "ticket-triage",
-    index: "004",
-    title: "Ticket Triage",
-    kicker: "Full stack + eval harness",
-    blurb:
-      "Classifies inbound support tickets with a forced-function-call to the OpenAI API, persists to Postgres, and reviews them in a filterable dashboard.",
-    detail: [
-      "The classifier is the easy half. The half people skip is knowing whether it works.",
-      "So it ships with an eval: 100 labelled tickets, scored per prompt version, accuracy printed for each. You can tell whether a prompt change helped or just felt better.",
-      "FastAPI + SQLAlchemy 2.0 + Postgres on the back, React + Vite + Tailwind on the front, full audit trail on every classification.",
-    ],
-    stat: { value: "100", label: "labelled tickets in the eval set" },
-    tags: ["FastAPI", "OpenAI", "PostgreSQL", "React", "Evals"],
   },
 ];
 
@@ -234,69 +219,78 @@ export const disciplines = [
 ] as const;
 
 /**
- * Read word by word as the section scrolls past. Kept to one sentence: the
- * reveal is what holds attention, and a second sentence outlasts it.
+ * Read word by word as the section scrolls past. Two lines: the first states
+ * the idea, the second says which parts of it are mine. The reveal runs
+ * straight through both, so the break is a beat rather than a full stop.
  */
-export const disciplineStatement =
-  "My work spans product ops, data and hiring \u2014 turning messy, manual processes into systems that still hold up when the volume goes up.";
+export const disciplineStatement = [
+  "Behind every product that scales is a system that does too.",
+  "I build that system \u2014 across product, data, operations and people.",
+] as const;
 
+/**
+ * Four groups, six items at most each. The list was twice this long and read
+ * as keyword stuffing — every extra pill made the ones that matter cheaper.
+ */
 export const skills = {
-  "Cross-functional execution": [
+  "Product & Execution": [
+    "0→1 Features",
     "Product Thinking",
-    "Ops Design",
-    "GTM Support",
+    "PRDs",
     "Feature Validation",
-    "User Research",
-    "PRD Writing",
     "UAT",
     "Workflow Design",
-    "Requirement Analysis",
   ],
-  "Data & analytics": [
+  "Data & Analytics": [
     "SQL",
     "Python",
     "Power BI",
     "Advanced Excel",
-    "Google Sheets",
-    "Dashboarding",
-    "Data Validation",
-    "Root Cause Analysis",
-    "Cohort Analysis",
+    "Dashboards",
     "Funnel Analysis",
-    "KPI Definition",
-    "Data Storytelling",
-    "AI-assisted analysis",
   ],
-  "Business & consulting": [
+  "Business & Strategy": [
     "Business Analysis",
-    "Stakeholder Management",
-    "Process Mapping",
     "Market Research",
-    "Competitive Analysis",
+    "Process Mapping",
     "Forecasting",
-    "Decision Memos",
   ],
-  Collaboration: [
+  "Leadership & Operations": [
     "Team Leadership",
+    "Stakeholder Management",
+    "Hiring",
     "Process Optimization",
-    "Structured Documentation",
-    "SOPs",
-    "AI-assisted documentation",
   ],
 } as const;
 
-/** Scrolling strip under the hero. Short, punchy, all true. */
+/**
+ * The right-hand summary. It deliberately does not repeat a single pill: the
+ * left column is what I work with, this is what comes out of it. Repeating the
+ * same words twice on one screen would just make the section look padded.
+ */
+export const coreStack = [
+  { area: "Product & Execution", output: "features that reach real users" },
+  { area: "Data & Analytics", output: "numbers a team can act on" },
+  { area: "Business & Strategy", output: "decisions backed by evidence" },
+  { area: "Leadership & Operations", output: "teams that keep shipping" },
+] as const;
+
+/**
+ * The strip under the hero. Proof points, not a skills list — each item is
+ * either something I do or a number I can stand behind.
+ *
+ * The company count comes from the same snapshot the map reads, so it can
+ * never drift from what the map itself says a few sections down.
+ */
 export const marqueeWords = [
-  "DATA PIPELINES",
   "PRODUCT OPS",
-  "500K STUDENTS",
-  "SQL",
-  "1 → 14 EXAMS",
-  "SOPs THAT STICK",
-  "99.4% ACCURATE",
-  "HIRING AT SCALE",
-  "SHIPS THINGS",
-  "EDGE CASES",
+  "DATA SYSTEMS",
+  "0 → 1 EXECUTION",
+  "700K+ STUDENTS IMPACTED",
+  "1 → 14 EXAMS SCALED",
+  "100+ INTERNS ONBOARDED",
+  "99.4% DATA ACCURACY",
+  `${pinCount} COMPANIES MAPPED`,
 ] as const;
 
 export type Testimonial = {

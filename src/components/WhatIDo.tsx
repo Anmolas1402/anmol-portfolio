@@ -33,7 +33,15 @@ const SLOTS = [
   { left: "45%", top: "51%", rotate: -9 },
 ] as const;
 
-const WORDS = disciplineStatement.split(" ");
+// Flattened once so a word's reveal position is its position in the whole
+// statement, not in its own line — the brightening runs straight through the
+// break instead of restarting on the second line.
+const LINES = disciplineStatement.map((l) => l.split(" "));
+const TOTAL_WORDS = LINES.reduce((n, l) => n + l.length, 0);
+const LINE_OFFSETS = LINES.reduce<number[]>(
+  (acc, l, i) => [...acc, (acc[i] ?? 0) + l.length],
+  [0],
+);
 
 /**
  * One word of the statement. Each takes a short slice of the section's scroll
@@ -118,19 +126,23 @@ export function WhatIDo() {
             })}
           </div>
 
-          <p className="display-soft text-[clamp(1.5rem,3vw,2.45rem)] leading-[1.3] text-muted">
-            {reduced
-              ? disciplineStatement
-              : WORDS.map((w, i) => (
-                  <Word
-                    key={`${w}-${i}`}
-                    word={w}
-                    index={i}
-                    total={WORDS.length}
-                    progress={scrollYProgress}
-                  />
-                ))}
-          </p>
+          <div className="display-soft space-y-5 text-[clamp(1.5rem,3vw,2.45rem)] leading-[1.3] text-muted">
+            {LINES.map((words, li) => (
+              <p key={li}>
+                {reduced
+                  ? disciplineStatement[li]
+                  : words.map((w, i) => (
+                      <Word
+                        key={`${li}-${w}-${i}`}
+                        word={w}
+                        index={LINE_OFFSETS[li] + i}
+                        total={TOTAL_WORDS}
+                        progress={scrollYProgress}
+                      />
+                    ))}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -3,7 +3,6 @@ import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { PhysicsPills } from "@/components/PhysicsPills";
 import { LiveProof } from "@/components/LiveProof";
-import { ShowcaseStrip } from "@/components/ShowcaseStrip";
 import { WhatIDo } from "@/components/WhatIDo";
 import { Work } from "@/components/Work";
 import { About } from "@/components/About";
@@ -19,7 +18,6 @@ export default function Home() {
         <Hero />
         <PhysicsPills />
         <LiveProof />
-        <ShowcaseStrip />
         <WhatIDo />
         <Work />
         <About />

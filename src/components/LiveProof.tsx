@@ -6,13 +6,6 @@ import { PinOrb, type Hit } from "./PinOrb";
 import { Reveal } from "./Reveal";
 import { usePins } from "./PinsProvider";
 
-const fmtDate = (iso: string) =>
-  new Intl.DateTimeFormat("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(iso));
-
 export function LiveProof() {
   const [hit, setHit] = useState<Hit | null>(null);
   const pins = usePins();
@@ -29,13 +22,18 @@ export function LiveProof() {
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <Reveal>
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-signal/25 bg-signal/8 px-3.5 py-1.5 text-[13px] text-signal">
-              <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
-              </span>
-              {pins.live ? "Live from ncrhiring.in" : `Snapshot · ${fmtDate(pins.generated)}`}
-            </p>
+            {/* Only when the numbers really did come from the live endpoint.
+                Nothing shows otherwise: a date-stamped "snapshot" label just
+                drew attention to the data being stale. */}
+            {pins.live && (
+              <p className="inline-flex items-center gap-2 rounded-full border border-signal/25 bg-signal/8 px-3.5 py-1.5 text-[13px] text-signal">
+                <span className="relative flex size-1.5">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
+                  <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
+                </span>
+                Live from ncrhiring.in
+              </p>
+            )}
 
             <h2 className="display mt-6 text-[clamp(2.2rem,6vw,4.2rem)] text-paper">
               This isn&rsquo;t
@@ -146,9 +144,7 @@ export function LiveProof() {
           </AnimatePresence>
 
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-[13px] text-muted">
-            {hit
-              ? "Verified pin"
-              : `Hover a bright pin · updated ${fmtDate(pins.generated)}`}
+            {hit ? "Verified pin" : "Hover a bright pin"}
           </div>
         </motion.div>
       </div>

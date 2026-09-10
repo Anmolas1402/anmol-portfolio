@@ -5,9 +5,17 @@ import { Reveal } from "./Reveal";
 import { projects, type Project } from "@/lib/content";
 import { SectionHeading } from "./SectionHeading";
 
-function Card({ project, i }: { project: Project; i: number }) {
+function Card({
+  project,
+  i,
+  wide = false,
+}: {
+  project: Project;
+  i: number;
+  wide?: boolean;
+}) {
   return (
-    <Reveal>
+    <Reveal className={wide ? "lg:col-span-2" : undefined}>
       <motion.article
         whileHover={{ y: -4 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -19,19 +27,10 @@ function Card({ project, i }: { project: Project; i: number }) {
 
         <div className="relative">
           <div className="mb-6 flex flex-wrap items-center gap-3">
-            <span className="mono text-xs tracking-[0.2em] text-accent">
+            <span className="text-[13px] font-medium tabular-nums text-accent">
               {project.index}
             </span>
             <span className="h-px flex-1 bg-line" />
-            {project.live && (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-signal/25 bg-signal/8 px-2.5 py-1 text-[12px] text-signal">
-                <span className="relative flex size-1.5">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-signal opacity-70" />
-                  <span className="relative inline-flex size-1.5 rounded-full bg-signal" />
-                </span>
-                Live
-              </span>
-            )}
             <span className="text-[13px] text-muted">
               {project.kicker}
             </span>
@@ -98,11 +97,17 @@ export function Work() {
       <SectionHeading
         eyebrow="Selected work"
         title="Things I shipped"
-        note="Four projects, each with a number attached. Two are live right now."
       />
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        {/* An odd number of projects leaves the last card alone beside an
+            empty half-row, so it takes the full width instead. */}
         {projects.map((p, i) => (
-          <Card key={p.id} project={p} i={i} />
+          <Card
+            key={p.id}
+            project={p}
+            i={i}
+            wide={projects.length % 2 === 1 && i === projects.length - 1}
+          />
         ))}
       </div>
     </section>
