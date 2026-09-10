@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Marquee } from "./Marquee";
-import { marqueeWords, pinCount } from "@/lib/content";
+import { marqueeWords } from "@/lib/content";
 
 /**
  * A band of metric pills and loose balls that drop in under gravity, land on
@@ -73,25 +73,71 @@ const ICONS = {
       <path d="M7.5 3v2.6M11.5 3v2.6" />
     </>
   ),
+  soda: (
+    <>
+      <path d="M8 6.5h8v12a2.5 2.5 0 0 1-2.5 2.5h-3A2.5 2.5 0 0 1 8 18.5v-12z" />
+      <path d="M8 6.5c0-1.1 1.8-2 4-2s4 .9 4 2" />
+      <path d="M10.4 10h3.2M10.4 13h3.2" />
+    </>
+  ),
+  heart: (
+    <path d="M12 20.3s-7-4.4-7-9.1A3.9 3.9 0 0 1 12 8.2a3.9 3.9 0 0 1 7 3C19 15.9 12 20.3 12 20.3z" />
+  ),
+  smiley: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M8.7 14.1a4.2 4.2 0 0 0 6.6 0" />
+      <path d="M9.4 9.5v.01M14.6 9.5v.01" />
+    </>
+  ),
+  fire: (
+    <>
+      <path d="M12 21c3.2 0 5.4-2.3 5.4-5.3 0-3.6-3.3-5.2-3.3-8.5C14.1 5.2 12.8 3.7 11.6 3c.3 2-1 3.4-2.2 4.8C8 9.3 6.6 11.1 6.6 13.9 6.6 17.6 8.9 21 12 21z" />
+      <path d="M12 21c1.6 0 2.7-1.1 2.7-2.6 0-1.8-1.7-2.5-1.7-4.1-1 1-2.2 1.9-2.2 3.6 0 1.6.7 3.1 1.2 3.1z" />
+    </>
+  ),
+  headphones: (
+    <>
+      <path d="M5 15.2v-2.4a7 7 0 0 1 14 0v2.4" />
+      <path d="M5 14h2.1a1 1 0 0 1 1 1v3.3a1 1 0 0 1-1 1H6.2A1.2 1.2 0 0 1 5 19.1V14z" />
+      <path d="M19 14h-2.1a1 1 0 0 0-1 1v3.3a1 1 0 0 0 1 1h.9a1.2 1.2 0 0 0 1.2-1.2V14z" />
+    </>
+  ),
+  star: (
+    <path d="M12 3.6l2.6 5.3 5.8.9-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.8l5.8-.9L12 3.6z" />
+  ),
+  eye: (
+    <>
+      <path d="M2.6 12S6.1 6.6 12 6.6 21.4 12 21.4 12 17.9 17.4 12 17.4 2.6 12 2.6 12z" />
+      <circle cx="12" cy="12" r="2.6" />
+    </>
+  ),
 } as const;
 
 const ITEMS: Item[] = [
-  { kind: "pill", text: "500K STUDENTS", tint: "#f5ce78" },
+  { kind: "pill", text: "STRUCTURING CHAOS", tint: "#f5ce78" },
   { kind: "ball", size: 54, tint: "#ff9a5c", icon: "chart" },
-  { kind: "pill", text: "1 → 14 EXAMS", tint: "#6dc7ba" },
-  { kind: "ball", size: 46, tint: "#c3afff", icon: "spark" },
-  { kind: "pill", text: "99.4% ACCURATE", tint: "#c3afff" },
-  { kind: "pill", text: "30+ TEAM", tint: "#f79c77" },
-  { kind: "ball", size: 60, tint: "#6dc7ba", icon: "clock" },
-  { kind: "pill", text: "100+ INTERNS HIRED", tint: "#f7c5d0" },
-  { kind: "ball", size: 48, tint: "#f5ce78", icon: "arrow" },
-  { kind: "pill", text: "2 L PAYING STUDENTS", tint: "#a8d5ff" },
-  { kind: "ball", size: 44, tint: "#b9e8a1", icon: "coffee" },
-  { kind: "pill", text: `${pinCount} STARTUPS MAPPED`, tint: "#ffb37a" },
-  { kind: "ball", size: 56, tint: "#a8d5ff", icon: "pin" },
-  { kind: "pill", text: "SOPs THAT STICK", tint: "#b9e8a1" },
-  { kind: "pill", text: "1,500+ LISTENERS/EP", tint: "#e5d3ff" },
-  { kind: "ball", size: 50, tint: "#f7c5d0", icon: "check" },
+  { kind: "ball", size: 46, tint: "#f7c5d0", icon: "heart" },
+  { kind: "pill", text: "PROBLEM SOLVING", tint: "#6dc7ba" },
+  { kind: "ball", size: 58, tint: "#e5d3ff", icon: "soda" },
+  { kind: "pill", text: "DATA → DECISIONS", tint: "#c3afff" },
+  { kind: "ball", size: 44, tint: "#c3afff", icon: "spark" },
+  { kind: "pill", text: "REFRAMING PROBLEMS", tint: "#f79c77" },
+  { kind: "ball", size: 52, tint: "#b9e8a1", icon: "smiley" },
+  { kind: "pill", text: "BUILDING SYSTEMS", tint: "#a8d5ff" },
+  { kind: "ball", size: 60, tint: "#6dc7ba", icon: "headphones" },
+  { kind: "pill", text: "ROOT CAUSE ANALYSIS", tint: "#f7c5d0" },
+  { kind: "ball", size: 48, tint: "#ffb37a", icon: "fire" },
+  { kind: "pill", text: "USER RESEARCH", tint: "#b9e8a1" },
+  { kind: "ball", size: 50, tint: "#f5ce78", icon: "star" },
+  { kind: "pill", text: "BUSINESS ANALYSIS", tint: "#ffb37a" },
+  { kind: "ball", size: 46, tint: "#a8d5ff", icon: "eye" },
+  { kind: "pill", text: "MARKET RESEARCH", tint: "#a8d5ff" },
+  { kind: "ball", size: 56, tint: "#c3afff", icon: "coffee" },
+  { kind: "pill", text: "PROCESS DESIGN", tint: "#b9e8a1" },
+  { kind: "ball", size: 44, tint: "#6dc7ba", icon: "clock" },
+  { kind: "pill", text: "EXPERIMENTATION", tint: "#f7c5d0" },
+  { kind: "ball", size: 52, tint: "#f79c77", icon: "pin" },
 ];
 
 /** Lit from above, seated below — what makes the shapes read as objects. */
@@ -114,11 +160,10 @@ export function PhysicsPills() {
     let stop = () => {};
     let cancelled = false;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0].isIntersecting) return;
-        io.disconnect();
-
+    // Runs the moment the component mounts rather than waiting for the band to
+    // scroll into view, so the drop has already started by the time the reader
+    // gets here. Matter is still imported dynamically, so nothing blocks paint.
+    const start = () => {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           // No gravity, no drag — just lay everything out and leave it alone.
           setMode("static");
@@ -144,14 +189,29 @@ export function PhysicsPills() {
           const engine = M.Engine.create();
           engine.gravity.y = 1.1;
 
+          // Fisher-Yates, so which body lands where changes on every load.
+          const slots = items.map((_, k) => k);
+          for (let k = slots.length - 1; k > 0; k--) {
+            const j = Math.floor(Math.random() * (k + 1));
+            [slots[k], slots[j]] = [slots[j], slots[k]];
+          }
+
           const bodies = items.map((item, i) => {
             const el = itemRefs.current[i];
             if (!el) return null;
-            // Spread the drop across the band, and start high enough that the
-            // first bodies enter from the top of the viewport rather than
-            // popping in just above the landing zone.
-            const x = width * (0.08 + 0.84 * ((i + 0.5) / items.length));
-            const y = -280 - i * 95;
+            // Scattered, not single file. Each body takes a shuffled slot
+            // across the width plus a little jitter — that keeps them spread
+            // out (pure random clusters) while looking unplanned — and a
+            // random height, so they arrive in no particular order.
+            const jitter = (Math.random() - 0.5) * width * 0.07;
+            const x = Math.max(
+              44,
+              Math.min(
+                width - 44,
+                width * (0.08 + 0.84 * ((slots[i] + 0.5) / items.length)) + jitter,
+              ),
+            );
+            const y = -120 - Math.random() * 1100;
             const opts = {
               restitution: 0.45,
               friction: 0.35,
@@ -236,14 +296,11 @@ export function PhysicsPills() {
             M.Engine.clear(engine);
           };
         })();
-      },
-      { threshold: 0.35 },
-    );
+    };
 
-    io.observe(band);
+    start();
     return () => {
       cancelled = true;
-      io.disconnect();
       stop();
     };
   }, []);
@@ -272,7 +329,7 @@ export function PhysicsPills() {
             aria-hidden={item.kind === "ball"}
             className={`${
               item.kind === "pill"
-                ? "mono flex items-center rounded-full px-4 py-2.5 text-[11px] font-semibold tracking-[0.14em] whitespace-nowrap"
+                ? "flex items-center rounded-full px-4 py-2.5 text-[11.5px] font-semibold tracking-[0.05em] whitespace-nowrap"
                 : "grid place-items-center rounded-full"
             } ${isStatic ? "" : "pointer-events-none absolute top-0 left-0"}`}
             style={{
@@ -317,7 +374,10 @@ export function PhysicsPills() {
         <Marquee duration={45}>
           {marqueeWords.map((w) => (
             <span key={w} className="flex items-center">
-              <span className="mono px-6 text-sm tracking-[0.18em] text-muted">
+              {/* Body sans, not mono. Uppercase needs a little tracking to
+                  stay legible, but the 0.18em mono it used to carry is the
+                  spaced-out machine look. */}
+              <span className="px-6 text-sm font-medium tracking-[0.04em] text-muted">
                 {w}
               </span>
               <span className="text-accent">✦</span>
