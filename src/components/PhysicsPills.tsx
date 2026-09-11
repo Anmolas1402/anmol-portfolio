@@ -228,10 +228,20 @@ export function PhysicsPills() {
             });
           });
 
+          // The side walls have to start above the highest spawn point, not at
+          // the band. Bodies drop in from as far up as -1220, and anything
+          // released above the walls had nothing beside it — a collision on
+          // the way down could push it clear off the page, which widened the
+          // document and made a phone zoom the whole layout out to fit.
+          const SIDE_TOP = -1400;
+          const SIDE_BOTTOM = height + WALL;
+          const sideH = SIDE_BOTTOM - SIDE_TOP;
+          const sideY = (SIDE_TOP + SIDE_BOTTOM) / 2;
+
           const walls = [
             M.Bodies.rectangle(width / 2, height + WALL / 2, width + WALL * 2, WALL, { isStatic: true }),
-            M.Bodies.rectangle(-WALL / 2, height / 2, WALL, height * 4, { isStatic: true }),
-            M.Bodies.rectangle(width + WALL / 2, height / 2, WALL, height * 4, { isStatic: true }),
+            M.Bodies.rectangle(-WALL / 2, sideY, WALL, sideH, { isStatic: true }),
+            M.Bodies.rectangle(width + WALL / 2, sideY, WALL, sideH, { isStatic: true }),
           ];
 
           const live = bodies.filter((b): b is NonNullable<typeof b> => !!b);
@@ -286,7 +296,7 @@ export function PhysicsPills() {
           const onResize = () => {
             const w = band.clientWidth;
             M.Body.setPosition(walls[0], { x: w / 2, y: height + WALL / 2 });
-            M.Body.setPosition(walls[2], { x: w + WALL / 2, y: height / 2 });
+            M.Body.setPosition(walls[2], { x: w + WALL / 2, y: sideY });
           };
           window.addEventListener("resize", onResize);
 
@@ -318,7 +328,7 @@ export function PhysicsPills() {
         className={
           isStatic
             ? "flex flex-wrap items-center justify-center gap-3 px-5 py-12"
-            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab overflow-visible select-none active:cursor-grabbing"
+            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab [overflow-x:clip] [overflow-y:visible] select-none active:cursor-grabbing"
         }
       >
         {ITEMS.slice(0, limit).map((item, i) => (
