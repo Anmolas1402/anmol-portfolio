@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Reveal } from "./Reveal";
+import { RevealGroup, revealChild } from "./Reveal";
 import { projects, type Project } from "@/lib/content";
 import { SectionHeading } from "./SectionHeading";
 
@@ -15,7 +15,9 @@ function Card({
   wide?: boolean;
 }) {
   return (
-    <Reveal className={wide ? "lg:col-span-2" : undefined}>
+    // Driven by the grid's variants rather than its own viewport check, so
+    // siblings step in one after another instead of the row popping at once.
+    <motion.div variants={revealChild} className={wide ? "lg:col-span-2" : undefined}>
       <motion.article
         whileHover={{ y: -4 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -87,7 +89,7 @@ function Card({
           {i + 1}
         </span>
       </motion.article>
-    </Reveal>
+    </motion.div>
   );
 }
 
@@ -98,7 +100,7 @@ export function Work() {
         eyebrow="Selected work"
         title="Things I shipped"
       />
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <RevealGroup className="mt-12 grid gap-6 lg:grid-cols-2" stagger={0.09}>
         {/* An odd number of projects leaves the last card alone beside an
             empty half-row, so it takes the full width instead. */}
         {projects.map((p, i) => (
@@ -109,7 +111,7 @@ export function Work() {
             wide={projects.length % 2 === 1 && i === projects.length - 1}
           />
         ))}
-      </div>
+      </RevealGroup>
     </section>
   );
 }

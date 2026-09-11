@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Reveal } from "./Reveal";
+import { revealChild } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { Logo } from "./Logo";
 import { education, experience } from "@/lib/content";
@@ -83,9 +83,18 @@ export function Experience() {
         </div>
 
         <div className="relative mt-14">
-          <Reveal>
+            {/* The stagger lives on the track, not on each card. A card that
+                has scrolled out of the clipped row never reports as
+                intersecting, so a per-card whileInView would leave it hidden
+                for good; driving them from the parent's variant avoids that
+                entirely. The parent's own variant carries no opacity or y, so
+                the sideways x transform is untouched. */}
             <motion.div
               ref={trackRef}
+              initial="hidden"
+              whileInView="shown"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.09 } } }}
               style={pinned ? { x } : undefined}
               className={`flex items-center gap-6 px-5 py-16 sm:px-[max(1.25rem,calc((100vw-72rem)/2))] ${
                 pinned
@@ -96,8 +105,9 @@ export function Experience() {
             {[...experience, ...education].map((role, i) => {
               const dateOnTop = i % 2 === 0;
               return (
-                <article
+                <motion.article
                   key={role.org + role.title}
+                  variants={revealChild}
                   // The alternating date block alone only offsets the cards by
                   // ~46px; the reference staggers them far harder, so push each
                   // one off centre as well.
@@ -157,11 +167,10 @@ export function Experience() {
                       ))}
                     </div>
                   </motion.div>
-                </article>
+                </motion.article>
               );
             })}
             </motion.div>
-          </Reveal>
         </div>
       </div>
     </section>
