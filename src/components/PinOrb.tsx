@@ -31,6 +31,7 @@ export function PinOrb({
   className = "",
   fill = 0.98,
   dotScale = 1,
+  approxThin = 1,
   parallax = 9,
   inspect = false,
   onHit,
@@ -39,6 +40,13 @@ export function PinOrb({
   /** How much of the diameter the data spans. >1 crops the edges. */
   fill?: number;
   dotScale?: number;
+  /**
+   * Multiplies how aggressively approximate pins are thinned. Above 1 draws
+   * fewer of them, which is what you want where the orb is small enough that
+   * the haze reads as clutter rather than density. Verified pins are never
+   * thinned.
+   */
+  approxThin?: number;
   parallax?: number;
   /** Enable hit-testing against verified pins. */
   inspect?: boolean;
@@ -109,7 +117,10 @@ export function PinOrb({
       // In the headline the orb is ~90px across, so all 1,492 approximate pins
       // stack 30-deep and compound to solid white however faint each one is.
       // Thin them until the density suits the size; verified pins always draw.
-      const approxStep = size < 140 ? 7 : size < 260 ? 3 : 1;
+      const approxStep = Math.max(
+        1,
+        Math.round((size < 140 ? 7 : size < 260 ? 3 : 1) * approxThin),
+      );
       // Generous grab radius — the pins are ~2px and nobody aims that well.
       const grab = Math.max(9, rBase * 5);
       let bestIdx = -1;
@@ -200,7 +211,7 @@ export function PinOrb({
       ro.disconnect();
       window.removeEventListener("pointermove", onMove);
     };
-  }, [fill, dotScale, parallax, inspect, PTS, LABELS]);
+  }, [fill, dotScale, approxThin, parallax, inspect, PTS, LABELS]);
 
   return (
     <div
