@@ -24,11 +24,15 @@ const VERBS = [
  * A thick outline faked with text-shadows arranged around a circle — the same
  * trick the reference uses, since -webkit-text-stroke draws inside the glyph
  * and thins the letterforms. 24 steps is enough that the ring reads as solid.
+ *
+ * The radius is in em, not px. At a fixed 9px it stayed the same weight while
+ * the heading scaled from 112px down to 35px, so on a phone it swelled past
+ * the line box and the two lines collided.
  */
-const ring = (color: string, radius = 9) =>
+const ring = (color: string, radius = 0.085) =>
   Array.from({ length: 24 }, (_, i) => {
     const a = (i / 24) * Math.PI * 2;
-    return `${(Math.cos(a) * radius).toFixed(2)}px ${(Math.sin(a) * radius).toFixed(2)}px 0 ${color}`;
+    return `${(Math.cos(a) * radius).toFixed(4)}em ${(Math.sin(a) * radius).toFixed(4)}em 0 ${color}`;
   }).join(", ");
 
 const socials = [
@@ -196,7 +200,9 @@ export function Contact() {
 
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
-          <h2 className="display text-[clamp(2.4rem,9vw,7rem)] text-paper">
+          {/* Looser than .display's 0.86: the ring needs 0.085em of clearance
+              above and below the glyphs, and 0.86 does not leave it. */}
+          <h2 className="display text-[clamp(2.4rem,9vw,7rem)] leading-[0.98]! text-paper">
             <span className="block">
               Let&rsquo;s <CyclingVerb />
             </span>
