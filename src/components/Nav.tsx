@@ -42,10 +42,10 @@ function Glyph({ name }: { name: keyof typeof ICONS }) {
       viewBox="0 0 21 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.6}
+      strokeWidth={1.85}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-[15px] shrink-0 opacity-75"
+      className="size-[16px] shrink-0 opacity-100"
       aria-hidden
     >
       {ICONS[name]}
@@ -68,10 +68,10 @@ export function Nav() {
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-      className="fixed inset-x-0 top-4 z-50 flex justify-center px-4"
+      className="fixed inset-x-0 top-8 z-50 flex justify-center px-4"
     >
       <div
-        className={`glass flex items-center gap-0.5 rounded-full p-1.5 pl-2 backdrop-saturate-[185%] transition-all duration-300 ${
+        className={`glass flex items-center gap-0.5 rounded-full p-3 pl-3.5 backdrop-saturate-[185%] transition-all duration-300 ${
           solid
             ? "glass-solid backdrop-blur-[30px] backdrop-saturate-[200%]"
             : "backdrop-blur-[22px]"
@@ -88,7 +88,7 @@ export function Nav() {
           <a
             key={l.href}
             href={l.href}
-            className={`relative flex items-center gap-1.5 rounded-full px-3 py-2.5 text-[14px] font-semibold text-paper/90 transition-colors hover:bg-white/10 hover:text-paper sm:px-3.5 ${
+            className={`relative flex items-center gap-1 rounded-full font-display px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 ${
               l.wide ? "hidden sm:flex" : ""
             }`}
           >
@@ -98,7 +98,7 @@ export function Nav() {
         ))}
         <a
           href={person.resume}
-          className="relative hidden items-center gap-1.5 rounded-full px-3.5 py-2.5 text-[14px] font-semibold text-paper/90 transition-colors hover:bg-white/10 hover:text-paper sm:flex"
+          className="font-display relative hidden items-center gap-1 rounded-full px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 sm:flex"
         >
           <Glyph name="doc" />
           Resume
@@ -107,7 +107,7 @@ export function Nav() {
           href={composeUrl}
           target="_blank"
           rel="noreferrer"
-          className="relative ml-1 flex items-center gap-2 rounded-full bg-paper px-4 py-2.5 text-[14px] font-bold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
+          className="font-display relative ml-1 flex items-center gap-2 rounded-full bg-paper px-4 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
         >
           <span className="hidden sm:inline">Get in Touch</span>
           <span className="sm:hidden">Contact</span>
