@@ -19,7 +19,7 @@ export const person = {
   phone: "+91 97295 81361",
   github: "https://github.com/Anmolas1402",
   linkedin: "https://linkedin.com/in/anmol-sethi-79ba03228",
-  resume: "/Anmol-Sethi-Resume.pdf",
+  resume: "/Anmol_Resume.pdf",
   /** Drop a square headshot at public/anmol.jpg, then set this to "/anmol.jpg". */
   photo: "/anmol.png",
   /** Larger portrait for the About polaroid. */
