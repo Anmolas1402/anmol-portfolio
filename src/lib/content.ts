@@ -44,7 +44,7 @@ export const composeUrl =
   `&su=${encodeURIComponent("Hello Anmol")}`;
 
 export const metrics = [
-  { value: "700K+", label: "students impacted through data & product pipelines I built" },
+  { value: "500K+", label: "students impacted through data & product pipelines I built" },
   { value: "1 → 14", label: "exam categories scaled in the test-series lineup", segments: { from: 1, to: 14 } },
   { value: "99.4%", label: "College Predictor accuracy at launch", ratio: 0.994 },
   { value: "~10 L", label: "College Predictor visits in the first 3 months" },
@@ -286,7 +286,7 @@ export const marqueeWords = [
   "PRODUCT OPS",
   "DATA SYSTEMS",
   "0 → 1 EXECUTION",
-  "700K+ STUDENTS IMPACTED",
+  "500K+ STUDENTS IMPACTED",
   "1 → 14 EXAMS SCALED",
   "100+ INTERNS ONBOARDED",
   "99.4% DATA ACCURACY",
