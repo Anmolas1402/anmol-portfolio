@@ -33,7 +33,7 @@ const links = [
   { href: "#work", label: "Work", icon: "folder" as const },
   { href: "#about", label: "About", icon: "smiley" as const },
   // Too many pills overflow a 375px screen, so this one waits for room.
-  { href: "#experience", label: "Experience", icon: "briefcase" as const, wide: true },
+  { href: "#experience", label: "Experience", icon: "briefcase" as const },
 ];
 
 function Glyph({ name }: { name: keyof typeof ICONS }) {
@@ -88,20 +88,23 @@ export function Nav() {
           <a
             key={l.href}
             href={l.href}
-            className={`relative flex items-center gap-1 rounded-full font-display px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 ${
-              l.wide ? "hidden sm:flex" : ""
-            }`}
+            aria-label={l.label}
+            className="font-display relative flex items-center gap-1 rounded-full px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10"
           >
             <Glyph name={l.icon} />
-            {l.label}
+            {/* Four labels plus the CTA will not fit across a phone at this
+                size. The icons stay, so every section is still reachable, and
+                aria-label carries the name for anyone who cannot see them. */}
+            <span className="hidden sm:inline">{l.label}</span>
           </a>
         ))}
         <a
           href={person.resume}
-          className="font-display relative hidden items-center gap-1 rounded-full px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 sm:flex"
+          aria-label="Resume"
+          className="font-display relative flex items-center gap-1 rounded-full px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10"
         >
           <Glyph name="doc" />
-          Resume
+          <span className="hidden sm:inline">Resume</span>
         </a>
         <a
           href={composeUrl}

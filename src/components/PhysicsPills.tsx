@@ -174,8 +174,10 @@ export function PhysicsPills() {
           const M = await import("matter-js");
           if (cancelled || !bandRef.current) return;
 
+          // A phone fits roughly two pills per row, so the pile climbs fast —
+          // but six out of twenty-three left the band looking half-empty.
           const count =
-            band.clientWidth < 560 ? 6 : band.clientWidth < 900 ? 10 : ITEMS.length;
+            band.clientWidth < 560 ? 13 : band.clientWidth < 900 ? 17 : ITEMS.length;
           setLimit(count);
           // Let React drop the extra bodies before measuring pill widths.
           await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
