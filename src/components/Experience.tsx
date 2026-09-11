@@ -27,16 +27,21 @@ export function Experience() {
 
   // Runway per pixel of sideways travel. At 1 the cards track the scroll
   // exactly, which reads as fast; a little more makes the pass deliberate.
-  const PACE = 1.4;
+  // A phone has far more sideways distance to cover relative to its screen,
+  // so it takes the brisker pace — 1.4 there would be a very long hold.
+  const [pace, setPace] = useState(1.4);
 
   // How far the track has to travel, and whether pinning is appropriate here.
   useEffect(() => {
     const measure = () => {
       const el = trackRef.current;
       if (!el) return;
-      const canPin = window.innerWidth >= 900 && !reduced;
+      // Pins at every width. Only reduced motion opts out, and that falls
+      // back to the native horizontal scroller.
+      const canPin = !reduced;
       setPinned(canPin);
-      setOverflow(canPin ? Math.max(0, el.scrollWidth - window.innerWidth + 80) : 0);
+      setPace(window.innerWidth < 900 ? 0.85 : 1.4);
+      setOverflow(canPin ? Math.max(0, el.scrollWidth - window.innerWidth + 40) : 0);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -61,7 +66,7 @@ export function Experience() {
       ref={sectionRef}
       className="scroll-mt-24"
       // The extra height is the runway the pinned track slides across.
-      style={pinned ? { height: `calc(100svh + ${overflow * PACE}px)` } : undefined}
+      style={pinned ? { height: `calc(100svh + ${overflow * pace}px)` } : undefined}
     >
       <div
         className={
