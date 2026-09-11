@@ -74,7 +74,10 @@ const HEADLINE: HeadLine[] = [
 export function Hero() {
 
   return (
-    <section id="top" className="relative pt-44 pb-4 sm:pt-56">
+    <section id="top" // pb on a phone is clearance, not decoration: the falling band sits directly
+  // below and its settled pile grows upward, so without this the pile buries
+  // the subtitle.
+  className="relative pt-28 pb-32 sm:pt-56 sm:pb-4">
       <div className="grid-ground pointer-events-none absolute inset-0 -z-10" />
 
 
@@ -84,7 +87,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease }}
-          className="mb-10 flex items-center justify-center gap-3 sm:mb-14"
+          className="mb-6 flex items-center justify-center gap-3 sm:mb-14"
         >
           <span className="text-lg text-muted sm:text-2xl">Hey, I&rsquo;m</span>
           <Avatar className="size-10 text-xs sm:size-12 sm:text-sm" />
@@ -168,7 +171,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease, delay: 0.7 }}
-          className="mx-auto mt-12 max-w-[34rem] text-center text-[1.25rem] leading-[1.4] tracking-[-0.01em] text-muted sm:text-[1.5rem]"
+          className="mx-auto mt-8 max-w-[34rem] text-center text-[1.25rem] leading-[1.4] tracking-[-0.01em] text-muted sm:mt-12 sm:text-[1.5rem]"
         >
           Currently figuring out how things work,{" "}
           {/* Forced only where the line is wide enough to need it. On a phone
@@ -184,7 +187,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease, delay: 0.85 }}
-          className="mx-auto mt-14 grid max-w-[46rem] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4"
+          className="mx-auto mt-14 hidden max-w-[46rem] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid sm:grid-cols-4"
         >
           {PROOF.map((p) => (
             <div key={p.label} className="bg-ink px-4 py-7 text-center">

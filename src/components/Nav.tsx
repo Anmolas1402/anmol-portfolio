@@ -45,7 +45,7 @@ function Glyph({ name }: { name: keyof typeof ICONS }) {
       strokeWidth={1.85}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-[16px] shrink-0 opacity-100"
+      className="hidden size-[16px] shrink-0 opacity-100 sm:block"
       aria-hidden
     >
       {ICONS[name]}
@@ -71,7 +71,7 @@ export function Nav() {
       className="fixed inset-x-0 top-8 z-50 flex justify-center px-4"
     >
       <div
-        className={`glass flex items-center gap-0.5 rounded-full p-3 pl-3.5 backdrop-saturate-[185%] transition-all duration-300 ${
+        className={`glass flex items-center gap-0 rounded-full p-2 pl-2 sm:gap-0.5 sm:p-3 sm:pl-3.5 backdrop-saturate-[185%] transition-all duration-300 ${
           solid
             ? "glass-solid backdrop-blur-[30px] backdrop-saturate-[200%]"
             : "backdrop-blur-[22px]"
@@ -79,7 +79,7 @@ export function Nav() {
       >
         <a
           href="#top"
-          className="relative flex transition hover:brightness-110"
+          className="relative hidden transition hover:brightness-110 sm:flex"
           aria-label="Back to top"
         >
           <Avatar className="size-10 text-[11px]" />
@@ -89,28 +89,28 @@ export function Nav() {
             key={l.href}
             href={l.href}
             aria-label={l.label}
-            className="font-display relative flex items-center gap-1 rounded-full px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10"
+            className="font-display relative flex items-center gap-1 rounded-full px-1.5 py-1.5 text-[13.5px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 sm:px-3 sm:text-[17px]"
           >
             <Glyph name={l.icon} />
             {/* Four labels plus the CTA will not fit across a phone at this
                 size. The icons stay, so every section is still reachable, and
                 aria-label carries the name for anyone who cannot see them. */}
-            <span className="hidden sm:inline">{l.label}</span>
+            <span>{l.label}</span>
           </a>
         ))}
         <a
           href={person.resume}
           aria-label="Resume"
-          className="font-display relative flex items-center gap-1 rounded-full px-3 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10"
+          className="font-display relative flex items-center gap-1 rounded-full px-2 py-1.5 text-[14px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 sm:px-3 sm:text-[17px]"
         >
           <Glyph name="doc" />
-          <span className="hidden sm:inline">Resume</span>
+          <span>Resume</span>
         </a>
         <a
           href={composeUrl}
           target="_blank"
           rel="noreferrer"
-          className="font-display relative ml-1 flex items-center gap-2 rounded-full bg-paper px-4 py-1.5 text-[17px] font-bold tracking-[-0.01em] text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
+          className="font-display relative ml-0.5 flex items-center sm:ml-1 gap-2 rounded-full bg-paper px-2.5 py-1.5 text-[13.5px] font-bold tracking-[-0.01em] text-ink sm:px-4 sm:text-[17px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
         >
           <span className="hidden sm:inline">Get in Touch</span>
           <span className="sm:hidden">Contact</span>

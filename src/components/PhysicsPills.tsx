@@ -149,8 +149,6 @@ export function PhysicsPills() {
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   // "idle" until we know what we can do; "static" honours reduced motion.
   const [mode, setMode] = useState<"idle" | "static" | "live">("idle");
-  // Sixteen bodies overflow the top of the band on a phone — the widest pill
-  // alone is 61% of a 390px screen. Narrow viewports get a subset instead.
   const [limit, setLimit] = useState(ITEMS.length);
 
   useEffect(() => {
@@ -174,10 +172,11 @@ export function PhysicsPills() {
           const M = await import("matter-js");
           if (cancelled || !bandRef.current) return;
 
-          // A phone fits roughly two pills per row, so the pile climbs fast —
-          // but six out of twenty-three left the band looking half-empty.
-          const count =
-            band.clientWidth < 560 ? 13 : band.clientWidth < 900 ? 17 : ITEMS.length;
+          // Every body, at every width. A phone fits about two pills per row,
+          // so the pile climbs well past the top of the band — that is the
+          // point. The band is overflow-visible, so it reads as things falling
+          // in from off-screen rather than as something clipped.
+          const count = ITEMS.length;
           setLimit(count);
           // Let React drop the extra bodies before measuring pill widths.
           await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
