@@ -28,14 +28,14 @@ const accentSerif = Instrument_Serif({
 });
 
 /**
- * The address the site is actually served from. Share images and canonical
- * links are resolved against it, so it must be a domain that resolves — it
- * previously pointed at anmolsethi.com, which does not exist, and every link
- * preview would have pulled its image from nowhere. Override with
- * NEXT_PUBLIC_SITE_URL once a custom domain is attached.
+ * The address the site is served from. Share images and canonical links are
+ * resolved against it, so it must be a domain that actually resolves — an
+ * earlier value, anmolsethi.com, never existed. The vercel.app address still
+ * serves the site, but canonical points here so search and link previews
+ * settle on one URL.
  */
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://anmol-portfolio-nu.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://anmolsethi.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
