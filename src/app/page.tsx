@@ -1,5 +1,6 @@
 import { PinsProvider } from "@/components/PinsProvider";
 import { Nav } from "@/components/Nav";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { Hero } from "@/components/Hero";
 import { PhysicsPills } from "@/components/PhysicsPills";
 import { LiveProof } from "@/components/LiveProof";
@@ -13,6 +14,7 @@ import { Contact } from "@/components/Contact";
 export default function Home() {
   return (
     <PinsProvider>
+      <SmoothScroll />
       <Nav />
       <main className="noise relative">
         <Hero />

@@ -13,7 +13,10 @@ export const pinCount = pins.total.toLocaleString();
 export const person = {
   name: "Anmol Sethi",
   role: "Product Ops",
-  tagline: "I build the data pipelines products get judged on.",
+  // Used as the meta description — the line search results and link previews
+  // show under the name. Kept in step with the hero headline.
+  tagline:
+    "Product ops at MathonGo. I turn complexity into clarity: data pipelines, 0 \u2192 1 features, and the systems that keep them working at scale.",
   location: "Delhi NCR / Bengaluru",
   email: "anmolsethi911@gmail.com",
   phone: "+91 97295 81361",

@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal, RevealGroup } from "./Reveal";
+import { CountUp } from "./CountUp";
 import { Polaroid } from "./Polaroid";
 import { coreStack, metrics, person, skills } from "@/lib/content";
 
@@ -127,7 +128,7 @@ export function About() {
             <Reveal key={m.value + m.label}>
               <div className="flex h-full flex-col bg-[#0b0b0f] p-6 transition-colors duration-500 hover:bg-[#101015]">
                 <div className="display text-3xl text-paper sm:text-4xl">
-                  {m.value}
+                  <CountUp value={m.value} />
                 </div>
                 <div className="mt-3 text-[13px] leading-snug text-muted">
                   {m.label}

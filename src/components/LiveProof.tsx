@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { PinOrb, type Hit } from "./PinOrb";
 import { Reveal } from "./Reveal";
+import { CountUp } from "./CountUp";
 import { usePins } from "./PinsProvider";
 
 export function LiveProof() {
@@ -77,7 +78,7 @@ export function LiveProof() {
               {readout.map((r) => (
                 <div key={r.k} className="bg-[#0b0b0f] p-5">
                   <div className="display text-2xl text-paper sm:text-3xl">
-                    {r.v}
+                    <CountUp value={r.v} />
                   </div>
                   <div className="mt-2 text-[13px] text-muted">
                     {r.k}

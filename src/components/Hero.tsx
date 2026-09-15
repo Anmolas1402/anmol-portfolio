@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { PinOrb } from "./PinOrb";
 import { Avatar } from "./Avatar";
+import { CountUp } from "./CountUp";
 import { person } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -30,7 +31,7 @@ const PROOF = [
   { value: "2+ YEARS", label: "Product Ops @ MathonGo" },
   { value: "500K+", label: "Students impacted" },
   { value: "0 → 1", label: "Features shipped end-to-end" },
-  { value: "30+", label: "People managed" },
+  { value: "30+", label: "People led & coordinated" },
 ] as const;
 
 /**
@@ -212,7 +213,7 @@ export function Hero() {
               className="border-l border-white/[0.07] px-4 py-7 text-center first:border-l-0"
             >
               <dd className="font-display text-xl font-bold tracking-[-0.02em] text-paper tabular-nums sm:text-[1.7rem]">
-                {p.value}
+                <CountUp value={p.value} />
               </dd>
               <dt className="mt-2 text-[13px] leading-snug text-balance text-paper/55">
                 {p.label}

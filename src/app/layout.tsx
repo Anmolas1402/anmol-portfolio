@@ -27,14 +27,33 @@ const accentSerif = Instrument_Serif({
   style: "italic",
 });
 
+/**
+ * The address the site is actually served from. Share images and canonical
+ * links are resolved against it, so it must be a domain that resolves — it
+ * previously pointed at anmolsethi.com, which does not exist, and every link
+ * preview would have pulled its image from nowhere. Override with
+ * NEXT_PUBLIC_SITE_URL once a custom domain is attached.
+ */
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://anmol-portfolio-nu.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://anmolsethi.com"),
+  metadataBase: new URL(SITE_URL),
   title: `${person.name} — ${person.role}`,
   description: person.tagline,
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${person.name} — ${person.role}`,
     description: person.tagline,
+    url: "/",
+    siteName: person.name,
     type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${person.name} — ${person.role}`,
+    description: person.tagline,
   },
 };
 

@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { RevealGroup, revealChild } from "./Reveal";
+import { CountUp } from "./CountUp";
 import { projects, type Project } from "@/lib/content";
 import { SectionHeading } from "./SectionHeading";
 
@@ -62,7 +63,7 @@ function Card({
             <div className="flex items-end justify-between gap-6">
               <div>
                 <div className="display text-[clamp(2rem,5vw,3rem)] text-paper">
-                  {project.stat.value}
+                  <CountUp value={project.stat.value} />
                 </div>
                 <div className="mt-2 max-w-[14rem] text-[13px] leading-snug text-muted">
                   {project.stat.label}
