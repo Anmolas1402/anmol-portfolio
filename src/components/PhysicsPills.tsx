@@ -247,13 +247,21 @@ export function PhysicsPills() {
           const live = bodies.filter((b): b is NonNullable<typeof b> => !!b);
           M.Composite.add(engine.world, [...walls, ...live]);
 
-          // Drag and throw. Matter's own wheel handler swallows page scroll, so
-          // remove it — the band sits mid-page and must not trap the user.
+          // Drag and throw — with a mouse. Matter binds wheel and touch
+          // handlers that call preventDefault, and the band sits mid-page, so
+          // both trapped the user: the wheel stopped scrolling, and on a phone
+          // any finger that landed on the pile started a drag instead of
+          // scrolling the page. Unbind them. On touch the pile is to look at;
+          // dragging stays a mouse thing.
           const mouse = M.Mouse.create(band);
-          band.removeEventListener(
-            "wheel",
-            (mouse as unknown as { mousewheel: (e: Event) => void }).mousewheel,
-          );
+          const handlers = mouse as unknown as Record<
+            "mousewheel" | "mousedown" | "mousemove" | "mouseup",
+            (e: Event) => void
+          >;
+          band.removeEventListener("wheel", handlers.mousewheel);
+          band.removeEventListener("touchstart", handlers.mousedown);
+          band.removeEventListener("touchmove", handlers.mousemove);
+          band.removeEventListener("touchend", handlers.mouseup);
           const drag = M.MouseConstraint.create(engine, {
             mouse,
             constraint: { stiffness: 0.18, render: { visible: false } },
@@ -328,7 +336,7 @@ export function PhysicsPills() {
         className={
           isStatic
             ? "flex flex-wrap items-center justify-center gap-3 px-5 py-12"
-            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab [overflow-x:clip] [overflow-y:visible] select-none active:cursor-grabbing"
+            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab touch-pan-y [overflow-x:clip] [overflow-y:visible] select-none active:cursor-grabbing"
         }
       >
         {ITEMS.slice(0, limit).map((item, i) => (

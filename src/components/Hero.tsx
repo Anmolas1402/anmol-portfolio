@@ -76,10 +76,12 @@ const HEADLINE: HeadLine[] = [
 export function Hero() {
 
   return (
-    <section id="top" // pb on a phone is clearance, not decoration: the falling band sits directly
-  // below and its settled pile grows upward, so without this the pile buries
-  // the subtitle.
-  className="relative isolate pt-28 pb-32 sm:pt-56 sm:pb-4">
+    <section id="top" // pb on a phone is clearance, not decoration. The falling band sits directly
+  // below and its settled pile grows upward, so this sets where the pile's top
+  // lands. It leaves a clear dark strip under the subtitle — somewhere a thumb
+  // can land to scroll — and lets the pile run off the bottom of the first
+  // screen, the way the reference does, rather than filling it edge to edge.
+  className="relative isolate pt-28 pb-72 sm:pt-56 sm:pb-4">
       {/* isolate on the section is what makes this visible at all: without a
           stacking context of its own, -z-10 sends it behind the body's
           painted background — which is why the old grid never showed.
