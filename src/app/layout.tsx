@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import {
   Bricolage_Grotesque,
   Geist_Mono,
@@ -64,6 +65,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${sans.variable} ${mono.variable} ${accentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full">{children}</body>
+      {/* Google Analytics, only once a measurement ID is configured in Vercel.
+          Loaded after hydration by the component, so it never holds up the
+          first paint. */}
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      )}
     </html>
   );
 }

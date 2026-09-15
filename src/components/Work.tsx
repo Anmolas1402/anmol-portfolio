@@ -5,6 +5,7 @@ import { RevealGroup, revealChild } from "./Reveal";
 import { CountUp } from "./CountUp";
 import { projects, type Project } from "@/lib/content";
 import { SectionHeading } from "./SectionHeading";
+import { track } from "@/lib/track";
 
 function Card({
   project,
@@ -75,6 +76,7 @@ function Card({
                   href={project.href}
                   target="_blank"
                   rel="noreferrer"
+                  onClick={() => track("project_open", { project: project.id })}
                   className="group/link inline-flex w-fit items-center gap-2 rounded-full border border-white/14 px-5 py-2.5 text-sm font-semibold text-paper transition hover:border-accent hover:bg-accent hover:text-white"
                 >
                   {project.hrefLabel ?? "Visit"}

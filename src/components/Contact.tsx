@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Reveal } from "./Reveal";
 import { composeUrl, person } from "@/lib/content";
+import { track } from "@/lib/track";
 
 /**
  * The verb cycles and each one carries its own ring colour, as the reference
@@ -89,7 +90,10 @@ function StampBadge() {
       href={composeUrl}
       target="_blank"
       rel="noreferrer"
-      onClick={copy}
+      onClick={() => {
+        copy();
+        track("contact_click", { from: "stamp" });
+      }}
       className="group relative grid size-[168px] shrink-0 place-items-center"
       aria-label={`Email ${person.email}`}
     >
@@ -215,12 +219,14 @@ export function Contact() {
             <div>
               <a
                 href={`mailto:${person.email}`}
+                onClick={() => track("contact_click", { from: "email" })}
                 className="mono text-sm text-paper underline decoration-accent decoration-2 underline-offset-[6px] transition hover:text-accent"
               >
                 {person.email}
               </a>
               <a
                 href={`tel:${person.phone.replace(/\s/g, "")}`}
+                onClick={() => track("contact_click", { from: "phone" })}
                 className="mono mt-2 block text-sm text-muted transition hover:text-paper"
               >
                 {person.phone}
@@ -233,6 +239,7 @@ export function Contact() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={s.label}
+                    onClick={() => track("social_click", { network: s.label.split(" ")[0] })}
                     className="grid size-11 place-items-center rounded-full border border-line text-muted transition hover:border-white/25 hover:bg-white/6 hover:text-paper"
                   >
                     <svg

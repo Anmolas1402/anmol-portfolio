@@ -6,6 +6,7 @@ import { PinOrb, type Hit } from "./PinOrb";
 import { Reveal } from "./Reveal";
 import { CountUp } from "./CountUp";
 import { usePins } from "./PinsProvider";
+import { track } from "@/lib/track";
 
 export function LiveProof() {
   const [hit, setHit] = useState<Hit | null>(null);
@@ -46,6 +47,7 @@ export function LiveProof() {
               Every dot is one company from{" "}
               <a
                 href="https://ncrhiring.in"
+                onClick={() => track("project_open", { project: "ncrhiring", from: "live-map" })}
                 target="_blank"
                 rel="noreferrer"
                 className="text-paper underline decoration-accent decoration-2 underline-offset-4 transition hover:text-accent"
@@ -89,6 +91,7 @@ export function LiveProof() {
 
             <a
               href="https://ncrhiring.in"
+                onClick={() => track("project_open", { project: "ncrhiring", from: "live-map" })}
               target="_blank"
               rel="noreferrer"
               className="group mt-8 inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3 text-sm font-semibold text-ink transition hover:bg-white"

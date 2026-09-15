@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { Avatar } from "./Avatar";
 import { composeUrl, person } from "@/lib/content";
+import { track } from "@/lib/track";
 
 /** 18px stroked glyphs, one viewBox, so they sit on the text baseline evenly. */
 const ICONS = {
@@ -176,7 +177,12 @@ export function Nav() {
             <Label open={open}>{l.label}</Label>
           </a>
         ))}
-        <a href={person.resume} aria-label="Resume" className={item}>
+        <a
+          href={person.resume}
+          aria-label="Resume"
+          onClick={() => track("resume_open", { from: "nav" })}
+          className={item}
+        >
           <Glyph name="doc" show={compact} />
           <Label open={open}>Resume</Label>
         </a>
@@ -185,6 +191,7 @@ export function Nav() {
           target="_blank"
           rel="noreferrer"
           aria-label="Get in Touch"
+          onClick={() => track("contact_click", { from: "nav" })}
           className={`font-display relative ml-0.5 flex items-center rounded-full bg-paper py-1.5 font-bold tracking-[-0.01em] text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition-[padding,background-color] duration-[750ms] ${ease} hover:bg-white sm:ml-1 ${
             compact
               ? "px-2.5"
