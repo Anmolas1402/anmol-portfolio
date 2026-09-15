@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { Avatar } from "./Avatar";
 import { composeUrl, person } from "@/lib/content";
@@ -27,16 +27,28 @@ const ICONS = {
       <path d="M11.3 4.6V8H15" />
     </>
   ),
+  mail: (
+    <>
+      <rect x="2.8" y="6" width="15.4" height="12" rx="2" />
+      <path d="M3.4 7.2l7.1 5.3 7.1-5.3" />
+    </>
+  ),
 } as const;
 
 const links = [
   { href: "#work", label: "Work", icon: "folder" as const },
   { href: "#about", label: "About", icon: "smiley" as const },
-  // Too many pills overflow a 375px screen, so this one waits for room.
   { href: "#experience", label: "Experience", icon: "briefcase" as const },
 ];
 
-function Glyph({ name }: { name: keyof typeof ICONS }) {
+/** How far the page must move in one direction before the nav reacts. */
+const THRESHOLD = 8;
+/** Near the top there is room for the full nav, so it never compacts here. */
+const TOP_ZONE = 120;
+
+const ease = "ease-[cubic-bezier(0.22,1,0.36,1)]";
+
+function Glyph({ name, show }: { name: keyof typeof ICONS; show: boolean }) {
   return (
     <svg
       viewBox="0 0 21 24"
@@ -45,7 +57,9 @@ function Glyph({ name }: { name: keyof typeof ICONS }) {
       strokeWidth={1.85}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="hidden size-[16px] shrink-0 opacity-100 sm:block"
+      // On a phone the expanded nav is names only — there is no room for both
+      // — so icons only appear there once it compacts.
+      className={`size-[16px] shrink-0 ${show ? "block" : "hidden sm:block"}`}
       aria-hidden
     >
       {ICONS[name]}
@@ -53,25 +67,93 @@ function Glyph({ name }: { name: keyof typeof ICONS }) {
   );
 }
 
+/**
+ * Collapses to zero width by animating the grid track rather than `width`,
+ * which cannot transition to or from `auto`. The text stays in the DOM, so it
+ * never reflows while it slides away.
+ */
+function Label({ open, children }: { open: boolean; children: ReactNode }) {
+  return (
+    <span
+      className={`grid transition-[grid-template-columns,opacity] duration-[750ms] ${ease} motion-reduce:transition-none ${
+        open ? "grid-cols-[1fr] opacity-100" : "grid-cols-[0fr] opacity-0"
+      }`}
+    >
+      <span className="overflow-hidden whitespace-nowrap">{children}</span>
+    </span>
+  );
+}
+
 export function Nav() {
   const [solid, setSolid] = useState(false);
+  const [scrolledDown, setScrolledDown] = useState(false);
+  // Pointing at or tabbing into a compact nav opens it back up, so nobody has
+  // to scroll up just to read a label.
+  const [engaged, setEngaged] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 40);
-    onScroll();
+    let lastY = window.scrollY;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const dy = y - lastY;
+      setSolid(y > 40);
+
+      if (y < TOP_ZONE) {
+        setScrolledDown(false);
+        lastY = y;
+        return;
+      }
+      // Only a deliberate move flips the state. lastY is only advanced once
+      // the threshold is crossed, so a slow scroll still accumulates — and a
+      // trackpad's small back-and-forth jitter never makes the nav flicker.
+      if (Math.abs(dy) >= THRESHOLD) {
+        setScrolledDown(dy > 0);
+        lastY = y;
+      }
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, []);
+
+  const compact = scrolledDown && !engaged;
+  const open = !compact;
+
+  const item = `font-display relative flex items-center rounded-full py-1.5 font-bold tracking-[-0.01em] text-white transition-[padding,gap,background-color] duration-[750ms] ${ease} hover:bg-white/10 ${
+    compact
+      ? "gap-0 px-2 sm:px-2.5"
+      : "gap-1 px-1.5 text-[13.5px] sm:px-3 sm:text-[17px]"
+  }`;
 
   return (
     <motion.nav
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-      className="fixed inset-x-0 top-8 z-50 flex justify-center px-4"
+      className={`fixed inset-x-0 z-50 flex justify-center px-4 transition-[top] duration-[750ms] ${ease} ${
+        compact ? "top-4" : "top-8"
+      }`}
     >
       <div
-        className={`glass flex items-center gap-0 rounded-full p-2 pl-2 sm:gap-0.5 sm:p-3 sm:pl-3.5 backdrop-saturate-[185%] transition-all duration-300 ${
+        onMouseEnter={() => setEngaged(true)}
+        onMouseLeave={() => setEngaged(false)}
+        onFocus={() => setEngaged(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) setEngaged(false);
+        }}
+        className={`glass flex items-center rounded-full backdrop-saturate-[185%] transition-[padding,gap,background-color] duration-[750ms] ${ease} ${
+          compact ? "gap-0.5 p-1.5" : "gap-0 p-2 pl-2 sm:gap-0.5 sm:p-3 sm:pl-3.5"
+        } ${
           solid
             ? "glass-solid backdrop-blur-[30px] backdrop-saturate-[200%]"
             : "backdrop-blur-[22px]"
@@ -82,38 +164,51 @@ export function Nav() {
           className="relative hidden transition hover:brightness-110 sm:flex"
           aria-label="Back to top"
         >
-          <Avatar className="size-10 text-[11px]" />
+          <Avatar
+            className={`text-[11px] transition-[width,height] duration-[750ms] ${ease} ${
+              compact ? "size-8" : "size-10"
+            }`}
+          />
         </a>
         {links.map((l) => (
-          <a
-            key={l.href}
-            href={l.href}
-            aria-label={l.label}
-            className="font-display relative flex items-center gap-1 rounded-full px-1.5 py-1.5 text-[13.5px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 sm:px-3 sm:text-[17px]"
-          >
-            <Glyph name={l.icon} />
-            {/* Four labels plus the CTA will not fit across a phone at this
-                size. The icons stay, so every section is still reachable, and
-                aria-label carries the name for anyone who cannot see them. */}
-            <span>{l.label}</span>
+          <a key={l.href} href={l.href} aria-label={l.label} className={item}>
+            <Glyph name={l.icon} show={compact} />
+            <Label open={open}>{l.label}</Label>
           </a>
         ))}
-        <a
-          href={person.resume}
-          aria-label="Resume"
-          className="font-display relative flex items-center gap-1 rounded-full px-2 py-1.5 text-[14px] font-bold tracking-[-0.01em] text-white transition-colors hover:bg-white/10 sm:px-3 sm:text-[17px]"
-        >
-          <Glyph name="doc" />
-          <span>Resume</span>
+        <a href={person.resume} aria-label="Resume" className={item}>
+          <Glyph name="doc" show={compact} />
+          <Label open={open}>Resume</Label>
         </a>
         <a
           href={composeUrl}
           target="_blank"
           rel="noreferrer"
-          className="font-display relative ml-0.5 flex items-center sm:ml-1 gap-2 rounded-full bg-paper px-2.5 py-1.5 text-[13.5px] font-bold tracking-[-0.01em] text-ink sm:px-4 sm:text-[17px] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition hover:bg-white"
+          aria-label="Get in Touch"
+          className={`font-display relative ml-0.5 flex items-center rounded-full bg-paper py-1.5 font-bold tracking-[-0.01em] text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_6px_rgba(0,0,0,0.10),0_2px_10px_rgba(0,0,0,0.35)] transition-[padding,background-color] duration-[750ms] ${ease} hover:bg-white sm:ml-1 ${
+            compact
+              ? "px-2.5"
+              : "px-2.5 text-[13.5px] sm:px-4 sm:text-[17px]"
+          }`}
         >
-          <span className="hidden sm:inline">Get in Touch</span>
-          <span className="sm:hidden">Contact</span>
+          {/* Compact, the CTA keeps its white pill but becomes an envelope, so
+              it still reads as the one primary action in the bar. */}
+          <svg
+            viewBox="0 0 21 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`size-[16px] shrink-0 ${compact ? "block" : "hidden"}`}
+            aria-hidden
+          >
+            {ICONS.mail}
+          </svg>
+          <Label open={open}>
+            <span className="hidden sm:inline">Get in Touch</span>
+            <span className="sm:hidden">Contact</span>
+          </Label>
         </a>
       </div>
     </motion.nav>

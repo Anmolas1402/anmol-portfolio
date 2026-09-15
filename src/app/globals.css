@@ -108,6 +108,10 @@ body {
   color: var(--muted);
 }
 
+/* Inside @layer components so Tailwind utilities still win. Unlayered, the
+   position: relative in these rules overrode `sticky` wherever they were
+   combined — which un-pinned the timeline and the Core stack card. */
+@layer components {
 /* Card glass ---------------------------------------------------------------
    The large-surface counterpart to the nav's .glass: quieter, because a card
    holds reading text and a bright rim around every paragraph is noise. A
@@ -144,6 +148,7 @@ body {
   background:
     radial-gradient(ellipse 55% 38% at 50% 0%, rgba(255, 110, 50, 0.075), transparent 70%),
     radial-gradient(ellipse 80% 45% at 50% 0%, rgba(150, 170, 255, 0.04), transparent 75%);
+}
 }
 
 /* Liquid glass ------------------------------------------------------------

@@ -59,8 +59,10 @@ function Word({
   total: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  const start = (index / total) * 0.82;
-  const opacity = useTransform(progress, [start, start + 0.18], [0.16, 1]);
+  // Each word gets a longer slice than before (0.28, was 0.18), so it
+  // brightens gradually instead of snapping on as the reader scrolls past.
+  const start = (index / total) * 0.72;
+  const opacity = useTransform(progress, [start, start + 0.28], [0.16, 1]);
   return (
     <motion.span style={{ opacity }} className="text-paper">
       {word}{" "}
@@ -72,11 +74,13 @@ export function WhatIDo() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
-  // Finishes well before the section leaves, so the last word is readable for
-  // a moment rather than lighting up on the way out.
+  // Spread over a longer stretch of scroll than before, so a quick flick does
+  // not light the whole sentence at once. It still finishes while the section
+  // is on screen, so the last word is readable rather than lighting up on the
+  // way out.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 0.9", "center 0.35"],
+    offset: ["start 0.95", "end 0.5"],
   });
 
   return (
