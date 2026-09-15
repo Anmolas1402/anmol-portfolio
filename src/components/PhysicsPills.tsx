@@ -247,12 +247,12 @@ export function PhysicsPills() {
           const live = bodies.filter((b): b is NonNullable<typeof b> => !!b);
           M.Composite.add(engine.world, [...walls, ...live]);
 
-          // Drag and throw — with a mouse. Matter binds wheel and touch
-          // handlers that call preventDefault, and the band sits mid-page, so
-          // both trapped the user: the wheel stopped scrolling, and on a phone
-          // any finger that landed on the pile started a drag instead of
-          // scrolling the page. Unbind them. On touch the pile is to look at;
-          // dragging stays a mouse thing.
+          // Drag and throw. Matter's own wheel and touch handlers call
+          // preventDefault on every event, which trapped the page: the wheel
+          // stopped scrolling, and on a phone any finger on the band started a
+          // drag. They are unbound and replaced for touch with a hit test — a
+          // finger that lands on a pill or ball grabs it, a finger on empty
+          // space scrolls the page as normal.
           const mouse = M.Mouse.create(band);
           const handlers = mouse as unknown as Record<
             "mousewheel" | "mousedown" | "mousemove" | "mouseup",
@@ -262,6 +262,36 @@ export function PhysicsPills() {
           band.removeEventListener("touchstart", handlers.mousedown);
           band.removeEventListener("touchmove", handlers.mousemove);
           band.removeEventListener("touchend", handlers.mouseup);
+
+          // Listened for on the window, not the band: the settled pile rises
+          // well above the band's box, and the bodies themselves are
+          // pointer-events: none, so a touch on the upper pills never reaches
+          // the band element.
+          let grabbing = false;
+          const onTouchStart = (e: TouchEvent) => {
+            const t = e.touches[0];
+            if (!t || e.touches.length > 1) return;
+            const r = band.getBoundingClientRect();
+            const hit = M.Query.point(live, {
+              x: t.clientX - r.left,
+              y: t.clientY - r.top,
+            });
+            if (!hit.length) return; // empty space: leave it to the page
+            grabbing = true;
+            handlers.mousedown(e); // positions the mouse and preventDefaults
+          };
+          const onTouchMove = (e: TouchEvent) => {
+            if (grabbing) handlers.mousemove(e);
+          };
+          const onTouchEnd = (e: TouchEvent) => {
+            if (!grabbing) return;
+            grabbing = false;
+            handlers.mouseup(e);
+          };
+          window.addEventListener("touchstart", onTouchStart, { passive: false });
+          window.addEventListener("touchmove", onTouchMove, { passive: false });
+          window.addEventListener("touchend", onTouchEnd, { passive: false });
+          window.addEventListener("touchcancel", onTouchEnd, { passive: false });
           const drag = M.MouseConstraint.create(engine, {
             mouse,
             constraint: { stiffness: 0.18, render: { visible: false } },
@@ -311,6 +341,10 @@ export function PhysicsPills() {
           stop = () => {
             cancelAnimationFrame(raf);
             window.removeEventListener("resize", onResize);
+            window.removeEventListener("touchstart", onTouchStart);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("touchend", onTouchEnd);
+            window.removeEventListener("touchcancel", onTouchEnd);
             M.Composite.clear(engine.world, false);
             M.Engine.clear(engine);
           };
@@ -336,7 +370,7 @@ export function PhysicsPills() {
         className={
           isStatic
             ? "flex flex-wrap items-center justify-center gap-3 px-5 py-12"
-            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab touch-pan-y [overflow-x:clip] [overflow-y:visible] select-none active:cursor-grabbing"
+            : "relative h-[26svh] max-h-[280px] min-h-[200px] w-full cursor-grab [overflow-x:clip] [overflow-y:visible] select-none active:cursor-grabbing"
         }
       >
         {ITEMS.slice(0, limit).map((item, i) => (
