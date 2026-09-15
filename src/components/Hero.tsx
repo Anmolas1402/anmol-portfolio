@@ -8,11 +8,12 @@ import { person } from "@/lib/content";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const line = {
-  hidden: { opacity: 0, y: "38%" },
+  hidden: { opacity: 0, y: "30%", filter: "blur(14px)" },
   shown: (i: number) => ({
     opacity: 1,
     y: "0%",
-    transition: { duration: 0.9, ease, delay: 0.15 + i * 0.09 },
+    filter: "blur(0px)",
+    transition: { duration: 1.2, ease, delay: 0.2 + i * 0.13 },
   }),
 };
 
@@ -77,8 +78,22 @@ export function Hero() {
     <section id="top" // pb on a phone is clearance, not decoration: the falling band sits directly
   // below and its settled pile grows upward, so without this the pile buries
   // the subtitle.
-  className="relative pt-28 pb-32 sm:pt-56 sm:pb-4">
-      <div className="grid-ground pointer-events-none absolute inset-0 -z-10" />
+  className="relative isolate pt-28 pb-32 sm:pt-56 sm:pb-4">
+      {/* isolate on the section is what makes this visible at all: without a
+          stacking context of its own, -z-10 sends it behind the body's
+          painted background — which is why the old grid never showed.
+          A soft spotlight from above rather than a drafting grid: the grid
+          read as a developer tool, the light reads as a stage. Warm at the
+          centre to sit under the accent, a faint cool wash at the edges so
+          the black is not flat. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[110svh]"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 42% at 50% 42%, rgba(255,100,40,0.2), transparent 72%), radial-gradient(ellipse 85% 55% at 50% 0%, rgba(150,170,255,0.09), transparent 75%)",
+        }}
+      />
 
 
       <div className="mx-auto max-w-6xl px-5">
@@ -90,7 +105,7 @@ export function Hero() {
           className="mb-6 flex items-center justify-center gap-3 sm:mb-14"
         >
           <span className="text-lg text-muted sm:text-2xl">Hey, I&rsquo;m</span>
-          <Avatar className="size-10 text-xs sm:size-12 sm:text-sm" />
+          <Avatar className="size-10 text-xs ring-1 ring-white/15 ring-offset-2 ring-offset-ink sm:size-12 sm:text-sm" />
           <span className="text-lg text-paper sm:text-2xl">{person.name}</span>
         </motion.div>
 
@@ -168,9 +183,9 @@ export function Hero() {
         {/* The claim carries the weight; the numbers underneath are a readout,
             not a sentence, so the whole block is scannable rather than read. */}
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.7 }}
+          initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.1, ease, delay: 0.8 }}
           className="mx-auto mt-8 max-w-[34rem] text-center text-[1.25rem] leading-[1.4] tracking-[-0.01em] text-muted sm:mt-12 sm:text-[1.5rem]"
         >
           Currently figuring out how things work,{" "}
@@ -184,17 +199,22 @@ export function Hero() {
         </motion.p>
 
         <motion.dl
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease, delay: 0.85 }}
-          className="mx-auto mt-14 hidden max-w-[46rem] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid sm:grid-cols-4"
+          initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.1, ease, delay: 1 }}
+          // One glass slab with hairline dividers, instead of four boxes in a
+          // ruled grid — reads as a single object, not a table.
+          className="glass mx-auto mt-16 hidden max-w-[46rem] grid-cols-4 rounded-[28px] backdrop-blur-xl sm:grid"
         >
           {PROOF.map((p) => (
-            <div key={p.label} className="bg-ink px-4 py-7 text-center">
-              <dd className="text-xl font-semibold text-paper sm:text-2xl">
+            <div
+              key={p.label}
+              className="border-l border-white/[0.07] px-4 py-7 text-center first:border-l-0"
+            >
+              <dd className="font-display text-xl font-bold tracking-[-0.02em] text-paper tabular-nums sm:text-[1.7rem]">
                 {p.value}
               </dd>
-              <dt className="mt-2 text-[13.5px] leading-snug text-balance text-paper/65">
+              <dt className="mt-2 text-[13px] leading-snug text-balance text-paper/55">
                 {p.label}
               </dt>
             </div>

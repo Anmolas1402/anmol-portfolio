@@ -71,8 +71,8 @@ export function Experience() {
       <div
         className={
           pinned
-            ? "sticky top-0 flex h-svh flex-col justify-center overflow-hidden"
-            : "overflow-hidden py-16 sm:py-20"
+            ? "stage sticky top-0 flex h-svh flex-col justify-center overflow-hidden"
+            : "stage overflow-hidden py-16 sm:py-20"
         }
       >
         <div className="mx-auto w-full max-w-6xl px-5">
@@ -124,7 +124,7 @@ export function Experience() {
                       dateOnTop ? "pb-1" : "flex-col-reverse pt-1"
                     }`}
                   >
-                    <span className="rounded-full border border-line bg-ink-2 px-4 py-2 text-[13px] text-paper/75">
+                    <span className="card-glass rounded-full px-4 py-2 text-[13px] text-paper/80">
                       {role.period}
                     </span>
                     <span className="size-2 rounded-full bg-accent" />
@@ -134,7 +134,7 @@ export function Experience() {
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="rounded-3xl border border-line bg-ink-2 p-7 transition-colors hover:border-white/16"
+                    className="card-glass rounded-3xl p-7 transition-[border-color] duration-500 hover:border-white/15"
                   >
                     <div className="flex items-center gap-4">
                       <Logo

@@ -83,7 +83,7 @@ export function WhatIDo() {
     <section
       id="what-i-do"
       ref={sectionRef}
-      className="scroll-mt-24 py-16 sm:py-20"
+      className="stage scroll-mt-24 py-16 sm:py-20"
     >
       <div className="mx-auto max-w-6xl px-5">
         <p className="eyebrow">What I do</p>

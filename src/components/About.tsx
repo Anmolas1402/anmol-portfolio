@@ -14,7 +14,7 @@ const TRAITS = [
 
 export function About() {
   return (
-    <section id="about" className="scroll-mt-24 py-16 sm:py-20">
+    <section id="about" className="stage scroll-mt-24 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5">
         <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
           <div>
@@ -93,7 +93,7 @@ export function About() {
               it stays level with the groups rather than stranding itself at the
               top of a taller neighbour. */}
           <Reveal>
-            <div className="rounded-3xl border border-line bg-ink-2 p-6 lg:sticky lg:top-28">
+            <div className="card-glass rounded-3xl p-6 lg:sticky lg:top-28">
               <p className="eyebrow">Core stack</p>
               <ul className="mt-5">
                 {coreStack.map((c, i) => (
@@ -122,10 +122,10 @@ export function About() {
 
       {/* The numbers, laid out like a readout. */}
       <div className="mx-auto mt-14 max-w-6xl px-5">
-        <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-4">
+        <RevealGroup className="card-glass grid grid-cols-2 gap-px overflow-hidden rounded-[28px] bg-white/[0.05] sm:grid-cols-4">
           {metrics.map((m) => (
             <Reveal key={m.value + m.label}>
-              <div className="flex h-full flex-col bg-ink p-6 transition-colors hover:bg-ink-2">
+              <div className="flex h-full flex-col bg-[#0b0b0f] p-6 transition-colors duration-500 hover:bg-[#101015]">
                 <div className="display text-3xl text-paper sm:text-4xl">
                   {m.value}
                 </div>

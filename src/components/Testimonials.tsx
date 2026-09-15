@@ -38,7 +38,7 @@ export function Testimonials() {
   if (testimonials.length === 0) return null;
 
   return (
-    <section className="scroll-mt-24 py-16 sm:py-20">
+    <section className="stage scroll-mt-24 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="What people say"

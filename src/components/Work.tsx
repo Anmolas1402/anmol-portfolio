@@ -21,7 +21,7 @@ function Card({
       <motion.article
         whileHover={{ y: -4 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="group relative overflow-hidden rounded-3xl border border-line bg-ink-2 p-6 sm:p-8"
+        className="card-glass group overflow-hidden rounded-3xl p-6 transition-[border-color] duration-500 hover:border-white/15 sm:p-8"
       >
         {/* Accent wash on hover — cheap, but it makes the card feel alive. */}
         <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -95,7 +95,7 @@ function Card({
 
 export function Work() {
   return (
-    <section id="work" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:py-24">
+    <section id="work" className="stage mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:py-24">
       <SectionHeading
         eyebrow="Selected work"
         title="Things I shipped"

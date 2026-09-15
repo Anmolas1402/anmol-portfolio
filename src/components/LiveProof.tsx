@@ -18,7 +18,7 @@ export function LiveProof() {
   ];
 
   return (
-    <section className="relative overflow-hidden border-y border-line bg-ink-2/40 py-20 sm:py-24">
+    <section className="stage overflow-hidden border-y border-line bg-ink-2/40 py-20 sm:py-24">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <Reveal>
           <div>
@@ -73,9 +73,9 @@ export function LiveProof() {
               </div>
             </div>
 
-            <div className="mt-9 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
+            <div className="card-glass mt-9 grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-white/[0.05]">
               {readout.map((r) => (
-                <div key={r.k} className="bg-ink p-5">
+                <div key={r.k} className="bg-[#0b0b0f] p-5">
                   <div className="display text-2xl text-paper sm:text-3xl">
                     {r.v}
                   </div>

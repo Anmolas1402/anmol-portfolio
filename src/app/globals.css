@@ -108,6 +108,44 @@ body {
   color: var(--muted);
 }
 
+/* Card glass ---------------------------------------------------------------
+   The large-surface counterpart to the nav's .glass: quieter, because a card
+   holds reading text and a bright rim around every paragraph is noise. A
+   faint top-lit gradient, one hairline highlight along the top edge, and a
+   long soft shadow so the card sits above the ground instead of on it. */
+.card-glass {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.055) 0%,
+    rgba(255, 255, 255, 0.018) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 30px 70px -35px rgba(0, 0, 0, 0.85);
+}
+
+/* Stage light ---------------------------------------------------------------
+   A low warm light from the top of a section, so each block reads as lit
+   rather than printed on flat black. isolate keeps the -1 layer inside the
+   section; without its own stacking context it would paint behind the body's
+   background and vanish, which is exactly what hid the hero's old grid. */
+.stage {
+  position: relative;
+  isolation: isolate;
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 38% at 50% 0%, rgba(255, 110, 50, 0.075), transparent 70%),
+    radial-gradient(ellipse 80% 45% at 50% 0%, rgba(150, 170, 255, 0.04), transparent 75%);
+}
+
 /* Liquid glass ------------------------------------------------------------
    Apple's material is not just a blur. Two things carry it: a saturation
    boost, so colour bleeding through the panel stays vivid instead of going
