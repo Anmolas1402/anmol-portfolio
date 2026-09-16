@@ -89,8 +89,29 @@ body {
 .animate-marquee {
   animation: marquee var(--marquee-duration, 40s) linear infinite;
 }
+/* The edges fade with two overlays rather than a mask. A mask over a moving
+   layer makes the browser repaint the whole strip every frame, which on a
+   phone was most of the main thread's work while the page sat still. */
 .marquee-mask {
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  position: relative;
+}
+.marquee-mask::before,
+.marquee-mask::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 7%;
+  z-index: 1;
+  pointer-events: none;
+}
+.marquee-mask::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--ink), transparent);
+}
+.marquee-mask::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--ink), transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

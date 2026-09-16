@@ -14,6 +14,10 @@ import Lenis from "lenis";
 export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Wheel smoothing only means anything with a mouse or trackpad. On a
+    // phone Lenis leaves touch native anyway, so all it would add is a
+    // requestAnimationFrame loop running for the whole visit.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     const lenis = new Lenis({
       duration: 1.15,

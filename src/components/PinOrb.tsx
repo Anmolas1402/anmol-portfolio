@@ -101,7 +101,26 @@ export function PinOrb({
       local.y = e.clientY - r.top;
     };
 
+    // Only animate while the orb is on screen, and at half rate on touch
+    // devices, where there is no cursor to follow and the only motion is a
+    // slow pulse. Left running, the two orbs drew every pin sixty times a
+    // second for the whole visit and kept a phone's main thread busy even
+    // with nothing on screen.
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    let visible = false;
+    let lastDraw = 0;
+    const schedule = () => {
+      if (visible && !raf) raf = requestAnimationFrame(draw);
+    };
+
     const draw = (now: number) => {
+      raf = 0;
+      if (!visible) return;
+      if (coarse && now - lastDraw < 32) {
+        schedule();
+        return;
+      }
+      lastDraw = now;
       const t = (now - start) / 1000;
       const intro = reduced ? 1 : Math.min(t / 1.5, 1);
       eased.x += (target.x - eased.x) * 0.06;
@@ -197,17 +216,31 @@ export function PinOrb({
           );
         }
       }
-      raf = requestAnimationFrame(draw);
+      // Once the reveal is done, a reduced-motion orb has nothing left to
+      // animate, so it stops asking for frames.
+      if (reduced && intro >= 1) return;
+      schedule();
     };
 
     resize();
     setReady(true);
-    raf = requestAnimationFrame(draw);
-    const ro = new ResizeObserver(resize);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        schedule();
+      },
+      { rootMargin: "100px" },
+    );
+    io.observe(wrap);
+    const ro = new ResizeObserver(() => {
+      resize();
+      schedule();
+    });
     ro.observe(wrap);
-    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointermove", onMove, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       ro.disconnect();
       window.removeEventListener("pointermove", onMove);
     };

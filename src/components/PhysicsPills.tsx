@@ -187,7 +187,9 @@ export function PhysicsPills() {
           const height = band.clientHeight;
           const WALL = 200; // thick walls so fast throws cannot tunnel out
 
-          const engine = M.Engine.create();
+          // Sleeping lets a settled body drop out of the simulation until
+          // something touches it, which is what allows the loop to stop.
+          const engine = M.Engine.create({ enableSleeping: true });
           engine.gravity.y = 1.1;
 
           // Fisher-Yates, so which body lands where changes on every load.
@@ -245,6 +247,8 @@ export function PhysicsPills() {
           ];
 
           const live = bodies.filter((b): b is NonNullable<typeof b> => !!b);
+          const halfW = items.map((_, i) => (itemRefs.current[i]?.offsetWidth ?? 0) / 2);
+          const halfH = items.map((_, i) => (itemRefs.current[i]?.offsetHeight ?? 0) / 2);
           M.Composite.add(engine.world, [...walls, ...live]);
 
           // Drag and throw. Matter's own wheel and touch handlers call
@@ -279,6 +283,7 @@ export function PhysicsPills() {
             if (!hit.length) return; // empty space: leave it to the page
             grabbing = true;
             handlers.mousedown(e); // positions the mouse and preventDefaults
+            wake();
           };
           const onTouchMove = (e: TouchEvent) => {
             if (grabbing) handlers.mousemove(e);
@@ -298,9 +303,20 @@ export function PhysicsPills() {
           });
           M.Composite.add(engine.world, drag);
 
+          // The loop runs only while it has something to do: the band is on
+          // screen, and either a body is still moving or one is being held.
+          // Before this it ran for the whole visit, writing twenty-three
+          // transforms a frame even from the footer.
           let raf = 0;
           let last = performance.now();
+          let onScreen = true;
+          const wake = () => {
+            if (raf || !onScreen) return;
+            last = performance.now();
+            raf = requestAnimationFrame(frame);
+          };
           const frame = (now: number) => {
+            raf = 0;
             // Clamped delta: a backgrounded tab would otherwise resume with a
             // huge step and fire every body through the floor.
             const dt = Math.min(now - last, 32);
@@ -322,16 +338,39 @@ export function PhysicsPills() {
                 M.Body.setAngularVelocity(body, 0);
               }
               const { position: p, angle } = body;
-              el.style.transform = `translate(${p.x - el.offsetWidth / 2}px, ${
-                p.y - el.offsetHeight / 2
+              // Half-sizes are measured once, below. Reading offsetWidth here
+              // straight after writing the previous body's transform forced a
+              // full layout for every body, every frame.
+              el.style.transform = `translate(${p.x - halfW[i]}px, ${
+                p.y - halfH[i]
               }px) rotate(${angle}rad)`;
             }
-            raf = requestAnimationFrame(frame);
+            const settled = live.every((body) => body.isSleeping);
+            if (onScreen && (!settled || grabbing || drag.body)) {
+              raf = requestAnimationFrame(frame);
+            }
           };
           raf = requestAnimationFrame(frame);
           setMode("live");
 
+          const io = new IntersectionObserver(
+            ([entry]) => {
+              onScreen = entry.isIntersecting;
+              if (onScreen) wake();
+            },
+            // The settled pile reaches well above the band, so count it as on
+            // screen a little early.
+            { rootMargin: "400px 0px" },
+          );
+          io.observe(band);
+          // A press anywhere near the pile has to restart a stopped loop, or a
+          // grab on a sleeping pill would do nothing.
+          const onPress = () => wake();
+          window.addEventListener("pointerdown", onPress, { passive: true });
+          band.addEventListener("mousemove", onPress, { passive: true });
+
           const onResize = () => {
+            wake();
             const w = band.clientWidth;
             M.Body.setPosition(walls[0], { x: w / 2, y: height + WALL / 2 });
             M.Body.setPosition(walls[2], { x: w + WALL / 2, y: sideY });
@@ -340,6 +379,9 @@ export function PhysicsPills() {
 
           stop = () => {
             cancelAnimationFrame(raf);
+            io.disconnect();
+            window.removeEventListener("pointerdown", onPress);
+            band.removeEventListener("mousemove", onPress);
             window.removeEventListener("resize", onResize);
             window.removeEventListener("touchstart", onTouchStart);
             window.removeEventListener("touchmove", onTouchMove);
