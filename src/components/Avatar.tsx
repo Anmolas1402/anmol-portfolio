@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import { person } from "@/lib/content";
 
 /**
@@ -20,7 +21,7 @@ export function Avatar({ className = "" }: { className?: string }) {
       className={`relative block shrink-0 overflow-hidden rounded-full border border-white/12 ${className}`}
     >
       <Image
-        src={person.photo}
+        src={asset(person.photo)}
         alt={person.name}
         fill
         sizes="64px"

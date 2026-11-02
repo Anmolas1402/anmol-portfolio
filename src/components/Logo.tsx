@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 
 /**
  * A square logo tile. Falls back to a monogram when no mark is available, so a
@@ -45,7 +46,7 @@ export function Logo({
           lazy loader can leave a logo permanently unloaded — the same trap the
           marquee hit. They are a few KB each; there is nothing to defer. */}
       <Image
-        src={src}
+        src={asset(src)}
         alt=""
         fill
         sizes="56px"

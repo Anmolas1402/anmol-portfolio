@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import { useState } from "react";
 
 /**
@@ -45,7 +46,7 @@ export function Polaroid({
         <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#e7e4dc]">
           {show ? (
             <Image
-              src={src}
+              src={asset(src)}
               alt={name}
               fill
               sizes="(max-width: 1024px) 80vw, 420px"

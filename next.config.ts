@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
   // Without a server there is no image optimiser either; ship the files as-is.
   images: { unoptimized: true },
   basePath,
+  // Read back by lib/asset.ts to prefix files in public/.
+  env: { NEXT_PUBLIC_BASE_PATH: basePath },
   assetPrefix: basePath || undefined,
 };
 
