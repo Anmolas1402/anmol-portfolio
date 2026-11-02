@@ -1,0 +1,51 @@
+# Builds the static export and publishes it to GitHub Pages.
+#
+# Pages is here because both previous hosts stopped serving: Netlify hit its
+# free-tier usage cap and Vercel paused the account on 15 Oct for exceeding
+# Hobby fair-use. Pages has no bandwidth cap for a site this size.
+name: Deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages needs these to mint the deployment; the defaults are read-only.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; the later push wins.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          # Serves from /<repo> until the custom domain is pointed here;
+          # drop this and the site builds for the root instead.
+          PAGES_BASE_PATH: /anmol-portfolio
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

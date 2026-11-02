@@ -3,6 +3,10 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { person } from "@/lib/content";
 
+// A static export has no server to generate this on request, so bake it at
+// build time like the rest of the site.
+export const dynamic = "force-static";
+
 /**
  * The card that appears when the link is pasted into LinkedIn, WhatsApp, Slack
  * or X. Without one those previews render as a bare URL, which is the first
